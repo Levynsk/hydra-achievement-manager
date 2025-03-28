@@ -79,7 +79,7 @@ Se você achou este projeto útil, considere:
 
 - Seguir os criadores no Twitter
 - Estrelar o repositório
-- Compartilhar com outros usuários Steam
+- Compartilhar com outros usuários
 
 ## 📌 Observação
 
