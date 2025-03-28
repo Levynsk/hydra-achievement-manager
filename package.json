@@ -1,0 +1,20 @@
+{
+  "name": "steam-achievements-manager",
+  "version": "1.0.0",
+  "description": "A modern Steam achievements manager",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.2",
+    "electron-store": "^8.1.0"
+  },
+  "devDependencies": {
+    "electron": "^27.1.0",
+    "electron-builder": "^24.6.4"
+  }
+}

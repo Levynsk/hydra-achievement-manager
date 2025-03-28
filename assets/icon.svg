@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="steam-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7aa2f7" />
+      <stop offset="100%" stop-color="#bb9af7" />
+    </linearGradient>
+  </defs>
+  <circle cx="256" cy="256" r="240" fill="#1a1b26" stroke="url(#steam-gradient)" stroke-width="16" />
+  <path d="M256 100c-85.5 0-155 69.5-155 155 0 85.5 69.5 155 155 155 85.5 0 155-69.5 155-155 0-85.5-69.5-155-155-155zm0 283.3c-70.9 0-128.3-57.4-128.3-128.3S185.1 126.7 256 126.7 384.3 184.1 384.3 255 326.9 383.3 256 383.3z" fill="url(#steam-gradient)" />
+  <path d="M318.7 255c0 34.6-28.1 62.7-62.7 62.7s-62.7-28.1-62.7-62.7 28.1-62.7 62.7-62.7 62.7 28.1 62.7 62.7zm-62.7-36c-19.9 0-36 16.1-36 36s16.1 36 36 36 36-16.1 36-36-16.1-36-36-36z" fill="url(#steam-gradient)" />
+  <path d="M256 192.3c-34.6 0-62.7 28.1-62.7 62.7h26.7c0-19.9 16.1-36 36-36v-26.7z" fill="url(#steam-gradient)" />
+  <path d="M256 317.7c34.6 0 62.7-28.1 62.7-62.7h-26.7c0 19.9-16.1 36-36 36v26.7z" fill="url(#steam-gradient)" />
+</svg>

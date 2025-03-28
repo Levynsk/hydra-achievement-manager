@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hydra Achievements Manager</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="titlebar">
+    <div class="titlebar-drag">Hydra Manager</div>
+    <div class="titlebar-buttons">
+      <button class="titlebar-button" id="minimizeBtn">
+        <i class="fas fa-window-minimize"></i>
+      </button>
+      <button class="titlebar-button" id="maximizeBtn">
+        <i class="fas fa-window-maximize"></i>
+      </button>
+      <button class="titlebar-button" id="closeBtn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+  <div class="app-container">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i class="fab fa-steam"></i>
+          <h1>Hydra Manager</h1>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="#games"><i class="fas fa-gamepad"></i> Jogos</a></li>
+          <li class="active"><a href="#achievements"><i class="fas fa-trophy"></i> Conquistas</a></li>
+          <li><a href="#settings"><i class="fas fa-cog"></i> Configurações</a></li>
+        </ul>
+      </nav>
+      <div class="sidebar-footer">
+        <p>v1.0.0</p>
+      </div>
+    </div>
+    
+    <div class="main-content">
+      <header class="app-header">
+        <h2 id="currentSection">Conquistas</h2>
+      </header>
+
+    <main class="app-content">
+      <section class="games-section hidden" id="gamesSection">
+        <div class="card games-card">
+          <h2><i class="fas fa-gamepad"></i> Jogos</h2>
+          <div class="games-list" id="gamesList" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+          </div>
+        </div>
+      </section>
+      <section class="setup-section">
+        <div class="card app-id-achievements-card">
+          <h2><i class="fas fa-gamepad"></i> Conquistas</h2>
+          <div class="input-group">
+            <input type="text" id="appId" placeholder="Digite o App ID do jogo">
+            <input type="text" id="steamId" placeholder="Digite seu Steam ID (opcional)">
+            <button id="fetchAchievements" class="btn"><i class="fas fa-search"></i></button>
+          </div>
+          <div class="app-id-info">
+            <p>Você pode encontrar o App ID na URL da loja Steam: store.steampowered.com/app/<strong>APP_ID</strong>/</p>
+            <p>O Steam ID é opcional e será usado para marcar as conquistas que você já possui.</p>
+          </div>
+          
+          <div class="achievements-content hidden" id="achievementsCard">
+            <div class="achievements-controls">
+              <div class="search-bar" style="display: flex; justify-content: center;">
+                <input type="text" id="searchAchievements" placeholder="Pesquisar conquistas..." style="height: 40px; width: 50%;">
+              </div>
+              <button id="selectAll" class="btn"><i class="fas fa-check-square"></i> Selecionar Todas</button>
+              <button id="deselectAll" class="btn"><i class="fas fa-square"></i> Desmarcar Todas</button>
+              <div class="timestamp-controls">
+                <label for="timestampType">Timestamp:</label>
+                <select id="timestampType">
+                  <option value="current">Atual</option>
+                  <option value="custom">Personalizado</option>
+                  <option value="random">Aleatório</option>
+                </select>
+                <input type="datetime-local" id="customTimestamp" class="hidden" disabled>
+              </div>
+            </div>
+            <div class="achievements-list" id="achievementsList" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+              <div class="achievement-item" style="position: relative;">
+                <button class="expand-card-btn" style="position: absolute; bottom: 10px; right: 10px;">&gt;</button>
+                <div class="custom-timestamp-options hidden" style="margin-top: 10px;">
+                  <label>
+                    <input type="checkbox" class="enable-custom-timestamp"> Ativar Timestamp Custom
+                  </label>
+                  <input type="datetime-local" class="custom-timestamp-input hidden" disabled>
+                </div>
+              </div>
+            </div>
+            <div class="achievements-actions">
+              <button id="generateFile" class="btn btn-primary"><i class="fas fa-file-export"></i> Gerar Arquivo</button>
+            </div>
+          </div>
+          
+          <div class="loading-content hidden" id="loadingCard">
+            <div class="loader"></div>
+            <p>Carregando conquistas...</p>
+          </div>
+          
+          <div class="error-content hidden" id="errorCard">
+            <i class="fas fa-exclamation-circle"></i>
+            <h3>Erro</h3>
+            <p id="errorMessage">Ocorreu um erro ao buscar as conquistas.</p>
+            <button id="tryAgain" class="btn">Tentar Novamente</button>
+          </div>
+        </div>
+      </section>
+      
+      <section class="settings-section hidden" id="settingsSection">
+        <div class="card settings-card">
+          <h2><i class="fas fa-cog"></i> Configurações</h2>
+          
+          <div class="settings-group">
+            <h3>API Steam</h3>
+            <div class="setting-item">
+              <label for="apiKey">Chave da API:</label>
+              <div class="input-group">
+                <input type="password" id="apiKey" placeholder="Insira sua chave da API Steam">
+                <button id="saveApiKey" class="btn"><i class="fas fa-save"></i> Salvar</button>
+                <button id="toggleApiKey" class="btn btn-icon"><i class="fas fa-eye"></i></button>
+              </div>
+              <p class="setting-description">Você pode obter sua chave da API Steam <a href="https://steamcommunity.com/dev/apikey" target="_blank">aqui</a>.</p>
+            </div>
+          </div>
+          
+          <div class="settings-group">
+            <h3>Aparência</h3>
+            <div class="setting-item">
+              <label for="themeSelect">Tema:</label>
+              <select id="themeSelect">
+                <option value="dark">Escuro</option>
+                <option value="light">Claro</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="settings-group">
+            <h3>Diretório de Saída</h3>
+            <div class="setting-item">
+              <label for="outputPath">Caminho:</label>
+              <div class="input-group">
+                <input type="text" id="outputPath" placeholder="Caminho para salvar os arquivos">
+                <button id="saveOutputPath" class="btn"><i class="fas fa-save"></i> Salvar</button>
+              </div>
+              <p class="setting-description">Diretório onde os arquivos de conquistas serão salvos.</p>
+            </div>
+          </div>
+          
+          <div class="settings-group">
+            <h3>Sobre</h3>
+            <p>Hydra Achievements Manager v1.0.0</p>
+            <p>Um gerenciador moderno para conquistas da Steam.</p>
+            <p>Feito por Levynsk e Esther (Twitter -  @onlysterbr)</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal" id="successModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fas fa-check-circle"></i> Sucesso</h3>
+          <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p id="successMessage">Arquivo achievements.ini foi gerado com sucesso!</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary close-modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
+
