@@ -1,4 +1,4 @@
-# 🎮 Hydra Achievements Manager
+# 🎮 Hydra Achievement Manager
 
 Um gerenciador de conquistas. Gerencie e acompanhe suas conquistas de jogos do Hydra <3
 
@@ -26,8 +26,8 @@ Um gerenciador de conquistas. Gerencie e acompanhe suas conquistas de jogos do H
 
 1. Clone este repositório
 ```bash
-git clone https://github.com/Levynsk/hydra-achievements-manager
-cd hydra-achievements-manager
+git clone https://github.com/Levynsk/hydra-achievement-manager
+cd hydra-achievement-manager
 ```
 
 2. Instale as dependências
@@ -60,7 +60,7 @@ Isso criará executáveis na pasta `dist`.
 
 ## 🤝 Contribuindo
 
-Contribuições, issues e pedidos de funcionalidades são bem-vindos! Sinta-se à vontade para verificar a [página de issues](https://github.com/yourusername/hydra-achievements-manager/issues).
+Contribuições, issues e pedidos de funcionalidades são bem-vindos! Sinta-se à vontade para verificar a [página de issues](https://github.com/yourusername/hydra-achievement-manager/issues).
 
 ## 📝 Licença
 
