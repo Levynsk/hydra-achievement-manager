@@ -26,7 +26,7 @@ Um gerenciador de conquistas. Gerencie e acompanhe suas conquistas de jogos do H
 
 1. Clone este repositório
 ```bash
-git clone https://github.com/Levynsk/hydra-achievement-manager
+git clone https://github.com/Levynsk/hydra-achievement-manager.git
 cd hydra-achievement-manager
 ```
 
