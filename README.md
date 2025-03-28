@@ -60,7 +60,7 @@ Isso criará executáveis na pasta `dist`.
 
 ## 🤝 Contribuindo
 
-Contribuições, issues e pedidos de funcionalidades são bem-vindos! Sinta-se à vontade para verificar a [página de issues](https://github.com/yourusername/hydra-achievement-manager/issues).
+Contribuições, issues e pedidos de funcionalidades são bem-vindos!
 
 ## 📝 Licença
 
@@ -83,7 +83,7 @@ Se você achou este projeto útil, considere:
 
 ## 📌 Observação
 
-Este aplicativo é apenas para fins educacionais. Use por sua própria conta e risco e de acordo com os termos de serviço da Steam.
+Este aplicativo é apenas para fins educacionais. Use por sua própria conta e risco e de acordo com os termos de serviço do Hydra.
 
 ---
 
