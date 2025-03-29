@@ -19,5 +19,46 @@
     "cross-env": "^7.0.3",
     "electron": "^27.1.0",
     "electron-builder": "^24.6.4"
+  },
+  "build": {
+    "appId": "com.hydra.achievements.manager",
+    "productName": "Hydra Achievements Manager",
+    "copyright": "Copyright © 2023",
+    "asar": true,
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico",
+      "shortcutName": "Hydra Achievements Manager",
+      "license": "LICENSE",
+      "artifactName": "${productName}-setup-${version}.${ext}"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "icon": "assets/icon.ico",
+      "category": "public.app-category.utilities"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "icon": "assets/icon.ico",
+      "category": "Utility",
+      "artifactName": "${productName}-${version}.${ext}"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "levynascimento",
+      "repo": "hydra-achievement-manager"
+    }
   }
 }

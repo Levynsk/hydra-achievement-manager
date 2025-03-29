@@ -63,7 +63,13 @@
       "themeLight": "Light",
       "themeDark": "Dark",
       "themeSystem": "System",
-      "about": "About"
+      "about": "About",
+      "tabs": {
+        "api": "Steam API",
+        "language": "Language",
+        "output": "Output Directory",
+        "about": "About"
+      }
     },
     "errors": {
       "invalidApiKey": "Please enter a valid API key.",

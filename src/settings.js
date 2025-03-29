@@ -70,9 +70,23 @@ export function toggleApiKeyVisibility() {
   }
 }
 
-export function setupSettingsTabs() {
+export async function setupSettingsTabs() {
   const tabButtons = document.querySelectorAll('.tab-button');
   const tabPanes = document.querySelectorAll('.tab-pane');
+  
+  // Traduzir os textos dos botões das abas
+  for (const button of tabButtons) {
+    const tabId = button.getAttribute('data-tab');
+    if (tabId === 'tab-api') {
+      button.textContent = await t('settings.tabs.api');
+    } else if (tabId === 'tab-language') {
+      button.textContent = await t('settings.tabs.language');
+    } else if (tabId === 'tab-output') {
+      button.textContent = await t('settings.tabs.output');
+    } else if (tabId === 'tab-about') {
+      button.textContent = await t('settings.tabs.about');
+    }
+  }
   
   tabButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -118,7 +132,7 @@ export async function initSettings() {
   }
   
   // Configurar as abas de configurações
-  setupSettingsTabs();
+  await setupSettingsTabs();
   
   // Esconder o campo Steam ID na interface 
   const steamIdContainer = document.querySelector('.setting-item:has(#steamId)');

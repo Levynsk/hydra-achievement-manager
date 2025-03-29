@@ -63,7 +63,13 @@
       "themeLight": "Світла",
       "themeDark": "Темна",
       "themeSystem": "Системна",
-      "about": "Про програму"
+      "about": "Про програму",
+      "tabs": {
+        "api": "API Steam",
+        "language": "Мова",
+        "output": "Вихідний каталог",
+        "about": "Про програму"
+      }
     },
     "errors": {
       "invalidApiKey": "Будь ласка, введіть дійсний API-ключ.",

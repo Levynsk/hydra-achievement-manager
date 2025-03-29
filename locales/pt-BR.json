@@ -63,7 +63,13 @@
       "themeLight": "Claro",
       "themeDark": "Escuro",
       "themeSystem": "Sistema",
-      "about": "Sobre"
+      "about": "Sobre",
+      "tabs": {
+        "api": "API Steam",
+        "language": "Idioma",
+        "output": "Diretório de Saída",
+        "about": "Sobre"
+      }
     },
     "errors": {
       "invalidApiKey": "Por favor, insira uma chave de API válida.",
