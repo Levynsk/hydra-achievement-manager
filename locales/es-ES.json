@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "name": "Español (España)",
+    "author": "Esther",
+    "version": "1.0.0"
+  },
+  "translations": {
+    "app": {
+      "title": "Hydra Achievements Manager",
+      "version": "v1.0.0",
+      "about": "Un gestor moderno de logros de Steam.",
+      "credits": "Hecho por Levynsk y Esther (Twitter - @onlysterbr)"
+    },
+    "sidebar": {
+      "games": "Juegos",
+      "achievements": "Logros",
+      "settings": "Ajustes"
+    },
+    "achievements": {
+      "title": "Logros",
+      "appIdPlaceholder": "Introduce el ID de la aplicación del juego",
+      "appIdInfo": "Puedes encontrar el ID de la aplicación en la URL de la tienda Steam: store.steampowered.com/app/APP_ID/",
+      "searchPlaceholder": "Buscar logros...",
+      "selectAll": "Seleccionar Todo",
+      "deselectAll": "Deseleccionar Todo",
+      "timestamp": "Marca de tiempo:",
+      "timestampCurrent": "Actual",
+      "timestampCustom": "Personalizado",
+      "timestampRandom": "Aleatorio",
+      "enableCustomTimestamp": "Activar Marca de Tiempo Personalizada",
+      "generateFile": "Generar Archivo",
+      "noAchievements": "No se encontraron logros para este juego.",
+      "select": "Seleccionar"
+    },
+    "settings": {
+      "title": "Ajustes",
+      "apiKey": "Clave API de Steam",
+      "apiKeyLabel": "Clave API:",
+      "apiKeyPlaceholder": "Introduce tu clave API de Steam",
+      "apiKeyInfo": "Puedes obtener tu clave API de Steam aquí.",
+      "saveApiKey": "Guardar",
+      "saved": "Guardado",
+      "language": "Idioma",
+      "languageLabel": "Idioma:",
+      "languageInfo": "Selecciona el idioma de la interfaz.",
+      "appearance": "Apariencia",
+      "themeLabel": "Tema:",
+      "outputDir": "Directorio de Salida",
+      "outputDirLabel": "Ruta:",
+      "outputDirPlaceholder": "Ruta para guardar archivos",
+      "outputDirInfo": "Directorio donde se guardarán los archivos de logros.",
+      "browse": "Explorar",
+      "theme": "Tema",
+      "themeLight": "Claro",
+      "themeDark": "Oscuro",
+      "themeSystem": "Sistema",
+      "about": "Acerca de"
+    },
+    "errors": {
+      "invalidApiKey": "Por favor, introduce una clave API válida.",
+      "invalidAppId": "Por favor, introduce un ID de aplicación válido.",
+      "fetchError": "Ocurrió un error al obtener los logros.",
+      "noSelection": "Por favor, selecciona al menos un logro.",
+      "writeError": "Error al generar el archivo."
+    },
+    "success": {
+      "fileGenerated": "El archivo Achievements.ini se generó correctamente en {path}",
+      "title": "Éxito",
+      "defaultMessage": "¡El archivo Achievements.ini se generó correctamente!",
+      "ok": "Aceptar"
+    },
+    "loading": {
+      "achievements": "Cargando logros..."
+    },
+    "error": {
+      "title": "Error",
+      "tryAgain": "Intentar de nuevo"
+    },
+    "games": {
+      "title": "Juegos",
+      "loading": "Cargando juegos...",
+      "noGames": "No se encontraron juegos. Compruebe el directorio de salida en la configuración.",
+      "error": "Error al cargar juegos: {message}",
+      "select": "Seleccionar",
+      "progress": "Progreso"
+    }
+  }
+}

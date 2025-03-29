@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "name": "Українська (Україна)",
+    "author": "Esther",
+    "version": "1.0.0"
+  },
+  "translations": {
+    "app": {
+      "title": "Hydra Achievements Manager",
+      "version": "v1.0.0",
+      "about": "Сучасний менеджер досягнень Steam.",
+      "credits": "Створено Levynsk та Esther (Twitter - @onlysterbr)"
+    },
+    "sidebar": {
+      "games": "Ігри",
+      "achievements": "Досягнення",
+      "settings": "Налаштування"
+    },
+    "achievements": {
+      "title": "Досягнення",
+      "appIdPlaceholder": "Введіть ID гри",
+      "appIdInfo": "Ви можете знайти ID гри в URL магазину Steam: store.steampowered.com/app/APP_ID/",
+      "searchPlaceholder": "Пошук досягнень...",
+      "selectAll": "Вибрати все",
+      "deselectAll": "Скасувати вибір",
+      "timestamp": "Часова мітка:",
+      "timestampCurrent": "Поточна",
+      "timestampCustom": "Власна",
+      "timestampRandom": "Випадкова",
+      "enableCustomTimestamp": "Увімкнути власну часову мітку",
+      "generateFile": "Створити файл",
+      "noAchievements": "Для цієї гри не знайдено досягнень.",
+      "select": "Вибрати"
+    },
+    "settings": {
+      "title": "Налаштування"
+    },
+    "games": {
+      "title": "Ігри",
+      "loading": "Завантаження ігор...",
+      "noGames": "Ігри не знайдено. Перевірте директорію виводу в налаштуваннях.",
+      "error": "Помилка при завантаженні ігор: {message}",
+      "select": "Вибрати",
+      "progress": "Прогрес"
+    },
+      "apiKey": "API-ключ Steam",
+      "apiKeyLabel": "API-ключ:",
+      "apiKeyPlaceholder": "Введіть ваш API-ключ Steam",
+      "apiKeyInfo": "Ви можете отримати свій API-ключ Steam тут.",
+      "saveApiKey": "Зберегти",
+      "saved": "Збережено",
+      "language": "Мова",
+      "languageLabel": "Мова:",
+      "languageInfo": "Виберіть мову інтерфейсу.",
+      "appearance": "Зовнішній вигляд",
+      "themeLabel": "Тема:",
+      "outputDir": "Вихідний каталог",
+      "outputDirLabel": "Шлях:",
+      "outputDirPlaceholder": "Шлях для збереження файлів",
+      "outputDirInfo": "Каталог, де будуть збережені файли досягнень.",
+      "browse": "Огляд",
+      "theme": "Тема",
+      "themeLight": "Світла",
+      "themeDark": "Темна",
+      "themeSystem": "Системна",
+      "about": "Про програму"
+    },
+    "errors": {
+      "invalidApiKey": "Будь ласка, введіть дійсний API-ключ.",
+      "invalidAppId": "Будь ласка, введіть дійсний ID гри.",
+      "fetchError": "Сталася помилка під час отримання досягнень.",
+      "noSelection": "Будь ласка, виберіть хоча б одне досягнення.",
+      "writeError": "Помилка при створенні файлу."
+    },
+    "success": {
+      "fileGenerated": "Файл Achievements.ini успішно створено в {path}",
+      "title": "Успіх",
+      "defaultMessage": "Файл Achievements.ini успішно створено!",
+      "ok": "OK"
+    },
+    "loading": {
+      "achievements": "Завантаження досягнень..."
+    },
+    "error": {
+      "title": "Помилка",
+      "tryAgain": "Спробувати знову"
+    }
+  }

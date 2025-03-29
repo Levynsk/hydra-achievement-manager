@@ -50,10 +50,8 @@
 
     <main class="app-content">
       <section class="games-section hidden" id="gamesSection">
-        <div class="card games-card">
-          <h2><i class="fas fa-gamepad"></i> Jogos</h2>
-          <div class="games-list" id="gamesList" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
-          </div>
+        <h2 class="section-title"><i class="fas fa-gamepad"></i> <span id="gamesTitle">Jogos</span></h2>
+        <div class="games-list" id="gamesList">
         </div>
       </section>
       <section class="setup-section">
@@ -128,6 +126,17 @@
                 <button id="toggleApiKey" class="btn btn-icon"><i class="fas fa-eye"></i></button>
               </div>
               <p class="setting-description">Você pode obter sua chave da API Steam <a href="https://steamcommunity.com/dev/apikey" target="_blank">aqui</a>.</p>
+            </div>
+          </div>
+          
+          <div class="settings-group">
+            <h3>Idioma</h3>
+            <div class="setting-item">
+              <label for="languageSelect">Idioma:</label>
+              <select id="languageSelect">
+                <!-- Opções de idioma serão preenchidas dinamicamente -->
+              </select>
+              <p class="setting-description">Selecione o idioma da interface.</p>
             </div>
           </div>
           

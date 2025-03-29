@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "name": "Português (Brasil)",
+    "author": "Levynsk & Esther",
+    "version": "1.0.0"
+  },
+  "translations": {
+    "app": {
+      "title": "Hydra Achievements Manager",
+      "version": "v1.0.0",
+      "about": "Um gerenciador moderno para conquistas da Steam.",
+      "credits": "Feito por Levynsk e Esther (Twitter - @onlysterbr)"
+    },
+    "sidebar": {
+      "games": "Jogos",
+      "achievements": "Conquistas",
+      "settings": "Configurações"
+    },
+    "achievements": {
+      "title": "Conquistas",
+      "appIdPlaceholder": "Digite o App ID do jogo",
+      "appIdInfo": "Você pode encontrar o App ID na URL da loja Steam: store.steampowered.com/app/APP_ID/",
+      "searchPlaceholder": "Pesquisar conquistas...",
+      "selectAll": "Selecionar Todas",
+      "deselectAll": "Desmarcar Todas",
+      "timestamp": "Timestamp:",
+      "timestampCurrent": "Atual",
+      "timestampCustom": "Personalizado",
+      "timestampRandom": "Aleatório",
+      "enableCustomTimestamp": "Ativar Timestamp Custom",
+      "generateFile": "Gerar Arquivo",
+      "noAchievements": "Nenhuma conquista encontrada para este jogo.",
+      "select": "Selecionar"
+    },
+    "settings": {
+      "title": "Configurações",
+      "apiKey": "Chave API Steam",
+      "apiKeyLabel": "Chave da API:",
+      "apiKeyPlaceholder": "Insira sua chave API Steam",
+      "apiKeyInfo": "Você pode obter sua chave da API Steam aqui.",
+      "saveApiKey": "Salvar",
+      "saved": "Salvo",
+      "language": "Idioma",
+      "languageLabel": "Idioma:",
+      "languageInfo": "Selecione o idioma da interface.",
+      "appearance": "Aparência",
+      "themeLabel": "Tema:",
+      "outputDir": "Diretório de Saída",
+      "outputDirLabel": "Caminho:",
+      "outputDirPlaceholder": "Caminho para salvar os arquivos",
+      "outputDirInfo": "Diretório onde os arquivos de conquistas serão salvos.",
+      "browse": "Procurar",
+      "theme": "Tema",
+      "themeLight": "Claro",
+      "themeDark": "Escuro",
+      "themeSystem": "Sistema",
+      "about": "Sobre"
+    },
+    "errors": {
+      "invalidApiKey": "Por favor, insira uma chave de API válida.",
+      "invalidAppId": "Por favor, insira um App ID válido.",
+      "fetchError": "Ocorreu um erro ao buscar as conquistas.",
+      "noSelection": "Por favor, selecione pelo menos uma conquista.",
+      "writeError": "Erro ao gerar arquivo."
+    },
+    "success": {
+      "fileGenerated": "Arquivo achievements.ini foi gerado com sucesso em {path}",
+      "title": "Sucesso",
+      "defaultMessage": "Arquivo achievements.ini foi gerado com sucesso!",
+      "ok": "OK"
+    },
+    "loading": {
+      "achievements": "Carregando conquistas..."
+    },
+    "error": {
+      "title": "Erro",
+      "tryAgain": "Tentar Novamente"
+    },
+    "games": {
+      "title": "Jogos",
+      "loading": "Carregando jogos...",
+      "noGames": "Nenhum jogo encontrado. Verifique o diretório de saída nas configurações.",
+      "error": "Erro ao carregar jogos: {message}",
+      "select": "Selecionar",
+      "progress": "Progresso"
+    }
+  }
+}

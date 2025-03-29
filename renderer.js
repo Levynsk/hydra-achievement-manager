@@ -28,6 +28,186 @@ const appIdContainer = document.querySelector('.app-id-info');
 let achievements = [];
 let selectedAchievements = new Set();
 let userAchievements = [];
+let currentLanguage = 'pt-BR'; 
+
+async function t(key, params = {}) {
+  return await window.api.getTranslation(key, params);
+}
+
+async function applyTranslations() {
+  const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+  sidebarLinks[0].textContent = await t('sidebar.games');
+  sidebarLinks[1].textContent = await t('sidebar.achievements');
+  sidebarLinks[2].textContent = await t('sidebar.settings');
+  
+  document.querySelector('.app-id-achievements-card h2').textContent = await t('achievements.title');
+  appIdInput.placeholder = await t('achievements.appIdPlaceholder');
+  appIdContainer.innerHTML = `<p>${await t('achievements.appIdInfo')}</p>`;
+  searchAchievementsInput.placeholder = await t('achievements.searchPlaceholder');
+  selectAllBtn.innerHTML = `<i class="fas fa-check-square"></i> ${await t('achievements.selectAll')}`;
+  deselectAllBtn.innerHTML = `<i class="fas fa-square"></i> ${await t('achievements.deselectAll')}`;
+  document.querySelector('label[for="timestampType"]').textContent = await t('achievements.timestamp');
+  
+  const timestampOptions = timestampTypeSelect.options;
+  timestampOptions[0].textContent = await t('achievements.timestampCurrent');
+  timestampOptions[1].textContent = await t('achievements.timestampCustom');
+  timestampOptions[2].textContent = await t('achievements.timestampRandom');
+  
+  generateFileBtn.innerHTML = `<i class="fas fa-file-export"></i> ${await t('achievements.generateFile')}`;
+  
+  const settingsTitle = document.querySelector('#settingsSection h2');
+  if (settingsTitle) {
+    settingsTitle.textContent = await t('settings.title');
+  }
+  
+  const apiKeyLabel = document.querySelector('label[for="apiKey"]');
+  if (apiKeyLabel) {
+    apiKeyLabel.textContent = await t('settings.apiKeyLabel');
+  }
+  
+  if (apiKeyInput) {
+    apiKeyInput.placeholder = await t('settings.apiKeyPlaceholder');
+  }
+  
+  if (saveApiKeyBtn) {
+    saveApiKeyBtn.innerHTML = `<i class="fas fa-save"></i> ${await t('settings.saveApiKey')}`;
+  }
+  
+  const apiKeyInfo = document.querySelector('.setting-description');
+  if (apiKeyInfo) {
+    apiKeyInfo.innerHTML = await t('settings.apiKeyInfo');
+  }
+  
+  const languageLabel = document.querySelector('label[for="languageSelect"]');
+  if (languageLabel) {
+    languageLabel.textContent = await t('settings.languageLabel');
+  }
+  
+  const languageInfo = document.querySelectorAll('.setting-description')[1];
+  if (languageInfo) {
+    languageInfo.textContent = await t('settings.languageInfo');
+  }
+  
+  const appearanceTitle = document.querySelector('.settings-group:nth-child(3) h3');
+  if (appearanceTitle) {
+    appearanceTitle.textContent = await t('settings.appearance');
+  }
+  
+  const themeLabel = document.querySelector('label[for="themeSelect"]');
+  if (themeLabel) {
+    themeLabel.textContent = await t('settings.themeLabel');
+  }
+  
+  const outputDirLabel = document.querySelector('label[for="outputPath"]');
+  if (outputDirLabel) {
+    outputDirLabel.textContent = await t('settings.outputDirLabel');
+  }
+  
+  const outputPathInput = document.getElementById('outputPath');
+  if (outputPathInput) {
+    outputPathInput.placeholder = await t('settings.outputDirPlaceholder');
+  }
+  
+  const outputDirInfo = document.querySelectorAll('.setting-description')[2];
+  if (outputDirInfo) {
+    outputDirInfo.textContent = await t('settings.outputDirInfo');
+  }
+  
+  const saveOutputPathBtn = document.getElementById('saveOutputPath');
+  if (saveOutputPathBtn) {
+    saveOutputPathBtn.innerHTML = `<i class="fas fa-save"></i> ${await t('settings.saveApiKey')}`;
+  }
+  
+  const aboutTitle = document.querySelector('.settings-group:nth-child(5) h3');
+  if (aboutTitle) {
+    aboutTitle.textContent = await t('settings.about');
+  }
+  
+  const aboutText = document.querySelectorAll('.settings-group:nth-child(5) p');
+  if (aboutText.length >= 3) {
+    aboutText[0].textContent = await t('app.title') + ' ' + await t('app.version');
+    aboutText[1].textContent = await t('app.about');
+    aboutText[2].textContent = await t('app.credits');
+  }
+  
+  updateCurrentSectionTitle();
+  
+  const loadingText = document.querySelector('#loadingCard p');
+  if (loadingText) {
+    loadingText.textContent = await t('loading.achievements');
+  }
+  
+  const errorTitle = document.querySelector('#errorCard h3');
+  if (errorTitle) {
+    errorTitle.textContent = await t('error.title');
+  }
+  
+  const tryAgainButton = document.getElementById('tryAgain');
+  if (tryAgainButton) {
+    tryAgainButton.textContent = await t('error.tryAgain');
+  }
+  
+  const successTitle = document.querySelector('#successModal .modal-header h3');
+  if (successTitle) {
+    successTitle.innerHTML = `<i class="fas fa-check-circle"></i> ${await t('success.title')}`;
+  }
+  
+  const okButton = document.querySelector('#successModal .modal-footer button');
+  if (okButton) {
+    okButton.textContent = await t('success.ok');
+  }
+}
+
+async function updateCurrentSectionTitle() {
+  const activeLink = document.querySelector('.sidebar-nav li.active a');
+  if (activeLink) {
+    const section = activeLink.getAttribute('href').substring(1);
+    let titleKey = '';
+    
+    switch (section) {
+      case 'games':
+        titleKey = 'sidebar.games';
+        break;
+      case 'achievements':
+        titleKey = 'sidebar.achievements';
+        break;
+      case 'settings':
+        titleKey = 'sidebar.settings';
+        break;
+      default:
+        titleKey = 'sidebar.achievements';
+    }
+    
+    currentSectionTitle.textContent = await t(titleKey);
+  }
+}
+
+async function initLanguageSelector() {
+  const languageSelect = document.getElementById('languageSelect');
+  if (!languageSelect) return;
+  
+  const languages = await window.api.getAvailableLanguages();
+  currentLanguage = await window.api.getCurrentLanguage();
+
+  languageSelect.innerHTML = '';
+  
+  Object.values(languages).forEach(lang => {
+    const option = document.createElement('option');
+    option.value = lang.code;
+    option.textContent = lang.name;
+    if (lang.code === currentLanguage) {
+      option.selected = true;
+    }
+    languageSelect.appendChild(option);
+  });
+  
+  languageSelect.addEventListener('change', async (e) => {
+    const newLang = e.target.value;
+    await window.api.setLanguage(newLang);
+    currentLanguage = newLang;
+    await applyTranslations();
+  });
+}
 
 async function initApp() {
   const savedApiKey = await window.api.getApiKey();
@@ -39,6 +219,10 @@ async function initApp() {
   const now = new Date();
   now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
   customTimestampInput.value = now.toISOString().slice(0, 16);
+  
+  // Inicializar traduções
+  await initLanguageSelector();
+  await applyTranslations();
   
   loadThemeSettings();
   
@@ -72,7 +256,7 @@ function setupEventListeners() {
   });
   
   sidebarNavLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
+    link.addEventListener('click', async (e) => {
       e.preventDefault();
       
 
@@ -80,7 +264,7 @@ function setupEventListeners() {
       
       link.parentElement.classList.add('active');
       
-      currentSectionTitle.textContent = link.textContent.trim();
+      await updateCurrentSectionTitle();
       
       const targetSection = link.getAttribute('href').substring(1);
       handleSectionChange(targetSection);
@@ -105,15 +289,17 @@ function setupEventListeners() {
 async function saveApiKey() {
   const apiKey = apiKeyInput.value.trim();
   if (!apiKey) {
-    showError('Por favor, insira uma chave de API válida.');
+    showError(await t('errors.invalidApiKey'));
     return;
   }
   
   const result = await window.api.saveApiKey(apiKey);
   if (result.success) {
-    saveApiKeyBtn.innerHTML = '<i class="fas fa-check"></i> Salvo';
-    setTimeout(() => {
-      saveApiKeyBtn.innerHTML = '<i class="fas fa-save"></i> Salvar';
+    const savedText = await t('settings.saved');
+    saveApiKeyBtn.innerHTML = `<i class="fas fa-check"></i> ${savedText}`;
+    setTimeout(async () => {
+      const saveText = await t('settings.saveApiKey');
+      saveApiKeyBtn.innerHTML = `<i class="fas fa-save"></i> ${saveText}`;
     }, 2000);
   }
 }
@@ -133,16 +319,16 @@ async function fetchAchievements() {
   const apiKey = apiKeyInput.value.trim();
   
   if (!appId) {
-    showError('Por favor, insira um App ID válido.');
+    showError(await t('errors.invalidAppId'));
     return;
   }
   
   if (!apiKey) {
-    showError('Por favor, insira uma chave de API válida.');
+    showError(await t('errors.invalidApiKey'));
     return;
   }
   
-  appIdContainer.innerHTML = `<p>Você pode encontrar o App ID na URL da loja Steam: store.steampowered.com/app/<strong>APP_ID</strong>/</p>`;
+  appIdContainer.innerHTML = `<p>${await t('achievements.appIdInfo')}</p>`;
 
   await displayGameInfo(appId);
   
@@ -159,22 +345,24 @@ async function fetchAchievements() {
   
   if (result.success) {
     achievements = result.achievements;
-    renderAchievements();
+    await renderAchievements();
     achievementsCard.classList.remove('hidden');
   } else {
-    showError(result.message || 'Ocorreu um erro ao buscar as conquistas.');
+    showError(result.message || await t('errors.fetchError'));
   }
 }
 
-function renderAchievements() {
+async function renderAchievements() {
   achievementsList.innerHTML = '';
   
   if (achievements.length === 0) {
-    achievementsList.innerHTML = '<p class="no-achievements">Nenhuma conquista encontrada para este jogo.</p>';
+    achievementsList.innerHTML = `<p class="no-achievements">${await t('achievements.noAchievements')}</p>`;
     return;
   }
   
-  achievements.forEach(achievement => {
+  const selectText = await t('achievements.select');
+  
+  for (const achievement of achievements) {
     const achievementItem = document.createElement('div');
     achievementItem.className = 'achievement-item';
     achievementItem.dataset.id = achievement.id;
@@ -188,11 +376,11 @@ function renderAchievements() {
         <div class="achievement-description">${achievement.description || 'Sem descrição'}</div>
         <div class="checkbox-container">
           <input type="checkbox" class="custom-checkbox achievement-checkbox" id="achievement-${achievement.id}">
-          <label for="achievement-${achievement.id}">Selecionar</label>
+          <label for="achievement-${achievement.id}">${selectText}</label>
         </div>
         <!-- Ensure the custom timestamp input is visible -->
         <div class="custom-timestamp">
-          <label for="timestamp-${achievement.id}">Timestamp:</label>
+          <label for="timestamp-${achievement.id}">${await t('achievements.timestamp')}</label>
           <input type="datetime-local" id="timestamp-${achievement.id}" class="timestamp-input">
         </div>
       </div>
@@ -209,7 +397,7 @@ function renderAchievements() {
       }
       updateGenerateButtonState();
     });
-  });
+  }
   
   updateGenerateButtonState();
   setupAchievementCardListeners();
@@ -246,13 +434,13 @@ function handleTimestampTypeChange() {
 async function generateAchievementsFile() {
   try {
     if (selectedAchievements.size === 0) {
-      showError('Por favor, selecione pelo menos uma conquista.');
+      showError(await t('errors.noSelection'));
       return;
     }
     
     const appId = appIdInput.value.trim();
     if (!appId) {
-      showError('App ID inválido.');
+      showError(await t('errors.invalidAppId'));
       return;
     }
 
@@ -296,7 +484,7 @@ async function generateAchievementsFile() {
       successMessage.textContent = result.message;
       successModal.classList.add('active');
     } else {
-      throw new Error(result.message || 'Erro ao gerar arquivo.');
+      throw new Error(result.message || await t('errors.writeError'));
     }
   } catch (error) {
     showError(error.message);
@@ -312,7 +500,7 @@ function updateGenerateButtonState() {
   }
 }
 
-function showError(message) {
+async function showError(message) {
   errorMessage.textContent = message;
   errorCard.classList.remove('hidden');
   achievementsCard.classList.add('hidden');
@@ -345,9 +533,11 @@ async function loadThemeSettings() {
         const newPath = outputPathInput.value.trim();
         if (newPath) {
           await window.api.saveConfig('outputPath', newPath);
-          saveOutputPathBtn.innerHTML = '<i class="fas fa-check"></i> Salvo';
-          setTimeout(() => {
-            saveOutputPathBtn.innerHTML = '<i class="fas fa-save"></i> Salvar';
+          const savedText = await t('settings.saved');
+          saveOutputPathBtn.innerHTML = `<i class="fas fa-check"></i> ${savedText}`;
+          setTimeout(async () => {
+            const saveText = await t('settings.saveApiKey');
+            saveOutputPathBtn.innerHTML = `<i class="fas fa-save"></i> ${saveText}`;
           }, 2000);
         }
       });
@@ -412,7 +602,7 @@ function setupAchievementCardListeners() {
 
 async function fetchGames() {
   const gamesList = document.getElementById('gamesList');
-  gamesList.innerHTML = '<p>Carregando jogos...</p>';
+  gamesList.innerHTML = `<div class="loading-content"><div class="loader"></div><p>${await t('games.loading')}</p></div>`;
 
   try {
     const config = await window.api.getConfig();
@@ -449,26 +639,41 @@ async function fetchGames() {
     }
 
     gamesList.innerHTML = '';
+    
+    if (games.length === 0) {
+      gamesList.innerHTML = `<p class="no-games">${await t('games.noGames')}</p>`;
+      return;
+    }
+    
+    const selectText = await t('games.select');
+    // Progress text removed as we're only showing percentage now
+    
     games.forEach(game => {
-      const progress = (game.achievements.unlocked / game.achievements.total) * 100;
+      const progress = game.achievements.total > 0 ? (game.achievements.unlocked / game.achievements.total) * 100 : 0;
       const gameCard = document.createElement('div');
       gameCard.className = 'game-card';
-      gameCard.style.cursor = 'pointer';
       gameCard.innerHTML = `
-        <img src="${game.image}" alt="${game.name}">
+        <img src="${game.image}" alt="${game.name}" onerror="this.src='assets/game-placeholder.jpg'">
         <div class="game-info">
-          <div class="game-title">${game.name}</div>
-          <div class="game-achievements">${game.achievements.unlocked}/${game.achievements.total} conquistas</div>
+          <div class="game-title" title="${game.name}">${game.name}</div>
+          <div class="game-achievements">
+            <i class="fas fa-trophy"></i> ${game.achievements.unlocked}/${game.achievements.total} conquistas
+          </div>
           <div class="progress-container">
             <div class="progress-bar">
               <div class="progress-bar-inner" style="width: ${progress}%;"></div>
             </div>
-            <div class="progress-percentage">${progress.toFixed(1)}%</div>
+            <div class="progress-details">
+              <span class="progress-percentage">${progress.toFixed(1)}%</span>
+            </div>
           </div>
+          <button class="play-button">
+            <i class="fas fa-gamepad"></i> ${selectText}
+          </button>
         </div>
       `;
 
-      gameCard.addEventListener('click', () => {
+      gameCard.querySelector('.play-button').addEventListener('click', () => {
         appIdInput.value = game.id;
         
         const achievementsLink = document.querySelector('.sidebar-nav a[href="#achievements"]');
@@ -480,7 +685,8 @@ async function fetchGames() {
       gamesList.appendChild(gameCard);
     });
   } catch (error) {
-    gamesList.innerHTML = `<p>Erro ao carregar jogos: ${error.message}</p>`;
+    const errorTemplate = await t('games.error', { message: error.message });
+    gamesList.innerHTML = `<p class="error-message">${errorTemplate}</p>`;
   }
 }
 
@@ -499,43 +705,22 @@ async function displayGameInfo(appId) {
       
       let unlockedAchievements = 0;
       if (result.success) {
-        const gameInfo = result.games.find(g => g.id === appId);
-        if (gameInfo) {
-          unlockedAchievements = gameInfo.unlockedAchievements;
+        const game = result.games.find(g => g.id === appId);
+        if (game) {
+          unlockedAchievements = game.unlockedAchievements;
         }
       }
-
-      const progress = totalAchievements > 0 ? (unlockedAchievements / totalAchievements) * 100 : 0;
       
-      const gameInfoHtml = `
-        <div class="game-preview-card" style="
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          background: var(--bg-tertiary);
-          padding: 1rem;
-          border-radius: var(--card-radius);
-          margin: 1rem 0;
-        ">
-          <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg" 
-               alt="${gameData.name}"
-               style="width: 200px; height: auto; border-radius: 4px;">
-          <div class="game-preview-info" style="flex: 1;">
-            <h3 style="margin-bottom: 0.5rem;">${gameData.name}</h3>
-            <div class="game-achievements" style="color: var(--text-secondary); margin-bottom: 0.5rem;">
-              ${unlockedAchievements}/${totalAchievements} conquistas
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar">
-                <div class="progress-bar-inner" style="width: ${progress}%;"></div>
-              </div>
-              <div class="progress-percentage">${progress.toFixed(1)}%</div>
-            </div>
+      appIdContainer.innerHTML = `
+        <p>${await t('achievements.appIdInfo')}</p>
+        <div class="game-info-container">
+          <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg" alt="${gameData.name}" class="game-header">
+          <div class="game-details">
+            <h3>${gameData.name}</h3>
+            <p>${unlockedAchievements}/${totalAchievements} conquistas</p>
           </div>
         </div>
       `;
-      
-      appIdContainer.innerHTML = gameInfoHtml + appIdContainer.innerHTML;
     }
   } catch (error) {
     console.error('Erro ao buscar informações do jogo:', error);

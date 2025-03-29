@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "name": "Русский (Россия)",
+    "author": "Esther",
+    "version": "1.0.0"
+  },
+  "translations": {
+    "app": {
+      "title": "Hydra Achievements Manager",
+      "version": "v1.0.0",
+      "about": "Современный менеджер достижений Steam.",
+      "credits": "Создано Levynsk и Esther (Twitter - @onlysterbr)"
+    },
+    "sidebar": {
+      "games": "Игры",
+      "achievements": "Достижения",
+      "settings": "Настройки"
+    },
+    "achievements": {
+      "title": "Достижения",
+      "appIdPlaceholder": "Введите ID игры",
+      "appIdInfo": "Вы можете найти ID игры в URL магазина Steam: store.steampowered.com/app/APP_ID/",
+      "searchPlaceholder": "Поиск достижений...",
+      "selectAll": "Выбрать все",
+      "deselectAll": "Отменить выбор",
+      "timestamp": "Временная метка:",
+      "timestampCurrent": "Текущая",
+      "timestampCustom": "Пользовательская",
+      "timestampRandom": "Случайная",
+      "enableCustomTimestamp": "Включить пользовательскую временную метку",
+      "generateFile": "Создать файл",
+      "noAchievements": "Для этой игры не найдено достижений.",
+      "select": "Выбрать"
+    },
+    "settings": {
+      "title": "Настройки"
+    },
+    "errors": {
+      "invalidApiKey": "Пожалуйста, введите действительный ключ API.",
+      "invalidAppId": "Пожалуйста, введите действительный ID игры.",
+      "fetchError": "Произошла ошибка при получении достижений.",
+      "noSelection": "Пожалуйста, выберите хотя бы одно достижение.",
+      "writeError": "Ошибка при создании файла."
+    },
+    "success": {
+      "fileGenerated": "Файл Achievements.ini был успешно создан в {path}",
+      "title": "Успех",
+      "defaultMessage": "Файл Achievements.ini был успешно создан!",
+      "ok": "OK"
+    },
+    "loading": {
+      "achievements": "Загрузка достижений..."
+    },
+    "error": {
+      "title": "Ошибка",
+      "tryAgain": "Попробовать снова"
+    },
+    "games": {
+      "title": "Игры",
+      "loading": "Загрузка игр...",
+      "noGames": "Игры не найдены. Проверьте директорию вывода в настройках.",
+      "error": "Ошибка при загрузке игр: {message}",
+      "select": "Выбрать",
+      "progress": "Прогресс"
+    }
+  }
+}

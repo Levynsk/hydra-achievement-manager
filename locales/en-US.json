@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "name": "English (United States)",
+    "author": "Esther",
+    "version": "1.0.0"
+  },
+  "translations": {
+    "app": {
+      "title": "Hydra Achievements Manager",
+      "version": "v1.0.0",
+      "about": "A modern Steam achievements manager.",
+      "credits": "Made by Levynsk and Esther (Twitter - @onlysterbr)"
+    },
+    "sidebar": {
+      "games": "Games",
+      "achievements": "Achievements",
+      "settings": "Settings"
+    },
+    "achievements": {
+      "title": "Achievements",
+      "appIdPlaceholder": "Enter the game's App ID",
+      "appIdInfo": "You can find the App ID in the Steam store URL: store.steampowered.com/app/APP_ID/",
+      "searchPlaceholder": "Search achievements...",
+      "selectAll": "Select All",
+      "deselectAll": "Deselect All",
+      "timestamp": "Timestamp:",
+      "timestampCurrent": "Current",
+      "timestampCustom": "Custom",
+      "timestampRandom": "Random",
+      "enableCustomTimestamp": "Enable Custom Timestamp",
+      "generateFile": "Generate File",
+      "noAchievements": "No achievements found for this game.",
+      "select": "Select"
+    },
+    "settings": {
+      "title": "Settings",
+      "apiKey": "Steam API Key",
+      "apiKeyLabel": "API Key:",
+      "apiKeyPlaceholder": "Enter your Steam API Key",
+      "apiKeyInfo": "You can get your Steam API key here.",
+      "saveApiKey": "Save",
+      "saved": "Saved",
+      "language": "Language",
+      "languageLabel": "Language:",
+      "languageInfo": "Select the interface language.",
+      "appearance": "Appearance",
+      "themeLabel": "Theme:",
+      "outputDir": "Output Directory",
+      "outputDirLabel": "Path:",
+      "outputDirPlaceholder": "Path to save files",
+      "outputDirInfo": "Directory where achievement files will be saved.",
+      "browse": "Browse",
+      "theme": "Theme",
+      "themeLight": "Light",
+      "themeDark": "Dark",
+      "themeSystem": "System",
+      "about": "About"
+    },
+    "errors": {
+      "invalidApiKey": "Please enter a valid API key.",
+      "invalidAppId": "Please enter a valid App ID.",
+      "fetchError": "An error occurred while fetching achievements.",
+      "noSelection": "Please select at least one achievement.",
+      "writeError": "Error generating file."
+    },
+    "success": {
+      "fileGenerated": "Achievements.ini file was successfully generated at {path}",
+      "title": "Success",
+      "defaultMessage": "Achievements.ini file was successfully generated!",
+      "ok": "OK"
+    },
+    "loading": {
+      "achievements": "Loading achievements..."
+    },
+    "error": {
+      "title": "Error",
+      "tryAgain": "Try Again"
+    },
+    "games": {
+      "title": "Games",
+      "loading": "Loading games...",
+      "noGames": "No games found. Please check the output directory in settings.",
+      "error": "Error loading games: {message}",
+      "select": "Select",
+      "progress": "Progress"
+    }
+  }
+}

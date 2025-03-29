@@ -3,6 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const Store = require('electron-store');
 
+// Import the i18n module
+const i18n = require('./i18n');
+
 const store = new Store();
 
 let mainWindow;
@@ -79,13 +82,13 @@ ipcMain.handle('write-achievements', async (event, appId, achievements) => {
 
     return { 
       success: true, 
-      message: `Arquivo achievements.ini foi gerado com sucesso em ${filePath}` 
+      message: i18n.t('success.fileGenerated', { path: filePath })
     };
   } catch (error) {
     console.error('Erro ao gerar arquivo:', error);
     return { 
       success: false, 
-      message: `Erro ao gerar arquivo: ${error.message}` 
+      message: `${i18n.t('errors.writeError')} ${error.message}` 
     };
   }
 });
@@ -119,7 +122,7 @@ ipcMain.handle('save-config', async (event, key, value) => {
 ipcMain.handle('get-game-folders', async (event, outputPath) => {
   try {
     if (!outputPath) {
-      throw new Error('O caminho de saída não foi fornecido.');
+      throw new Error(i18n.t('errors.outputPathNotProvided'));
     }
 
     const fullPath = path.resolve(outputPath);
@@ -145,6 +148,23 @@ ipcMain.handle('get-game-folders', async (event, outputPath) => {
   } catch (error) {
     return { success: false, message: error.message };
   }
+});
+
+// i18n related IPC handlers
+ipcMain.handle('get-translation', (event, key, params) => {
+  return i18n.t(key, params);
+});
+
+ipcMain.handle('get-current-language', () => {
+  return i18n.getCurrentLanguage();
+});
+
+ipcMain.handle('get-available-languages', () => {
+  return i18n.getAvailableLanguages();
+});
+
+ipcMain.handle('set-language', (event, langCode) => {
+  return i18n.setLanguage(langCode);
 });
 
 ipcMain.handle('minimize-window', () => {

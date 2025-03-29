@@ -83,9 +83,22 @@ contextBridge.exposeInMainWorld('api', {
     return await ipcRenderer.invoke('get-game-folders', outputPath);
   },
 
-  getGameFolders: async (appId) => {
-    return await ipcRenderer.invoke('get-game-folders', appId);
+  // i18n related functions
+  getTranslation: (key, params = {}) => {
+    return ipcRenderer.invoke('get-translation', key, params);
   },
+  
+  getCurrentLanguage: () => {
+    return ipcRenderer.invoke('get-current-language');
+  },
+  
+  getAvailableLanguages: () => {
+    return ipcRenderer.invoke('get-available-languages');
+  },
+  
+  setLanguage: (langCode) => {
+    return ipcRenderer.invoke('set-language', langCode);
+  }
 });
 
 contextBridge.exposeInMainWorld('windowControls', {
