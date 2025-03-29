@@ -19,15 +19,15 @@
     "achievements": {
       "title": "Достижения",
       "appIdPlaceholder": "Введите ID игры",
-      "appIdInfo": "Вы можете найти ID игры в URL магазина Steam: store.steampowered.com/app/APP_ID/",
+      "appIdInfo": "Вы можете найти ID игры в URL страницы игры: store.steampowered.com/app/APP_ID/",
       "searchPlaceholder": "Поиск достижений...",
       "selectAll": "Выбрать все",
       "deselectAll": "Отменить выбор",
-      "timestamp": "Временная метка:",
+      "timestamp": "Время получения достижения:",
       "timestampCurrent": "Текущая",
       "timestampCustom": "Пользовательская",
-      "timestampRandom": "Случайная",
-      "enableCustomTimestamp": "Включить пользовательскую временную метку",
+      "timestampRandom": "Рандомная",
+      "enableCustomTimestamp": "Включить пользовательское время",
       "generateFile": "Создать файл",
       "noAchievements": "Для этой игры не найдено достижений.",
       "select": "Выбрать"
@@ -44,7 +44,7 @@
     },
     "success": {
       "fileGenerated": "Файл Achievements.ini был успешно создан в {path}",
-      "title": "Успех",
+      "title": "Успешно!",
       "defaultMessage": "Файл Achievements.ini был успешно создан!",
       "ok": "OK"
     },
@@ -58,7 +58,7 @@
     "games": {
       "title": "Игры",
       "loading": "Загрузка игр...",
-      "noGames": "Игры не найдены. Проверьте директорию вывода в настройках.",
+      "noGames": "Игры не найдены. Проверьте директорию в настройках.",
       "error": "Ошибка при загрузке игр: {message}",
       "select": "Выбрать",
       "progress": "Прогресс"
