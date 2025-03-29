@@ -64,7 +64,7 @@ Contribuições, issues e pedidos de funcionalidades são bem-vindos!
 
 ## 📝 Licença
 
-Este projeto está licenciado sob a licença [MIT](LICENSE).
+Este projeto está licenciado sob a licença [GNU GPL](LICENSE).
 
 ## ✨ Créditos
 
