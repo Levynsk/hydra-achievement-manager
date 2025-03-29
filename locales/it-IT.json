@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "name": "Italiano",
+    "author": "Levynsk & Esther",
+    "version": "v1.1.0"
+  },
+  "translations": {
+    "app": {
+      "title": "Hydra Achievements Manager",
+      "version": "v1.0.0",
+      "about": "Un gestore moderno per gli obiettivi di Steam.",
+      "credits": "Creato da Levynsk e Esther (Twitter - @onlysterbr)"
+    },
+    "sidebar": {
+      "games": "Giochi",
+      "achievements": "Obiettivi",
+      "settings": "Impostazioni"
+    },
+    "achievements": {
+      "title": "Obiettivi",
+      "appIdPlaceholder": "Inserisci l'App ID del gioco",
+      "appIdInfo": "Puoi trovare l'App ID nell'URL del negozio Steam: store.steampowered.com/app/APP_ID/",
+      "searchPlaceholder": "Cerca obiettivi...",
+      "selectAll": "Seleziona Tutto",
+      "deselectAll": "Deseleziona Tutto",
+      "timestamp": "Timestamp:",
+      "timestampCurrent": "Attuale",
+      "timestampCustom": "Personalizzato",
+      "timestampRandom": "Casuale",
+      "enableCustomTimestamp": "Abilita Timestamp Personalizzato",
+      "generateFile": "Genera File",
+      "noAchievements": "Nessun obiettivo trovato per questo gioco.",
+      "select": "Seleziona",
+      "unlockedAt": "Già sbloccato il: {date}",
+      "alreadyUnlocked": "Già sbloccato",
+      "notUnlocked": "Non sbloccato",
+      "selectToUnlock": "Seleziona per sbloccare",
+      "unlockDate": "Data di sblocco",
+      "lockedStatus": "Bloccato",
+      "unlockedStatus": "Sbloccato",
+      "noDescription": "Nessuna descrizione",
+      "platinum": "Platino"
+    },
+    "settings": {
+      "title": "Impostazioni",
+      "apiKey": "Chiave API Steam",
+      "apiKeyLabel": "Chiave API:",
+      "apiKeyPlaceholder": "Inserisci la tua chiave API Steam",
+      "apiKeyInfo": "Puoi ottenere la tua chiave API Steam qui.",
+      "saveApiKey": "Salva",
+      "saved": "Salvato",
+      "language": "Lingua",
+      "languageLabel": "Lingua:",
+      "languageInfo": "Seleziona la lingua dell'interfaccia.",
+      "appearance": "Aspetto",
+      "themeLabel": "Tema:",
+      "outputDir": "Directory di Uscita",
+      "outputDirLabel": "Percorso:",
+      "outputDirPlaceholder": "Percorso per salvare i file",
+      "outputDirInfo": "Directory dove verranno salvati i file degli obiettivi.",
+      "browse": "Sfoglia",
+      "theme": "Tema",
+      "themeLight": "Chiaro",
+      "themeDark": "Scuro",
+      "themeSystem": "Sistema",
+      "about": "Informazioni"
+    },
+    "errors": {
+      "invalidApiKey": "Inserisci una chiave API valida.",
+      "invalidAppId": "Inserisci un App ID valido.",
+      "fetchError": "Si è verificato un errore durante il recupero degli obiettivi.",
+      "noSelection": "Seleziona almeno un obiettivo.",
+      "writeError": "Errore nella generazione del file.",
+      "appIdRequired": "Inserisci l'App ID del gioco.",
+      "achievementsNotFound": "Impossibile ottenere gli obiettivi. Controlla l'app_id e riprova.",
+      "outputPathNotConfigured": "Il percorso di uscita non è configurato."
+    },
+    "success": {
+      "fileGenerated": "Il file achievements.ini è stato generato con successo in {path}",
+      "title": "Successo",
+      "defaultMessage": "Il file achievements.ini è stato generato con successo!",
+      "ok": "OK"
+    },
+    "loading": {
+      "achievements": "Caricamento obiettivi...",
+      "games": "Caricamento giochi..."
+    },
+    "error": {
+      "title": "Errore",
+      "tryAgain": "Riprova",
+      "message": "Si è verificato un errore: {message}"
+    },
+    "games": {
+      "title": "Giochi",
+      "loading": "Caricamento giochi...",
+      "noGames": "Nessun gioco trovato. Controlla la directory di uscita nelle impostazioni.",
+      "error": "Errore durante il caricamento dei giochi: {message}",
+      "select": "Seleziona",
+      "progress": "Progresso",
+      "achievements": "obiettivi",
+      "errorFetchingGame": "Errore durante il recupero delle informazioni del gioco",
+      "errorFetchingGameDetails": "Errore durante il recupero dei dettagli del gioco"
+    }
+  }
+}
