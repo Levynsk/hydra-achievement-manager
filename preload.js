@@ -12,44 +12,28 @@ contextBridge.exposeInMainWorld('api', {
       const data = await response.json();
       
       if (!data.game || !data.game.availableGameStats || !data.game.availableGameStats.achievements) {
-        throw new Error('Não foi possível obter as conquistas. Verifique o app_id e tente novamente.');
+        throw new Error('Could not get achievements. Please check the app_id and try again.');
       }
       
       const achievements = data.game.availableGameStats.achievements.map(achievement => ({
-        id: achievement.name,
-        name: achievement.displayName,
+        apiname: achievement.name,
+        displayName: achievement.displayName,
         description: achievement.description || '',
         icon: achievement.icon || ''
       }));
       
-      return { success: true, achievements };
-    } catch (error) {
-      return { success: false, message: error.message };
-    }
-  },
-  
-  getUserAchievements: async (appId, apiKey, steamId) => {
-    try {
-      const response = await fetch(`https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=${apiKey}&appid=${appId}&steamid=${steamId}`);
+      const unlockedAchievementsInfo = await ipcRenderer.invoke('get-unlocked-achievements', appId);
       
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
-      }
+      const achievementsWithUnlockedStatus = achievements.map(achievement => {
+        const unlockedInfo = unlockedAchievementsInfo.find(a => a.id === achievement.apiname);
+        return {
+          ...achievement,
+          unlocked: !!unlockedInfo,
+          unlockTime: unlockedInfo ? unlockedInfo.unlockTime : null
+        };
+      });
       
-      const data = await response.json();
-      
-      if (!data.playerstats || !data.playerstats.achievements) {
-        throw new Error('Não foi possível obter as conquistas do usuário. Verifique o app_id, steamid e tente novamente.');
-      }
-      
-      const unlockedAchievements = data.playerstats.achievements
-        .filter(achievement => achievement.achieved === 1)
-        .map(achievement => ({
-          id: achievement.apiname,
-          unlockTime: achievement.unlocktime
-        }));
-      
-      return { success: true, unlockedAchievements };
+      return { success: true, achievements: achievementsWithUnlockedStatus };
     } catch (error) {
       return { success: false, message: error.message };
     }
@@ -65,6 +49,14 @@ contextBridge.exposeInMainWorld('api', {
   
   getApiKey: () => {
     return ipcRenderer.invoke('get-api-key');
+  },
+
+  saveSteamId: (steamId) => {
+    return ipcRenderer.invoke('save-config', 'steamId', steamId);
+  },
+  
+  getSteamId: () => {
+    return ipcRenderer.invoke('get-config', 'steamId');
   },
   
   getConfig: (key) => {
@@ -104,5 +96,6 @@ contextBridge.exposeInMainWorld('api', {
 contextBridge.exposeInMainWorld('windowControls', {
   minimize: () => ipcRenderer.invoke('minimize-window'),
   maximize: () => ipcRenderer.invoke('maximize-window'),
-  close: () => ipcRenderer.invoke('close-window')
+  close: () => ipcRenderer.invoke('close-window'),
+  isMaximized: () => ipcRenderer.invoke('is-window-maximized')
 });

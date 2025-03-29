@@ -5,23 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hydra Achievements Manager</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <div class="titlebar">
-    <div class="titlebar-drag">Hydra Manager</div>
     <div class="titlebar-buttons">
+      <button class="titlebar-button" id="closeBtn">
+        <i class="fas fa-xmark"></i>
+      </button>
       <button class="titlebar-button" id="minimizeBtn">
-        <i class="fas fa-window-minimize"></i>
+        <i class="fas fa-minus"></i>
       </button>
       <button class="titlebar-button" id="maximizeBtn">
-        <i class="fas fa-window-maximize"></i>
-      </button>
-      <button class="titlebar-button" id="closeBtn">
-        <i class="fas fa-times"></i>
+        <i class="fas fa-expand"></i>
       </button>
     </div>
+    <div class="titlebar-drag">Hydra Manager</div>
+    <div style="width: 54px;"></div>
   </div>
   <div class="app-container">
     <div class="sidebar">
@@ -33,141 +34,174 @@
       </div>
       <nav class="sidebar-nav">
         <ul>
-          <li><a href="#games"><i class="fas fa-gamepad"></i> Jogos</a></li>
-          <li class="active"><a href="#achievements"><i class="fas fa-trophy"></i> Conquistas</a></li>
-          <li><a href="#settings"><i class="fas fa-cog"></i> Configurações</a></li>
+          <li><a href="#games"><i class="fas fa-gamepad"></i> <span>Jogos</span></a></li>
+          <li class="active"><a href="#achievements"><i class="fas fa-trophy"></i> <span>Conquistas</span></a></li>
+          <li><a href="#settings"><i class="fas fa-cog"></i> <span>Configurações</span></a></li>
         </ul>
       </nav>
       <div class="sidebar-footer">
-        <p>v1.0.0</p>
+        <p>v1.1.0</p>
       </div>
     </div>
     
     <div class="main-content">
       <header class="app-header">
-        <h2 id="currentSection">Conquistas</h2>
+        <h2 id="currentSection"><i class="fas fa-trophy"></i></h2>
       </header>
 
     <main class="app-content">
-      <section class="games-section hidden" id="gamesSection">
-        <h2 class="section-title"><i class="fas fa-gamepad"></i> <span id="gamesTitle">Jogos</span></h2>
+      <section class="section games-section hidden" id="gamesSection">
         <div class="games-list" id="gamesList">
+          <!-- Games will be loaded here dynamically -->
         </div>
       </section>
-      <section class="setup-section">
-        <div class="card app-id-achievements-card">
-          <h2><i class="fas fa-gamepad"></i> Conquistas</h2>
-          <div class="input-group">
-            <input type="text" id="appId" placeholder="Digite o App ID do jogo">
-            <button id="fetchAchievements" class="btn"><i class="fas fa-search"></i></button>
+      
+      <section class="section achievements-section" id="achievementsSection">
+        <div class="achievements-header-card">
+          <div class="input-group stretched">
+            <div class="input-icon-wrapper">
+              <i class="fas fa-gamepad input-icon"></i>
+              <input type="text" id="appId" placeholder="Digite o App ID do jogo" class="input-with-icon">
+            </div>
+            <button id="fetchAchievements" class="btn btn-primary"><i class="fas fa-search"></i></button>
           </div>
           <div class="app-id-info">
             <p>Você pode encontrar o App ID na URL da loja Steam: store.steampowered.com/app/<strong>APP_ID</strong>/</p>
           </div>
+        </div>
           
-          <div class="achievements-content hidden" id="achievementsCard">
-            <div class="achievements-controls">
-              <div class="search-bar" style="display: flex; justify-content: center;">
-                <input type="text" id="searchAchievements" placeholder="Pesquisar conquistas..." style="height: 40px; width: 50%;">
+        <div class="achievements-content hidden" id="achievementsCard">
+          <div class="achievements-controls">
+            <div class="search-bar">
+              <div class="input-icon-wrapper">
+                <i class="fas fa-search input-icon"></i>
+                <input type="text" id="searchAchievements" placeholder="Pesquisar conquistas..." class="input-with-icon stretched-input">
               </div>
+            </div>
+            <div class="control-buttons">
               <button id="selectAll" class="btn"><i class="fas fa-check-square"></i> Selecionar Todas</button>
               <button id="deselectAll" class="btn"><i class="fas fa-square"></i> Desmarcar Todas</button>
-              <div class="timestamp-controls">
-                <label for="timestampType">Timestamp:</label>
-                <select id="timestampType">
-                  <option value="current">Atual</option>
-                  <option value="custom">Personalizado</option>
-                  <option value="random">Aleatório</option>
-                </select>
-                <input type="datetime-local" id="customTimestamp" class="hidden" disabled>
-              </div>
             </div>
-            <div class="achievements-list" id="achievementsList" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-              <div class="achievement-item" style="position: relative;">
-                <button class="expand-card-btn" style="position: absolute; bottom: 10px; right: 10px;">&gt;</button>
-                <div class="custom-timestamp-options hidden" style="margin-top: 10px;">
-                  <label>
-                    <input type="checkbox" class="enable-custom-timestamp"> Ativar Timestamp Custom
-                  </label>
-                  <input type="datetime-local" class="custom-timestamp-input hidden" disabled>
-                </div>
-              </div>
-            </div>
-            <div class="achievements-actions">
-              <button id="generateFile" class="btn btn-primary"><i class="fas fa-file-export"></i> Gerar Arquivo</button>
+            <div class="timestamp-controls">
+              <label for="timestampType">Tipo de Data:</label>
+              <select id="timestampType" class="timestamp-select">
+                <option value="current">Atual</option>
+                <option value="custom">Personalizado</option>
+                <option value="random">Aleatório</option>
+              </select>
+              <input type="datetime-local" id="customTimestamp" class="timestamp-input hidden" disabled>
             </div>
           </div>
+            
+          <div class="achievements-list" id="achievementsList">
+            <!-- Achievement items will be loaded here dynamically -->
+          </div>
+            
+          <div class="achievements-actions">
+            <button id="generateFile" class="btn btn-primary"><i class="fas fa-file-export"></i> Gerar Arquivo</button>
+          </div>
+        </div>
           
-          <div class="loading-content hidden" id="loadingCard">
-            <div class="loader"></div>
-            <p>Carregando conquistas...</p>
-          </div>
+        <div class="loading-content hidden" id="loadingCard">
+          <div class="loader"></div>
+          <p>Carregando conquistas...</p>
+        </div>
           
-          <div class="error-content hidden" id="errorCard">
-            <i class="fas fa-exclamation-circle"></i>
-            <h3>Erro</h3>
-            <p id="errorMessage">Ocorreu um erro ao buscar as conquistas.</p>
-            <button id="tryAgain" class="btn">Tentar Novamente</button>
-          </div>
+        <div class="error-content hidden" id="errorCard">
+          <i class="fas fa-exclamation-circle"></i>
+          <h3>Erro</h3>
+          <p id="errorMessage">Ocorreu um erro ao buscar as conquistas.</p>
+          <button id="tryAgain" class="btn">Tentar Novamente</button>
         </div>
       </section>
       
-      <section class="settings-section hidden" id="settingsSection">
+      <section class="section settings-section hidden" id="settingsSection">
         <div class="card settings-card">
           <h2><i class="fas fa-cog"></i> Configurações</h2>
           
-          <div class="settings-group">
-            <h3>API Steam</h3>
-            <div class="setting-item">
-              <label for="apiKey">Chave da API:</label>
-              <div class="input-group">
-                <input type="password" id="apiKey" placeholder="Insira sua chave da API Steam">
-                <button id="saveApiKey" class="btn"><i class="fas fa-save"></i> Salvar</button>
-                <button id="toggleApiKey" class="btn btn-icon"><i class="fas fa-eye"></i></button>
+          <div class="settings-tabs">
+            <div class="tab-header">
+              <button class="tab-button active" data-tab="tab-api">API Steam</button>
+              <button class="tab-button" data-tab="tab-language">Idioma</button>
+              <button class="tab-button" data-tab="tab-output">Diretório de Saída</button>
+              <button class="tab-button" data-tab="tab-about">Sobre</button>
+            </div>
+            
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab-api">
+                <div class="settings-group">
+                  <div class="setting-item">
+                    <label for="apiKey">Chave da API:</label>
+                    <div class="input-group stretched">
+                      <div class="input-icon-wrapper">
+                        <i class="fas fa-key input-icon"></i>
+                        <input type="password" id="apiKey" placeholder="Insira sua chave da API Steam" class="input-with-icon">
+                      </div>
+                      <button id="saveApiKey" class="btn"><i class="fas fa-save"></i> Salvar</button>
+                      <button id="toggleApiKey" class="btn btn-icon"><i class="fas fa-eye"></i></button>
+                    </div>
+                    <p class="setting-description">Você pode obter sua chave da API Steam <a href="https://steamcommunity.com/dev/apikey" target="_blank">aqui</a>.</p>
+                  </div>
+                  <div class="setting-item">
+                    <label for="steamId">Steam ID:</label>
+                    <div class="input-group stretched">
+                      <div class="input-icon-wrapper">
+                        <i class="fas fa-id-card input-icon"></i>
+                        <input type="text" id="steamId" placeholder="Insira seu Steam ID" class="input-with-icon">
+                      </div>
+                      <button id="saveSteamId" class="btn"><i class="fas fa-save"></i> Salvar</button>
+                    </div>
+                    <p class="setting-description">Você pode encontrar seu Steam ID <a href="https://steamid.io" target="_blank">aqui</a>.</p>
+                  </div>
+                </div>
               </div>
-              <p class="setting-description">Você pode obter sua chave da API Steam <a href="https://steamcommunity.com/dev/apikey" target="_blank">aqui</a>.</p>
-            </div>
-          </div>
-          
-          <div class="settings-group">
-            <h3>Idioma</h3>
-            <div class="setting-item">
-              <label for="languageSelect">Idioma:</label>
-              <select id="languageSelect">
-                <!-- Opções de idioma serão preenchidas dinamicamente -->
-              </select>
-              <p class="setting-description">Selecione o idioma da interface.</p>
-            </div>
-          </div>
-          
-          <div class="settings-group">
-            <h3>Aparência</h3>
-            <div class="setting-item">
-              <label for="themeSelect">Tema:</label>
-              <select id="themeSelect">
-                <option value="dark">Escuro</option>
-                <option value="light">Claro</option>
-              </select>
-            </div>
-          </div>
-          
-          <div class="settings-group">
-            <h3>Diretório de Saída</h3>
-            <div class="setting-item">
-              <label for="outputPath">Caminho:</label>
-              <div class="input-group">
-                <input type="text" id="outputPath" placeholder="Caminho para salvar os arquivos">
-                <button id="saveOutputPath" class="btn"><i class="fas fa-save"></i> Salvar</button>
+              
+              <div class="tab-pane" id="tab-language">
+                <div class="settings-group">
+                  <div class="setting-item">
+                    <label for="languageSelect">Idioma:</label>
+                    <div class="input-icon-wrapper select-wrapper">
+                      <i class="fas fa-globe input-icon"></i>
+                      <select id="languageSelect" class="input-with-icon">
+                        <!-- Opções de idioma serão preenchidas dinamicamente -->
+                      </select>
+                    </div>
+                    <p class="setting-description">Selecione o idioma da interface.</p>
+                  </div>
+                </div>
               </div>
-              <p class="setting-description">Diretório onde os arquivos de conquistas serão salvos.</p>
+              
+              <div class="tab-pane" id="tab-output">
+                <div class="settings-group">
+                  <div class="setting-item">
+                    <label for="outputPath">Caminho:</label>
+                    <div class="input-group stretched">
+                      <div class="input-icon-wrapper">
+                        <i class="fas fa-folder input-icon directory-icon"></i>
+                        <input type="text" id="outputPath" placeholder="Caminho para salvar os arquivos" class="input-with-icon directory-input">
+                      </div>
+                      <button id="browseOutputPath" class="btn"><i class="fas fa-folder-open"></i></button>
+                      <button id="saveOutputPath" class="btn"><i class="fas fa-save"></i> Salvar</button>
+                    </div>
+                    <p class="setting-description">Diretório onde os arquivos de conquistas serão salvos.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="tab-pane" id="tab-about">
+                <div class="settings-group">
+                  <div class="about-content">
+                    <div class="app-logo">
+                      <i class="fab fa-steam"></i>
+                      <h2>Hydra Achievements Manager</h2>
+                    </div>
+                    <p class="version">v1.1.0</p>
+                    <p class="app-description">Um gerenciador moderno para conquistas da Steam.</p>
+                    <p class="app-credits">Feito por Levynsk e Esther (<a href="https://twitter.com/onlysterbr" target="_blank">@onlysterbr</a>)</p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          
-          <div class="settings-group">
-            <h3>Sobre</h3>
-            <p>Hydra Achievements Manager v1.0.0</p>
-            <p>Um gerenciador moderno para conquistas da Steam.</p>
-            <p>Feito por Levynsk e Esther (Twitter -  @onlysterbr)</p>
           </div>
         </div>
       </section>
@@ -180,6 +214,9 @@
           <button class="close-modal">&times;</button>
         </div>
         <div class="modal-body">
+          <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
           <p id="successMessage">Arquivo achievements.ini foi gerado com sucesso!</p>
         </div>
         <div class="modal-footer">
@@ -189,6 +226,14 @@
     </div>
   </div>
 
-  <script src="renderer.js"></script>
+  <script type="module" src="src/constants.js"></script>
+  <script type="module" src="src/translations.js"></script>
+  <script type="module" src="src/settings.js"></script>
+  <script type="module" src="src/achievements.js"></script>
+  <script type="module" src="src/games.js"></script>
+  <script type="module" src="src/events.js"></script>
+  <script type="module" src="src/ui.js"></script>
+  <script type="module" src="src/main.js"></script>
+  <script type="module" src="renderer.js"></script>
 </body>
 </html>

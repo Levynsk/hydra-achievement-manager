@@ -2,7 +2,7 @@
   "meta": {
     "name": "Português (Brasil)",
     "author": "Levynsk & Esther",
-    "version": "1.0.0"
+    "version": "v1.1.0"
   },
   "translations": {
     "app": {
@@ -30,7 +30,16 @@
       "enableCustomTimestamp": "Ativar Timestamp Custom",
       "generateFile": "Gerar Arquivo",
       "noAchievements": "Nenhuma conquista encontrada para este jogo.",
-      "select": "Selecionar"
+      "select": "Selecionar",
+      "unlockedAt": "Já desbloqueada em: {date}",
+      "alreadyUnlocked": "Já desbloqueada",
+      "notUnlocked": "Não desbloqueada",
+      "selectToUnlock": "Selecionar para desbloquear",
+      "unlockDate": "Data de desbloqueio",
+      "lockedStatus": "Bloqueada",
+      "unlockedStatus": "Desbloqueada",
+      "noDescription": "Sem descrição",
+      "platinum": "Platina"
     },
     "settings": {
       "title": "Configurações",
@@ -61,7 +70,10 @@
       "invalidAppId": "Por favor, insira um App ID válido.",
       "fetchError": "Ocorreu um erro ao buscar as conquistas.",
       "noSelection": "Por favor, selecione pelo menos uma conquista.",
-      "writeError": "Erro ao gerar arquivo."
+      "writeError": "Erro ao gerar arquivo.",
+      "appIdRequired": "Por favor, digite o App ID do jogo.",
+      "achievementsNotFound": "Não foi possível obter as conquistas. Verifique o app_id e tente novamente.",
+      "outputPathNotConfigured": "O caminho de saída não está configurado."
     },
     "success": {
       "fileGenerated": "Arquivo achievements.ini foi gerado com sucesso em {path}",
@@ -70,11 +82,13 @@
       "ok": "OK"
     },
     "loading": {
-      "achievements": "Carregando conquistas..."
+      "achievements": "Carregando conquistas...",
+      "games": "Carregando jogos..."
     },
     "error": {
       "title": "Erro",
-      "tryAgain": "Tentar Novamente"
+      "tryAgain": "Tentar Novamente",
+      "message": "Ocorreu um erro: {message}"
     },
     "games": {
       "title": "Jogos",
@@ -82,7 +96,10 @@
       "noGames": "Nenhum jogo encontrado. Verifique o diretório de saída nas configurações.",
       "error": "Erro ao carregar jogos: {message}",
       "select": "Selecionar",
-      "progress": "Progresso"
+      "progress": "Progresso",
+      "achievements": "conquistas",
+      "errorFetchingGame": "Erro ao buscar informações do jogo",
+      "errorFetchingGameDetails": "Erro ao buscar detalhes do jogo"
     }
   }
 }

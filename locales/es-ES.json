@@ -2,7 +2,7 @@
   "meta": {
     "name": "Español (España)",
     "author": "Esther",
-    "version": "1.0.0"
+    "version": "v1.1.0"
   },
   "translations": {
     "app": {
@@ -30,7 +30,16 @@
       "enableCustomTimestamp": "Activar Marca de Tiempo Personalizada",
       "generateFile": "Generar Archivo",
       "noAchievements": "No se encontraron logros para este juego.",
-      "select": "Seleccionar"
+      "select": "Seleccionar",
+      "unlockedAt": "Ya desbloqueado en: {date}",
+      "alreadyUnlocked": "Ya desbloqueado",
+      "notUnlocked": "No desbloqueado",
+      "selectToUnlock": "Seleccionar para desbloquear",
+      "unlockDate": "Fecha de desbloqueo",
+      "lockedStatus": "Bloqueado",
+      "unlockedStatus": "Desbloqueado",
+      "noDescription": "Sin descripción",
+      "platinum": "Platino"
     },
     "settings": {
       "title": "Ajustes",
@@ -61,7 +70,10 @@
       "invalidAppId": "Por favor, introduce un ID de aplicación válido.",
       "fetchError": "Ocurrió un error al obtener los logros.",
       "noSelection": "Por favor, selecciona al menos un logro.",
-      "writeError": "Error al generar el archivo."
+      "writeError": "Error al generar el archivo.",
+      "appIdRequired": "Por favor, introduce el ID de la aplicación del juego.",
+      "achievementsNotFound": "No se pudieron obtener los logros. Por favor, verifica el app_id e inténtalo de nuevo.",
+      "outputPathNotConfigured": "La ruta de salida no está configurada."
     },
     "success": {
       "fileGenerated": "El archivo Achievements.ini se generó correctamente en {path}",
@@ -70,11 +82,13 @@
       "ok": "Aceptar"
     },
     "loading": {
-      "achievements": "Cargando logros..."
+      "achievements": "Cargando logros...",
+      "games": "Cargando juegos..."
     },
     "error": {
       "title": "Error",
-      "tryAgain": "Intentar de nuevo"
+      "tryAgain": "Intentar de nuevo",
+      "message": "Ocurrió un error: {message}"
     },
     "games": {
       "title": "Juegos",
@@ -82,7 +96,10 @@
       "noGames": "No se encontraron juegos. Compruebe el directorio de salida en la configuración.",
       "error": "Error al cargar juegos: {message}",
       "select": "Seleccionar",
-      "progress": "Progreso"
+      "progress": "Progreso",
+      "achievements": "logros",
+      "errorFetchingGame": "Error al obtener información del juego",
+      "errorFetchingGameDetails": "Error al obtener detalles del juego"
     }
   }
 }

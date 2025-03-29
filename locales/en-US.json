@@ -2,12 +2,12 @@
   "meta": {
     "name": "English (United States)",
     "author": "Esther",
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "v1.0.0",
+      "version": "v1.1.0",
       "about": "A modern Steam achievements manager.",
       "credits": "Made by Levynsk and Esther (Twitter - @onlysterbr)"
     },
@@ -30,7 +30,16 @@
       "enableCustomTimestamp": "Enable Custom Timestamp",
       "generateFile": "Generate File",
       "noAchievements": "No achievements found for this game.",
-      "select": "Select"
+      "select": "Select",
+      "unlockedAt": "Already unlocked on: {date}",
+      "alreadyUnlocked": "Already unlocked",
+      "notUnlocked": "Not unlocked",
+      "selectToUnlock": "Select to unlock",
+      "unlockDate": "Unlock date",
+      "lockedStatus": "Locked",
+      "unlockedStatus": "Unlocked",
+      "noDescription": "No description",
+      "platinum": "Platinum"
     },
     "settings": {
       "title": "Settings",
@@ -61,7 +70,10 @@
       "invalidAppId": "Please enter a valid App ID.",
       "fetchError": "An error occurred while fetching achievements.",
       "noSelection": "Please select at least one achievement.",
-      "writeError": "Error generating file."
+      "writeError": "Error generating file.",
+      "appIdRequired": "Please enter the game's App ID.",
+      "achievementsNotFound": "Could not get achievements. Please check the app_id and try again.",
+      "outputPathNotConfigured": "The output path is not configured."
     },
     "success": {
       "fileGenerated": "Achievements.ini file was successfully generated at {path}",
@@ -70,11 +82,13 @@
       "ok": "OK"
     },
     "loading": {
-      "achievements": "Loading achievements..."
+      "achievements": "Loading achievements...",
+      "games": "Loading games..."
     },
     "error": {
       "title": "Error",
-      "tryAgain": "Try Again"
+      "tryAgain": "Try Again",
+      "message": "An error occurred: {message}"
     },
     "games": {
       "title": "Games",
@@ -82,7 +96,10 @@
       "noGames": "No games found. Please check the output directory in settings.",
       "error": "Error loading games: {message}",
       "select": "Select",
-      "progress": "Progress"
+      "progress": "Progress",
+      "achievements": "achievements",
+      "errorFetchingGame": "Error fetching game information",
+      "errorFetchingGameDetails": "Error fetching details for game"
     }
   }
 }

@@ -2,7 +2,7 @@
   "meta": {
     "name": "Українська (Україна)",
     "author": "Esther",
-    "version": "1.0.0"
+    "version": "v1.1.0"
   },
   "translations": {
     "app": {
@@ -30,19 +30,19 @@
       "enableCustomTimestamp": "Увімкнути власну часову мітку",
       "generateFile": "Створити файл",
       "noAchievements": "Для цієї гри не знайдено досягнень.",
-      "select": "Вибрати"
+      "select": "Вибрати",
+      "unlockedAt": "Вже розблоковано: {date}",
+      "alreadyUnlocked": "Вже розблоковано",
+      "notUnlocked": "Не розблоковано",
+      "selectToUnlock": "Вибрати для розблокування",
+      "unlockDate": "Дата розблокування",
+      "lockedStatus": "Заблоковано",
+      "unlockedStatus": "Розблоковано",
+      "noDescription": "Немає опису",
+      "platinum": "Платина"
     },
     "settings": {
-      "title": "Налаштування"
-    },
-    "games": {
-      "title": "Ігри",
-      "loading": "Завантаження ігор...",
-      "noGames": "Ігри не знайдено. Перевірте директорію виводу в налаштуваннях.",
-      "error": "Помилка при завантаженні ігор: {message}",
-      "select": "Вибрати",
-      "progress": "Прогрес"
-    },
+      "title": "Налаштування",
       "apiKey": "API-ключ Steam",
       "apiKeyLabel": "API-ключ:",
       "apiKeyPlaceholder": "Введіть ваш API-ключ Steam",
@@ -70,7 +70,10 @@
       "invalidAppId": "Будь ласка, введіть дійсний ID гри.",
       "fetchError": "Сталася помилка під час отримання досягнень.",
       "noSelection": "Будь ласка, виберіть хоча б одне досягнення.",
-      "writeError": "Помилка при створенні файлу."
+      "writeError": "Помилка при створенні файлу.",
+      "appIdRequired": "Будь ласка, введіть ID гри.",
+      "achievementsNotFound": "Не вдалося отримати досягнення. Будь ласка, перевірте ID гри та спробуйте знову.",
+      "outputPathNotConfigured": "Шлях виводу не налаштовано."
     },
     "success": {
       "fileGenerated": "Файл Achievements.ini успішно створено в {path}",
@@ -79,10 +82,24 @@
       "ok": "OK"
     },
     "loading": {
-      "achievements": "Завантаження досягнень..."
+      "achievements": "Завантаження досягнень...",
+      "games": "Завантаження ігор..."
     },
     "error": {
       "title": "Помилка",
-      "tryAgain": "Спробувати знову"
+      "tryAgain": "Спробувати знову",
+      "message": "Сталася помилка: {message}"
+    },
+    "games": {
+      "title": "Ігри",
+      "loading": "Завантаження ігор...",
+      "noGames": "Ігри не знайдено. Перевірте директорію виводу в налаштуваннях.",
+      "error": "Помилка при завантаженні ігор: {message}",
+      "select": "Вибрати",
+      "progress": "Прогрес",
+      "achievements": "досягнення",
+      "errorFetchingGame": "Помилка при отриманні інформації про гру",
+      "errorFetchingGameDetails": "Помилка при отриманні деталей гри"
     }
   }
+}

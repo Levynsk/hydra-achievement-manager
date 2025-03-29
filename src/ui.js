@@ -1,0 +1,64 @@
+import { appContainer, currentSectionTitle } from './constants.js';
+import { t } from './translations.js';
+import { fetchGames, clearGamesList } from './games.js';
+
+let currentSection = '';
+
+export async function updateCurrentSectionTitle() {
+  const activeLink = document.querySelector('.sidebar-nav li.active a');
+  if (activeLink) {
+    const section = activeLink.getAttribute('href').substring(1);
+    let titleKey = '';
+    
+    switch (section) {
+      case 'games':
+        titleKey = 'sidebar.games';
+        break;
+      case 'achievements':
+        titleKey = 'sidebar.achievements';
+        break;
+      case 'settings':
+        titleKey = 'sidebar.settings';
+        break;
+      default:
+        titleKey = 'sidebar.achievements';
+    }
+    
+    currentSectionTitle.textContent = await t(titleKey);
+  }
+}
+
+export async function handleSectionChange(section) {
+  // Se estiver saindo da seção de jogos, limpe a lista
+  if (currentSection === 'games' && section !== 'games') {
+    clearGamesList();
+  }
+  
+  // Atualizar a seção atual
+  currentSection = section;
+  
+  // Atualizar links ativos
+  document.querySelectorAll('.sidebar-nav li').forEach(li => {
+    li.classList.remove('active');
+  });
+  document.querySelector(`.sidebar-nav a[href="#${section}"]`).parentElement.classList.add('active');
+
+  // Esconder todas as seções
+  document.querySelectorAll('.section').forEach(section => {
+    section.classList.add('hidden');
+  });
+
+  // Mostrar a seção selecionada
+  const selectedSection = document.getElementById(`${section}Section`);
+  if (selectedSection) {
+    selectedSection.classList.remove('hidden');
+  }
+
+  // Atualizar o título da seção
+  await updateCurrentSectionTitle();
+
+  // Carregar jogos se a seção for 'games'
+  if (section === 'games') {
+    await fetchGames();
+  }
+} 

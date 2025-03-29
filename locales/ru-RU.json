@@ -2,7 +2,7 @@
   "meta": {
     "name": "Русский (Россия)",
     "author": "Moyase",
-    "version": "1.0.0"
+    "version": "v1.1.0"
   },
   "translations": {
     "app": {
@@ -30,17 +30,50 @@
       "enableCustomTimestamp": "Включить пользовательское время",
       "generateFile": "Создать файл",
       "noAchievements": "Для этой игры не найдено достижений.",
-      "select": "Выбрать"
+      "select": "Выбрать",
+      "unlockedAt": "Уже разблокировано: {date}",
+      "alreadyUnlocked": "Уже разблокировано",
+      "notUnlocked": "Не разблокировано",
+      "selectToUnlock": "Выбрать для разблокировки",
+      "unlockDate": "Дата разблокировки",
+      "lockedStatus": "Заблокировано",
+      "unlockedStatus": "Разблокировано",
+      "noDescription": "Нет описания",
+      "platinum": "Платина"
     },
     "settings": {
-      "title": "Настройки"
+      "title": "Настройки",
+      "apiKey": "API-ключ Steam",
+      "apiKeyLabel": "API-ключ:",
+      "apiKeyPlaceholder": "Введите ваш API-ключ Steam",
+      "apiKeyInfo": "Вы можете получить свой API-ключ Steam здесь.",
+      "saveApiKey": "Сохранить",
+      "saved": "Сохранено",
+      "language": "Язык",
+      "languageLabel": "Язык:",
+      "languageInfo": "Выберите язык интерфейса.",
+      "appearance": "Внешний вид",
+      "themeLabel": "Тема:",
+      "outputDir": "Директория вывода",
+      "outputDirLabel": "Путь:",
+      "outputDirPlaceholder": "Путь для сохранения файлов",
+      "outputDirInfo": "Директория, где будут сохранены файлы достижений.",
+      "browse": "Обзор",
+      "theme": "Тема",
+      "themeLight": "Светлая",
+      "themeDark": "Темная",
+      "themeSystem": "Системная",
+      "about": "О программе"
     },
     "errors": {
       "invalidApiKey": "Пожалуйста, введите действительный ключ API.",
       "invalidAppId": "Пожалуйста, введите действительный ID игры.",
       "fetchError": "Произошла ошибка при получении достижений.",
       "noSelection": "Пожалуйста, выберите хотя бы одно достижение.",
-      "writeError": "Ошибка при создании файла."
+      "writeError": "Ошибка при создании файла.",
+      "appIdRequired": "Пожалуйста, введите ID игры.",
+      "achievementsNotFound": "Не удалось получить достижения. Пожалуйста, проверьте ID игры и попробуйте снова.",
+      "outputPathNotConfigured": "Путь вывода не настроен."
     },
     "success": {
       "fileGenerated": "Файл Achievements.ini был успешно создан в {path}",
@@ -49,11 +82,13 @@
       "ok": "OK"
     },
     "loading": {
-      "achievements": "Загрузка достижений..."
+      "achievements": "Загрузка достижений...",
+      "games": "Загрузка игр..."
     },
     "error": {
       "title": "Ошибка",
-      "tryAgain": "Попробовать снова"
+      "tryAgain": "Попробовать снова",
+      "message": "Произошла ошибка: {message}"
     },
     "games": {
       "title": "Игры",
@@ -61,7 +96,10 @@
       "noGames": "Игры не найдены. Проверьте директорию в настройках.",
       "error": "Ошибка при загрузке игр: {message}",
       "select": "Выбрать",
-      "progress": "Прогресс"
+      "progress": "Прогресс",
+      "achievements": "достижения",
+      "errorFetchingGame": "Ошибка при получении информации об игре",
+      "errorFetchingGameDetails": "Ошибка при получении деталей игры"
     }
   }
 }

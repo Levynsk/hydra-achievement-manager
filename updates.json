@@ -1,0 +1,28 @@
+{
+  "latest_version": "1.1.0",
+  "download_url": "https://example.com/hydra-manager-v1.1.0.zip",
+  "release_date": "2023-11-15",
+  "min_version_required": "1.0.0",
+  "is_mandatory": false,
+  "changelog": [
+    {
+      "version": "1.1.0",
+      "changes": [
+        "Adicionado sistema de atualização automática",
+        "Melhorias na interface da barra de título",
+        "Nova organização das configurações em abas",
+        "Correção de bugs na geração de arquivos",
+        "Melhor desempenho ao carregar grandes listas de conquistas"
+      ]
+    },
+    {
+      "version": "1.0.5",
+      "changes": [
+        "Correção de bugs menores",
+        "Melhorias na tradução",
+        "Atualização de dependências"
+      ]
+    }
+  ],
+  "release_notes": "Esta atualização traz melhorias significativas na usabilidade e correções importantes. Recomendamos que todos os usuários atualizem para a versão mais recente."
+} 
