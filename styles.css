@@ -171,15 +171,17 @@ a:hover {
 }
 
 .sidebar-header {
-  padding: 2rem 1.5rem;
+  padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border-color);
   background: rgba(0, 0, 0, 0.2);
+  height: 64px;
+  display: flex;
+  align-items: center;
 }
 
 .sidebar-header .logo {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 12px;
 }
 
@@ -300,17 +302,18 @@ a:hover {
 
 /* Header Styles */
 .app-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.5rem 2rem;
+  padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border-color);
-  background-color: rgba(22, 22, 30, 0.7);
+  background: rgba(16, 16, 24, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   position: sticky;
   top: 38px;
   z-index: 100;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .app-header h2 {
@@ -350,7 +353,7 @@ a:hover {
 
 .app-content {
   flex: 1;
-  padding: 2rem;
+  padding: 1.25rem 1.5rem;
   overflow-y: auto;
   position: relative;
   scrollbar-width: thin;
@@ -545,12 +548,12 @@ select:focus {
 
 /* Section Styles */
 .section {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .section-title {
   font-size: 1.75rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: var(--text-primary);
   display: flex;
   align-items: center;
@@ -748,7 +751,7 @@ select:focus {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
 }
 
 .game-card {
