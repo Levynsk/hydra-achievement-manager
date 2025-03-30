@@ -21,31 +21,60 @@ export async function initApp() {
   await initLanguageSelector();
   await applyTranslations();
   
-  // Configurar o caminho de saída
+  // Configurar os diretórios de saída
   const config = await window.api.getConfig();
   const outputPathInput = document.getElementById('outputPath');
-  if (outputPathInput) {
-    outputPathInput.value = config.outputPath || 'C:/Users/Public/Documents/Steam/RUNE';
+  const directoriesContainer = document.getElementById('directoriesContainer');
+  
+  if (outputPathInput && directoriesContainer) {
+    outputPathInput.value = '';
     
-    const saveOutputPathBtn = document.getElementById('saveOutputPath');
-    if (saveOutputPathBtn) {
-      saveOutputPathBtn.addEventListener('click', async () => {
-        const newPath = outputPathInput.value.trim();
-        if (newPath) {
-          await window.api.saveConfig('outputPath', newPath);
-          const savedText = await t('settings.saved');
-          saveOutputPathBtn.innerHTML = `<i class="fas fa-check"></i> ${savedText}`;
-          setTimeout(async () => {
-            const saveText = await t('settings.saveApiKey');
-            saveOutputPathBtn.innerHTML = `<i class="fas fa-save"></i> ${saveText}`;
-          }, 2000);
+    // Inicializar os diretórios
+    const outputPaths = config.outputPaths || [config.outputPath || 'C:/Users/Public/Documents/Steam/RUNE'];
+    const activeOutputPath = config.activeOutputPath || outputPaths[0];
+    
+    // Função para renderizar os diretórios
+    const renderDirectories = async () => {
+      directoriesContainer.innerHTML = '';
+      
+      // Buscar os diretórios padrão
+      const paths = await window.api.getConfig('outputPaths') || [];
+      const activePath = await window.api.getConfig('activeOutputPath') || paths[0];
+      
+      // Usar Set para garantir que não haja duplicatas
+      const uniquePaths = [...new Set(paths)];
+      
+      uniquePaths.forEach(path => {
+        const directoryItem = document.createElement('div');
+        directoryItem.className = 'directory-item';
+        if (path === activePath) {
+          directoryItem.classList.add('active');
         }
+        
+        // Usar o caminho completo em vez de apenas o nome da pasta
+        directoryItem.innerHTML = `
+          <span class="directory-name" title="${path}">${path}</span>
+          <div class="directory-actions">
+            <button class="btn btn-icon set-active-btn" title="Definir como ativo"><i class="fas fa-check"></i></button>
+          </div>
+        `;
+        
+        // Evento para definir como diretório ativo
+        directoryItem.querySelector('.set-active-btn').addEventListener('click', async () => {
+          await window.api.saveConfig('activeOutputPath', path);
+          renderDirectories();
+        });
+        
+        directoriesContainer.appendChild(directoryItem);
       });
-    }
+    };
+    
+    // Renderizar diretórios iniciais
+    renderDirectories();
   }
   
   setupEventListeners();
 }
 
 // Inicializar a aplicação quando o DOM estiver pronto
-document.addEventListener('DOMContentLoaded', initApp); 
+document.addEventListener('DOMContentLoaded', initApp);

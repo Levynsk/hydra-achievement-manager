@@ -47,8 +47,9 @@ contextBridge.exposeInMainWorld('api', {
     }
   },
   
-  writeAchievements: (appId, achievements) => {
-    return ipcRenderer.invoke('write-achievements', appId, achievements);
+  writeAchievements: (appId, achievements, targetDirectory) => {
+    console.log("Preload: escrevendo achievements no diretório:", targetDirectory);
+    return ipcRenderer.invoke('write-achievements', appId, achievements, targetDirectory);
   },
 
   saveApiKey: (apiKey) => {
@@ -98,6 +99,18 @@ contextBridge.exposeInMainWorld('api', {
   
   setLanguage: (langCode) => {
     return ipcRenderer.invoke('set-language', langCode);
+  },
+
+  getOutputDirectories: () => {
+    return ipcRenderer.invoke('get-output-directories');
+  },
+  
+  checkGameFiles: (appId, directories) => {
+    return ipcRenderer.invoke('check-game-files', appId, directories);
+  },
+  
+  selectDirectory: () => {
+    return ipcRenderer.invoke('select-directory');
   }
 });
 

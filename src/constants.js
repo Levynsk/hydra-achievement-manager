@@ -27,11 +27,18 @@ export const minimizeBtn = document.getElementById('minimizeBtn');
 export const maximizeBtn = document.getElementById('maximizeBtn');
 export const closeBtn = document.getElementById('closeBtn');
 
+// Novos elementos para o modal de seleção de diretório
+export const directoryModal = document.getElementById('directoryModal');
+export const directoryList = document.getElementById('directoryList');
+export const cancelSaveBtn = document.getElementById('cancelSave');
+export const confirmSaveBtn = document.getElementById('confirmSave');
+
 // Variáveis globais
 export let achievements = [];
 export let selectedAchievements = new Set();
 export let userAchievements = [];
 export let currentLanguage = 'pt-BR';
+export let existingDirectories = [];
 
 // Função para atualizar o idioma atual
 export function setCurrentLanguage(lang) {

@@ -61,7 +61,7 @@ export function setupEventListeners() {
     btn.addEventListener('click', () => {
       const modal = btn.closest('.modal');
       if (modal) {
-        modal.classList.remove('active');
+        modal.classList.add('hidden');
       }
     });
   });

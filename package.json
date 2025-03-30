@@ -7,30 +7,47 @@
     "start": "electron .",
     "dev": "cross-env NODE_ENV=development electron .",
     "prod": "cross-env NODE_ENV=production electron .",
-    "build": "electron-builder"
+    "rebuild": "electron-rebuild",
+    "prebuild": "npm run rebuild",
+    "build": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "axios": "^1.6.2",
-    "electron-store": "^8.1.0"
+    "electron-store": "^8.2.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
     "electron": "^27.1.0",
-    "electron-builder": "^24.6.4"
+    "electron-builder": "^24.6.4",
+    "electron-rebuild": "^3.2.9"
   },
   "build": {
     "appId": "com.hydra.achievements.manager",
     "productName": "Hydra Achievements Manager",
     "copyright": "Copyright © 2023",
-    "asar": true,
+    "asar": false,
+    "files": [
+      "**/*",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!**/{.git,.hg,.svn,CVS,RCS,SCCS,__pycache__,thumbs.db,.DS_Store,.idea,.vs,.vscode,docs,.github,.gradle,.settings}/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "assets/",
+        "to": "assets/"
+      }
+    ],
     "directories": {
       "output": "dist",
       "buildResources": "assets"
     },
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "assets/icon.ico"
     },
     "nsis": {
@@ -45,12 +62,16 @@
       "artifactName": "${productName}-setup-${version}.${ext}"
     },
     "mac": {
-      "target": ["dmg"],
+      "target": [
+        "dmg"
+      ],
       "icon": "assets/icon.ico",
       "category": "public.app-category.utilities"
     },
     "linux": {
-      "target": ["AppImage"],
+      "target": [
+        "AppImage"
+      ],
       "icon": "assets/icon.ico",
       "category": "Utility",
       "artifactName": "${productName}-${version}.${ext}"

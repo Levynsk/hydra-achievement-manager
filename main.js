@@ -61,28 +61,110 @@ ipcMain.handle('get-api-key', () => {
 
 ipcMain.handle('save-config', async (event, key, value) => {
   try {
-    store.set(key, value);
+    console.log(`Salvando configuração: ${key} = `, value);
+    
+    // Tratar outputPaths de forma especial
+    if (key === 'outputPaths') {
+      // Garantir que o valor é um array
+      if (!Array.isArray(value)) {
+        value = [value];
+      }
+      
+      // Salvar dentro do objeto config
+      const config = store.get('config') || {};
+      config.outputPaths = value;
+      store.set('config', config);
+      
+      console.log('Caminhos salvos em config.outputPaths:', value);
+    } else {
+      // Verificar se estamos lidando com uma chave dentro de config
+      if (key.includes('.')) {
+        store.set(key, value);
+      } else {
+        // Para outras chaves, salvar diretamente
+        store.set(key, value);
+      }
+    }
+    
     return { success: true };
   } catch (error) {
+    console.error(`Erro ao salvar configuração ${key}:`, error);
     return { success: false, message: error.message };
   }
 });
 
 ipcMain.handle('get-config', (event, key) => {
+  // Se não for especificada uma chave, retorna toda a configuração
+  if (!key) {
+    const config = store.get('config') || {};
+    // Garantir que outputPaths exista
+    if (!config.outputPaths) {
+      config.outputPaths = [config.outputPath || 'C:/Users/Public/Documents/Steam/RUNE'];
+      config.activeOutputPath = config.outputPath || 'C:/Users/Public/Documents/Steam/RUNE';
+      store.set('config', config);
+    }
+    return config;
+  }
+  
+  // Se for 'outputPaths' e não existir, inicializa com o outputPath atual
+  if (key === 'outputPaths') {
+    const paths = store.get('outputPaths');
+    if (!paths) {
+      const currentPath = store.get('outputPath') || 'C:/Users/Public/Documents/Steam/RUNE';
+      store.set('outputPaths', [currentPath]);
+      return [currentPath];
+    }
+    return paths;
+  }
+  
   return store.get(key);
 });
 
-ipcMain.handle('write-achievements', async (event, appId, achievements) => {
+ipcMain.handle('write-achievements', async (event, appId, achievements, targetDirectory) => {
   try {
     const config = store.get('config') || {};
-    const outputPath = config.outputPath || 'C:/Users/Public/Documents/Steam/RUNE';
+    const outputPaths = config.outputPaths || [config.outputPath || 'C:/Users/Public/Documents/Steam/RUNE'];
     
-    const achievementsPath = path.join(outputPath, appId, 'achievements.ini');
+    // Se um diretório de destino específico foi fornecido, usa-o; caso contrário, usa o ativo
+    const outputPath = targetDirectory || config.activeOutputPath || outputPaths[0];
+    
+    console.log('Diretório alvo para salvar:', outputPath);
+    console.log('AppID:', appId);
+    
+    // Determinar o caminho correto com base no diretório de destino
+    let achievementsPath;
+    if (outputPath.includes('OnlineFix')) {
+      // Caminho específico para OnlineFix (AppID/Stats/achievements.ini)
+      achievementsPath = path.join(outputPath, appId, 'Stats', 'achievements.ini');
+      console.log('Usando caminho específico para OnlineFix:', achievementsPath);
+    } else {
+      // Caminho padrão para outros diretórios
+      achievementsPath = path.join(outputPath, appId, 'achievements.ini');
+      console.log('Usando caminho padrão:', achievementsPath);
+    }
+    
+    console.log('Caminho completo do arquivo:', achievementsPath);
     
     // Criar diretório se não existir
     const dir = path.dirname(achievementsPath);
     if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
+      console.log('Criando diretório:', dir);
+      try {
+        fs.mkdirSync(dir, { recursive: true, mode: 0o777 });
+        console.log('Diretório criado com sucesso');
+      } catch (mkdirError) {
+        console.error('Erro ao criar diretório:', mkdirError);
+        throw new Error(`Não foi possível criar o diretório: ${mkdirError.message}`);
+      }
+    }
+    
+    // Verificar se consegue escrever no diretório
+    try {
+      fs.accessSync(dir, fs.constants.W_OK);
+      console.log('Diretório tem permissão de escrita');
+    } catch (accessError) {
+      console.error('Erro de permissão no diretório:', accessError);
+      throw new Error(`Sem permissão para escrever no diretório: ${accessError.message}`);
     }
     
     // Mapa para armazenar conquistas e garantir que não haja duplicatas
@@ -93,6 +175,7 @@ ipcMain.handle('write-achievements', async (event, appId, achievements) => {
     
     // Verificar se o arquivo existe, e se existir, ler as conquistas atuais
     if (fs.existsSync(achievementsPath)) {
+      console.log('Arquivo existente encontrado, mesclando dados...');
       try {
         const existingContent = fs.readFileSync(achievementsPath, 'utf8');
         const sections = existingContent.split(/\n\s*\n/);
@@ -133,9 +216,75 @@ ipcMain.handle('write-achievements', async (event, appId, achievements) => {
       iniContent += `UnlockTime=${achievement.unlockTime}\n\n`;
     }
     
+    console.log('Escrevendo arquivo:', achievementsPath);
     fs.writeFileSync(achievementsPath, iniContent);
     
     return { success: true, message: 'Arquivo achievements.ini foi gerado com sucesso!' };
+  } catch (error) {
+    console.error('Erro ao salvar arquivo:', error);
+    return { success: false, message: error.message };
+  }
+});
+
+// Handler para obter todos os diretórios de saída configurados
+ipcMain.handle('get-output-directories', async (event) => {
+  try {
+    console.log('Obtendo diretórios de configuração no processo principal...');
+    
+    // Diretórios padrão fixos como solicitado
+    const defaultDirectories = [
+      'C:/Users/Public/Documents/Steam/RUNE',
+      'C:/Users/Public/Documents/Steam/CODEX',
+      'C:/ProgramData/Steam/RLD!',
+      'C:/Users/Public/Documents/OnlineFix',
+      'C:/Users/Public/Documents/Steam'
+    ];
+    
+    // Salvar no store para futura referência
+    store.set('config.outputPaths', defaultDirectories);
+    
+    // Se não houver um diretório ativo, definir o primeiro como ativo
+    const activeOutputPath = store.get('config.activeOutputPath');
+    if (!activeOutputPath || !defaultDirectories.includes(activeOutputPath)) {
+      store.set('config.activeOutputPath', defaultDirectories[0]);
+    }
+    
+    console.log('Diretórios padrão retornados:', defaultDirectories);
+    return { success: true, directories: defaultDirectories };
+  } catch (error) {
+    console.error('Erro ao obter diretórios:', error);
+    return { success: false, message: error.message };
+  }
+});
+
+// Handler para verificar em quais diretórios o jogo já existe
+ipcMain.handle('check-game-files', async (event, appId, directories) => {
+  try {
+    if (!appId) {
+      return { success: false, message: 'ID do aplicativo não fornecido' };
+    }
+    
+    if (!directories || !Array.isArray(directories) || directories.length === 0) {
+      return { success: true, existingDirectories: [] };
+    }
+    
+    const existingDirectories = [];
+    
+    for (const directory of directories) {
+      // Caminho padrão
+      const gamePath = path.join(directory, appId);
+      const achievementsPath = path.join(gamePath, 'achievements.ini');
+      
+      // Caminho específico para OnlineFix (AppID/Stats/achievements.ini)
+      const onlineFixPath = path.join(directory, appId, 'Stats', 'achievements.ini');
+      
+      // Verificar ambos os caminhos
+      if (fs.existsSync(achievementsPath) || (directory.includes('OnlineFix') && fs.existsSync(onlineFixPath))) {
+        existingDirectories.push(directory);
+      }
+    }
+    
+    return { success: true, existingDirectories };
   } catch (error) {
     return { success: false, message: error.message };
   }
@@ -154,7 +303,16 @@ ipcMain.handle('get-game-folders', async (event, outputPath) => {
       // Ignorar pastas duplicadas ou inválidas
       if (!folder || gamesMap.has(folder)) continue;
       
-      const achievementsPath = path.join(outputPath, folder, 'achievements.ini');
+      // Verificar o caminho de achievements.ini com base no diretório
+      let achievementsPath;
+      if (outputPath.includes('OnlineFix')) {
+        // Caminho específico para OnlineFix
+        achievementsPath = path.join(outputPath, folder, 'Stats', 'achievements.ini');
+      } else {
+        // Caminho padrão
+        achievementsPath = path.join(outputPath, folder, 'achievements.ini');
+      }
+      
       if (fs.existsSync(achievementsPath)) {
         // Ler o conteúdo do arquivo INI para contar as conquistas
         try {
@@ -249,9 +407,18 @@ ipcMain.handle('set-language', async (event, langCode) => {
 ipcMain.handle('get-unlocked-achievements', async (event, appId) => {
   try {
     const config = store.get('config') || {};
-    const outputPath = config.outputPath || 'C:/Users/Public/Documents/Steam/RUNE';
+    const outputPaths = config.outputPaths || [config.outputPath || 'C:/Users/Public/Documents/Steam/RUNE'];
+    const activeOutputPath = config.activeOutputPath || outputPaths[0];
     
-    const achievementsPath = path.join(outputPath, appId, 'achievements.ini');
+    // Determinar o caminho correto com base no diretório ativo
+    let achievementsPath;
+    if (activeOutputPath.includes('OnlineFix')) {
+      // Caminho específico para OnlineFix (AppID/Stats/achievements.ini)
+      achievementsPath = path.join(activeOutputPath, appId, 'Stats', 'achievements.ini');
+    } else {
+      // Caminho padrão para outros diretórios
+      achievementsPath = path.join(activeOutputPath, appId, 'achievements.ini');
+    }
     
     // Se o arquivo não existe, retorna um array vazio
     if (!fs.existsSync(achievementsPath)) {
@@ -289,5 +456,23 @@ ipcMain.handle('get-unlocked-achievements', async (event, appId) => {
   } catch (error) {
     console.error('Erro ao ler o arquivo de conquistas:', error);
     return [];
+  }
+});
+
+// Handler para selecionar um diretório
+ipcMain.handle('select-directory', async () => {
+  try {
+    const { dialog } = require('electron');
+    const result = await dialog.showOpenDialog(mainWindow, {
+      properties: ['openDirectory']
+    });
+    
+    if (result.canceled) {
+      return { success: false, canceled: true };
+    }
+    
+    return { success: true, filePath: result.filePaths[0] };
+  } catch (error) {
+    return { success: false, message: error.message };
   }
 });

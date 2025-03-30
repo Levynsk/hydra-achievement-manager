@@ -120,7 +120,7 @@ export async function showSuccess(message) {
   const successModal = document.getElementById('successModal');
   
   if (successMessage) successMessage.textContent = message;
-  if (successModal) successModal.classList.add('active');
+  if (successModal) successModal.classList.remove('hidden');
 }
 
 export async function initSettings() {

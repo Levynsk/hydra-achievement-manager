@@ -24,6 +24,182 @@ html {
   data-theme: 'dark';
 }
 
+/* Estilos para o container de diretórios */
+.directories-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: var(--bg-tertiary);
+}
+
+/* Estilos para o modal de seleção de diretório */
+.directory-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  max-height: 250px;
+  overflow-y: auto;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: var(--bg-tertiary);
+}
+
+.directory-option {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.directory-option:hover {
+  background-color: rgba(var(--accent-primary-rgb), 0.1);
+  border-color: var(--accent-primary);
+}
+
+.directory-option.selected {
+  background-color: rgba(var(--accent-primary-rgb), 0.2);
+  border-color: var(--accent-primary);
+}
+
+.directory-option i {
+  color: var(--text-muted);
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.directory-option.selected i {
+  color: var(--accent-primary);
+}
+
+.directory-option-name {
+  flex: 1;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.existing-files-info {
+  background-color: rgba(var(--accent-primary-rgb), 0.05);
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 16px;
+  border-left: 3px solid var(--accent-primary);
+}
+
+.existing-files-info p {
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.existing-files-info ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.existing-files-info li {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.existing-files-info.empty {
+  display: none;
+}
+
+.directory-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.directory-item.active {
+  background-color: rgba(var(--accent-primary-rgb), 0.2);
+  border-color: var(--accent-primary);
+}
+
+.directory-item .directory-name {
+  margin-right: 8px;
+  white-space: normal;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  font-size: 13px;
+  max-width: calc(100% - 70px);
+}
+
+.directory-item .directory-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.directory-item .btn-icon {
+  padding: 2px 4px;
+  font-size: 12px;
+}
+
+/* Estilos modernos com efeito Glassmorphism para os botões de diretório nos cards de jogos */
+.game-directory-buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+.game-directory-btn {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--text-secondary);
+  border: none;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+  line-height: 1.2;
+  height: 28px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.game-directory-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+.game-directory-btn.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
 /* Smooth Scrolling - Centralizado em um único lugar */
 html, body {
   scroll-behavior: smooth;
@@ -654,14 +830,15 @@ select:focus {
   align-items: center;
   justify-content: center;
   z-index: 2000;
-  opacity: 0;
-  visibility: hidden;
+  opacity: 1;
+  visibility: visible;
   transition: opacity var(--transition-speed) ease, visibility var(--transition-speed) ease;
 }
 
-.modal.active {
-  opacity: 1;
-  visibility: visible;
+.modal.hidden {
+  opacity: 0;
+  visibility: hidden;
+  display: none !important;
 }
 
 .modal-content {
@@ -739,6 +916,47 @@ select:focus {
   border-top: 1px solid var(--border-color);
   text-align: right;
   background: rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-footer button {
+  min-width: 100px;
+}
+
+/* Para o modal específico de diretório, quero os botões stretch */
+#directoryModal .modal-footer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#directoryModal .modal-footer button {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#cancelSave {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+#cancelSave:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--text-muted);
+}
+
+#confirmSave {
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 /* Utility Classes */
@@ -1799,4 +2017,30 @@ select::-ms-expand {
 
 #languageSelect option[value="en-US"] {
   background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2Y5ZjlmOSIvPjxnIGZpbGw9IiNkODAwMjciPjxyZWN0IHg9IjAiIHk9IjQuOSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iNC45Ii8+PHJlY3QgeD0iMCIgeT0iMTQuNiIgd2lkdGg9IjEwMCUiIGhlaWdodD0iNC45Ii8+PHJlY3QgeD0iMCIgeT0iMjQuNCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iNC45Ii8+PHJlY3QgeD0iMCIgeT0iMzQuMSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iNC45Ii8+PHJlY3QgeD0iMCIgeT0iNDMuOSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iNC45Ii8+PHJlY3QgeD0iMCIgeT0iNTMuNiIgd2lkdGg9IjEwMCUiIGhlaWdodD0iNC45Ii8+PC9nPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIyNS4yIiBoZWlnaHQ9IjM0LjEiIGZpbGw9IiMyODJmNWYiLz48ZyBmaWxsPSIjZjlmOWY5Ij48Y2lyY2xlIGN4PSIzLjIiIGN5PSIzLjIiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjguNCIgY3k9IjMuMiIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iMTMuNyIgY3k9IjMuMiIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iMTkiIGN5PSIzLjIiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjI0LjIiIGN5PSIzLjIiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjUuOCIgY3k9IjUuOCIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iMTEiIGN5PSI1LjgiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjE2LjMiIGN5PSI1LjgiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjIxLjYiIGN5PSI1LjgiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjMuMiIgY3k9IjguNCIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iOC40IiBjeT0iOC40IiByPSIxLjIiLz48Y2lyY2xlIGN4PSIxMy43IiBjeT0iOC40IiByPSIxLjIiLz48Y2lyY2xlIGN4PSIxOSIgY3k9IjguNCIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iMjQuMiIgY3k9IjguNCIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iNS44IiBjeT0iMTEiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjE2LjMiIGN5PSIxMSIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iMjEuNiIgY3k9IjExIiByPSIxLjIiLz48Y2lyY2xlIGN4PSIzLjIiIGN5PSIxMy43IiByPSIxLjIiLz48Y2lyY2xlIGN4PSI4LjQiIGN5PSIxMy43IiByPSIxLjIiLz48Y2lyY2xlIGN4PSIxMy43IiBjeT0iMTMuNyIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iMTkiIGN5PSIxMy43IiByPSIxLjIiLz48Y2lyY2xlIGN4PSIyNC4yIiBjeT0iMTMuNyIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iNS44IiBjeT0iMTYuMyIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iMTEiIGN5PSIxNi4zIiByPSIxLjIiLz48Y2lyY2xlIGN4PSIxNi4zIiBjeT0iMTYuMyIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iMjEuNiIgY3k9IjE2LjMiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjMuMiIgY3k9IjE5IiByPSIxLjIiLz48Y2lyY2xlIGN4PSI4LjQiIGN5PSIxOSIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iMTMuNyIgY3k9IjE5IiByPSIxLjIiLz48Y2lyY2xlIGN4PSIxOSIgY3k9IjE5IiByPSIxLjIiLz48Y2lyY2xlIGN4PSIyNC4yIiBjeT0iMTkiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjUuOCIgY3k9IjIxLjYiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjExIiBjeT0iMjEuNiIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iMTYuMyIgY3k9IjIxLjYiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjIxLjYiIGN5PSIyMS42IiByPSIxLjIiLz48Y2lyY2xlIGN4PSIzLjIiIGN5PSIyNC4yIiByPSIxLjIiLz48Y2lyY2xlIGN4PSI4LjQiIGN5PSIyNC4yIiByPSIxLjIiLz48Y2lyY2xlIGN4PSIxMy43IiBjeT0iMjQuMiIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iMTkiIGN5PSIyNC4yIiByPSIxLjIiLz48Y2lyY2xlIGN4PSIyNC4yIiBjeT0iMjQuMiIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iNS44IiBjeT0iMjYuOCIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iMTEiIGN5PSIyNi44IiByPSIxLjIiLz48Y2lyY2xlIGN4PSIxNi4zIiBjeT0iMjYuOCIgcj0iMS4yIi8+PGNpcmNsZSBjeD0iMjEuNiIgY3k9IjI2LjgiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjMuMiIgY3k9IjI5LjUiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjguNCIgY3k9IjI5LjUiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjEzLjciIGN5PSIyOS41IiByPSIxLjIiLz48Y2lyY2xlIGN4PSIxOSIgY3k9IjI5LjUiIHI9IjEuMiIvPjxjaXJjbGUgY3g9IjI0LjIiIGN5PSIyOS41IiByPSIxLjIiLz48L2c+PC9zdmc+");
+}
+
+#directoryModal .modal-content {
+  max-width: 550px;
+}
+
+#directoryModal .modal-header h3 i {
+  color: var(--accent-primary);
+}
+
+#directoryModal .directory-option.selected {
+  background-color: rgba(var(--accent-primary-rgb), 0.2);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 8px rgba(var(--accent-primary-rgb), 0.3);
+}
+
+#directoryModal .directory-option.selected i {
+  color: var(--accent-primary);
+}
+
+#directoryModal .directory-list {
+  max-height: 200px;
+}
+
+#directoryModal .fa-check {
+  margin-left: 8px;
 }

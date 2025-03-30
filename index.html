@@ -176,16 +176,11 @@
               <div class="tab-pane" id="tab-output">
                 <div class="settings-group">
                   <div class="setting-item">
-                    <label for="outputPath">Caminho:</label>
-                    <div class="input-group stretched">
-                      <div class="input-icon-wrapper">
-                        <i class="fas fa-folder input-icon directory-icon"></i>
-                        <input type="text" id="outputPath" placeholder="Caminho para salvar os arquivos" class="input-with-icon directory-input">
-                      </div>
-                      <button id="browseOutputPath" class="btn"><i class="fas fa-folder-open"></i></button>
-                      <button id="saveOutputPath" class="btn"><i class="fas fa-save"></i> Salvar</button>
+                    <label for="outputPath">Diretórios:</label>
+                    <div class="directories-container" id="directoriesContainer">
+                      <!-- Os diretórios serão adicionados aqui dinamicamente -->
                     </div>
-                    <p class="setting-description">Diretório onde os arquivos de conquistas serão salvos.</p>
+                    <p class="setting-description">Diretórios padrão onde os arquivos de conquistas serão salvos. Cada diretório será representado por um botão nos cards dos jogos.</p>
                   </div>
                 </div>
               </div>
@@ -209,7 +204,7 @@
       </section>
     </main>
 
-    <div class="modal" id="successModal">
+    <div class="modal hidden" id="successModal">
       <div class="modal-content">
         <div class="modal-header">
           <h3><i class="fas fa-check-circle"></i> Sucesso</h3>
@@ -224,6 +219,27 @@
         <div class="modal-footer">
           <button class="btn btn-primary close-modal">OK</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para seleção de diretório -->
+  <div class="modal hidden" id="directoryModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-folder-open"></i> Selecionar Diretório</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Selecione onde deseja salvar o arquivo de conquistas:</p>
+        
+        <div class="directory-list" id="directoryList">
+          <!-- Os diretórios serão adicionados aqui dinamicamente -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" id="cancelSave">Cancelar</button>
+        <button class="btn btn-primary" id="confirmSave">Salvar</button>
       </div>
     </div>
   </div>
