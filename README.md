@@ -55,8 +55,6 @@ Isso criará executáveis na pasta `dist`.
 1. Abra o aplicativo
 2. Vá para a aba Configurações
 3. Insira sua chave API Steam
-4. Configure seu diretório de saída (padrão: C:/Users/Public/Documents/Steam/RUNE)
-5. Escolha seu tema preferido
 
 ## 🤝 Contribuindo
 
