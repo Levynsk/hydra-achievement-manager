@@ -88,6 +88,9 @@ ipcMain.handle('write-achievements', async (event, appId, achievements) => {
     // Mapa para armazenar conquistas e garantir que não haja duplicatas
     const achievementsMap = new Map();
     
+    // Set para armazenar os IDs das conquistas selecionadas
+    const selectedAchievementIds = new Set(achievements.map(a => a.id));
+    
     // Verificar se o arquivo existe, e se existir, ler as conquistas atuais
     if (fs.existsSync(achievementsPath)) {
       try {
@@ -105,8 +108,8 @@ ipcMain.handle('write-achievements', async (event, appId, achievements) => {
             const unlockTimeMatch = lines.find(line => line.includes('UnlockTime='))?.match(/UnlockTime=(\d+)/);
             const unlockTime = unlockTimeMatch ? parseInt(unlockTimeMatch[1]) : Math.floor(Date.now() / 1000);
             
-            // Adicionar ao mapa apenas se ainda não existir
-            if (!achievementsMap.has(id)) {
+            // Adicionar ao mapa apenas se ainda não existir E estiver nas conquistas selecionadas
+            if (!achievementsMap.has(id) && selectedAchievementIds.has(id)) {
               achievementsMap.set(id, { id, unlockTime });
             }
           }
