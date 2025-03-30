@@ -1,6 +1,6 @@
 # 🎮 Hydra Achievement Manager
 
-Um gerenciador de conquistas. Gerencie e acompanhe suas conquistas de jogos do Hydra <3
+Um gerenciador de conquistas. Gerencie e acompanhe suas conquistas de jogos do Hydra.
 
 ![Preview do Hydra Manager](assets/preview.png)
 
