@@ -7,7 +7,7 @@
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "v1.0.0",
+      "version": "v1.2.0",
       "about": "Современный менеджер достижений Steam.",
       "credits": "Создано Levynsk и Esther (Twitter - @onlysterbr)"
     },
