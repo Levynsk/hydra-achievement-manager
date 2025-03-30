@@ -135,7 +135,9 @@ export async function renderAchievements() {
 
 function formatDateForInput(timestamp) {
   const date = new Date(timestamp * 1000);
-  return date.toISOString().slice(0, 16);
+  // Ajustar para o fuso horário local
+  const localDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+  return localDate.toISOString().slice(0, 16);
 }
 
 export function selectAllAchievements() {
@@ -205,7 +207,9 @@ export async function generateAchievementsFile() {
               unlockTime = Math.floor(Math.random() * (now - oneYearAgo) + oneYearAgo);
               break;
             default:
-              unlockTime = Math.floor(Date.now() / 1000);
+              // Timestamp atual ajustado para o fuso horário local
+              const currentDate = new Date();
+              unlockTime = Math.floor(currentDate.getTime() / 1000);
           }
         }
 

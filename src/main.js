@@ -11,9 +11,11 @@ export async function initApp() {
     apiKeyInput.type = 'password';
   }
   
+  // Configurar o timestamp personalizado inicial com a data e hora atuais
   const now = new Date();
-  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-  customTimestampInput.value = now.toISOString().slice(0, 16);
+  // Ajustar para o fuso horário local
+  const localNow = new Date(now.getTime() - (now.getTimezoneOffset() * 60000));
+  customTimestampInput.value = localNow.toISOString().slice(0, 16);
   
   // Inicializar traduções
   await initLanguageSelector();
