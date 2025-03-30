@@ -75,7 +75,16 @@ export async function renderAchievements() {
   const alreadyUnlockedText = await t('achievements.alreadyUnlocked');
   const unlockedAtText = await t('achievements.unlockedAt');
   
+  // Usar um Map para garantir que cada conquista seja única por apiname
+  const uniqueAchievements = new Map();
+  
+  // Adicionar cada conquista ao Map, sobrescrevendo duplicatas
   for (const achievement of achievements) {
+    uniqueAchievements.set(achievement.apiname, achievement);
+  }
+  
+  // Renderizar apenas as conquistas únicas
+  for (const achievement of uniqueAchievements.values()) {
     const achievementItem = document.createElement('div');
     achievementItem.className = 'achievement-item';
     achievementItem.dataset.id = achievement.apiname;

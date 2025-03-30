@@ -15,12 +15,20 @@ contextBridge.exposeInMainWorld('api', {
         throw new Error('Could not get achievements. Please check the app_id and try again.');
       }
       
-      const achievements = data.game.availableGameStats.achievements.map(achievement => ({
-        apiname: achievement.name,
-        displayName: achievement.displayName,
-        description: achievement.description || '',
-        icon: achievement.icon || ''
-      }));
+      const achievementsMap = new Map();
+      
+      data.game.availableGameStats.achievements.forEach(achievement => {
+        if (!achievementsMap.has(achievement.name)) {
+          achievementsMap.set(achievement.name, {
+            apiname: achievement.name,
+            displayName: achievement.displayName,
+            description: achievement.description || '',
+            icon: achievement.icon || ''
+          });
+        }
+      });
+      
+      const achievements = Array.from(achievementsMap.values());
       
       const unlockedAchievementsInfo = await ipcRenderer.invoke('get-unlocked-achievements', appId);
       

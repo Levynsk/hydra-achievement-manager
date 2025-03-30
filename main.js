@@ -85,9 +85,46 @@ ipcMain.handle('write-achievements', async (event, appId, achievements) => {
       fs.mkdirSync(dir, { recursive: true });
     }
     
-    // Escrever arquivo de conquistas no formato INI - exatamente como no Python
-    let iniContent = '';
+    // Mapa para armazenar conquistas e garantir que não haja duplicatas
+    const achievementsMap = new Map();
+    
+    // Verificar se o arquivo existe, e se existir, ler as conquistas atuais
+    if (fs.existsSync(achievementsPath)) {
+      try {
+        const existingContent = fs.readFileSync(achievementsPath, 'utf8');
+        const sections = existingContent.split(/\n\s*\n/);
+        
+        for (const section of sections) {
+          if (!section.trim()) continue;
+          
+          const lines = section.split('\n');
+          const idMatch = lines[0].match(/\[(.*?)\]/);
+          
+          if (idMatch) {
+            const id = idMatch[1];
+            const unlockTimeMatch = lines.find(line => line.includes('UnlockTime='))?.match(/UnlockTime=(\d+)/);
+            const unlockTime = unlockTimeMatch ? parseInt(unlockTimeMatch[1]) : Math.floor(Date.now() / 1000);
+            
+            // Adicionar ao mapa apenas se ainda não existir
+            if (!achievementsMap.has(id)) {
+              achievementsMap.set(id, { id, unlockTime });
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao ler o arquivo de conquistas existente:', error);
+        // Continuar mesmo com erro, criando um novo arquivo
+      }
+    }
+    
+    // Adicionar as novas conquistas, substituindo as existentes se tiverem o mesmo ID
     for (const achievement of achievements) {
+      achievementsMap.set(achievement.id, achievement);
+    }
+    
+    // Escrever arquivo de conquistas no formato INI - sem duplicatas
+    let iniContent = '';
+    for (const achievement of achievementsMap.values()) {
       iniContent += `[${achievement.id}]\n`;
       iniContent += `Achieved=1\n`;
       iniContent += `UnlockTime=${achievement.unlockTime}\n\n`;
@@ -117,13 +154,31 @@ ipcMain.handle('get-game-folders', async (event, outputPath) => {
       const achievementsPath = path.join(outputPath, folder, 'achievements.ini');
       if (fs.existsSync(achievementsPath)) {
         // Ler o conteúdo do arquivo INI para contar as conquistas
-        const content = fs.readFileSync(achievementsPath, 'utf8');
-        const achievementMatches = content.match(/\[.*?\]/g) || [];
-        
-        gamesMap.set(folder, {
-          id: folder,
-          unlockedAchievements: achievementMatches.length
-        });
+        try {
+          const content = fs.readFileSync(achievementsPath, 'utf8');
+          const achievementMatches = (content.match(/\[.*?\]/g) || []).filter(match => !!match.trim());
+          
+          // Identificar conquistas únicas, pois o mesmo ID pode aparecer mais de uma vez no arquivo
+          const uniqueAchievementIds = new Set();
+          for (const match of achievementMatches) {
+            const id = match.replace(/[\[\]]/g, ''); // Remove colchetes
+            if (id.trim()) {
+              uniqueAchievementIds.add(id);
+            }
+          }
+          
+          gamesMap.set(folder, {
+            id: folder,
+            unlockedAchievements: uniqueAchievementIds.size // Usar o número de conquistas únicas
+          });
+        } catch (error) {
+          console.error(`Erro ao ler o arquivo de conquistas para o jogo ${folder}:`, error);
+          // Se houver erro na leitura do arquivo, ainda adiciona o jogo, mas com 0 conquistas
+          gamesMap.set(folder, {
+            id: folder,
+            unlockedAchievements: 0
+          });
+        }
       }
     }
 
@@ -204,7 +259,7 @@ ipcMain.handle('get-unlocked-achievements', async (event, appId) => {
     const content = fs.readFileSync(achievementsPath, 'utf8');
     
     // Parsear o arquivo INI para extrair as conquistas
-    const unlockedAchievements = [];
+    const achievementsMap = new Map(); // Usar um Map para evitar duplicatas
     const sections = content.split(/\n\s*\n/); // Dividir por linhas em branco para cada seção
     
     for (const section of sections) {
@@ -218,14 +273,16 @@ ipcMain.handle('get-unlocked-achievements', async (event, appId) => {
         const unlockTimeMatch = lines.find(line => line.includes('UnlockTime='))?.match(/UnlockTime=(\d+)/);
         const unlockTime = unlockTimeMatch ? parseInt(unlockTimeMatch[1]) : null;
         
-        unlockedAchievements.push({
+        // Adicionar ao mapa (substitui se já existir com o mesmo ID)
+        achievementsMap.set(id, {
           id,
           unlockTime
         });
       }
     }
     
-    return unlockedAchievements;
+    // Converter o Map para um array
+    return Array.from(achievementsMap.values());
   } catch (error) {
     console.error('Erro ao ler o arquivo de conquistas:', error);
     return [];
