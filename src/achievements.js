@@ -152,6 +152,10 @@ export function deselectAllAchievements() {
   const checkboxes = document.querySelectorAll('.achievement-checkbox');
   checkboxes.forEach(checkbox => {
     checkbox.checked = false;
+    const achievementItem = checkbox.closest('.achievement-item');
+    if (achievementItem) {
+      achievementItem.classList.remove('achieved');
+    }
   });
   selectedAchievements.clear();
   updateGenerateButtonState();
@@ -168,49 +172,48 @@ export function handleTimestampTypeChange() {
 
 export async function generateAchievementsFile() {
   try {
-    if (selectedAchievements.size === 0) {
-      await showError(await t('errors.noSelection'));
-      return;
-    }
-    
     const appId = appIdInput.value.trim();
     if (!appId) {
       await showError(await t('errors.invalidAppId'));
       return;
     }
 
+    // Se não houver conquistas selecionadas, criamos um array vazio para limpar o arquivo INI
     const achievementsData = [];
     
-    for (const achievementId of selectedAchievements) {
-      const timestampInput = document.getElementById(`timestamp-${achievementId}`);
-      let unlockTime;
+    // Só processar conquistas se houver alguma selecionada
+    if (selectedAchievements.size > 0) {
+      for (const achievementId of selectedAchievements) {
+        const timestampInput = document.getElementById(`timestamp-${achievementId}`);
+        let unlockTime;
 
-      if (timestampInput && timestampInput.value) {
-        unlockTime = Math.floor(new Date(timestampInput.value).getTime() / 1000);
-      } else {
-        const timestampType = timestampTypeSelect.value;
-        switch (timestampType) {
-          case 'custom':
-            if (customTimestampInput.value) {
-              unlockTime = Math.floor(new Date(customTimestampInput.value).getTime() / 1000);
-            } else {
+        if (timestampInput && timestampInput.value) {
+          unlockTime = Math.floor(new Date(timestampInput.value).getTime() / 1000);
+        } else {
+          const timestampType = timestampTypeSelect.value;
+          switch (timestampType) {
+            case 'custom':
+              if (customTimestampInput.value) {
+                unlockTime = Math.floor(new Date(customTimestampInput.value).getTime() / 1000);
+              } else {
+                unlockTime = Math.floor(Date.now() / 1000);
+              }
+              break;
+            case 'random':
+              const now = Math.floor(Date.now() / 1000);
+              const oneYearAgo = now - (365 * 24 * 60 * 60);
+              unlockTime = Math.floor(Math.random() * (now - oneYearAgo) + oneYearAgo);
+              break;
+            default:
               unlockTime = Math.floor(Date.now() / 1000);
-            }
-            break;
-          case 'random':
-            const now = Math.floor(Date.now() / 1000);
-            const oneYearAgo = now - (365 * 24 * 60 * 60);
-            unlockTime = Math.floor(Math.random() * (now - oneYearAgo) + oneYearAgo);
-            break;
-          default:
-            unlockTime = Math.floor(Date.now() / 1000);
+          }
         }
-      }
 
-      achievementsData.push({
-        id: achievementId,
-        unlockTime
-      });
+        achievementsData.push({
+          id: achievementId,
+          unlockTime
+        });
+      }
     }
 
     const result = await window.api.writeAchievements(appId, achievementsData);
@@ -237,12 +240,10 @@ export async function generateAchievementsFile() {
 }
 
 export function updateGenerateButtonState() {
-  generateFileBtn.disabled = selectedAchievements.size === 0;
-  if (selectedAchievements.size === 0) {
-    generateFileBtn.classList.add('btn-disabled');
-  } else {
-    generateFileBtn.classList.remove('btn-disabled');
-  }
+  // Remover a desabilitação do botão baseada na quantidade de conquistas selecionadas
+  // O botão deve estar sempre habilitado para permitir a geração do INI
+  generateFileBtn.disabled = false;
+  generateFileBtn.classList.remove('btn-disabled');
 }
 
 export function filterAchievements() {
