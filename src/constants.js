@@ -26,6 +26,7 @@ export const appIdContainer = document.querySelector('.app-id-info');
 export const minimizeBtn = document.getElementById('minimizeBtn');
 export const maximizeBtn = document.getElementById('maximizeBtn');
 export const closeBtn = document.getElementById('closeBtn');
+export const apiSourceSelect = document.getElementById('apiSource');
 
 // Novos elementos para o modal de seleção de diretório
 export const directoryModal = document.getElementById('directoryModal');
@@ -45,8 +46,14 @@ export let selectedAchievements = new Set();
 export let userAchievements = [];
 export let currentLanguage = 'pt-BR';
 export let existingDirectories = [];
+export let selectedApiSource = 'hydra';
 
 // Função para atualizar o idioma atual
 export function setCurrentLanguage(lang) {
   currentLanguage = lang;
+}
+
+// Função para atualizar a fonte da API
+export function setSelectedApiSource(source) {
+  selectedApiSource = source;
 } 

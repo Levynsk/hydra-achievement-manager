@@ -166,13 +166,28 @@ async function fetchAchievementsFromDirectory() {
   achievementsCard.classList.add('hidden');
   
   try {
-    // Buscar da API primeiro para obter detalhes das conquistas
-    const apiKey = await window.api.getApiKey();
-    if (!apiKey) {
-      throw new Error('API key não encontrada. Por favor, configure sua chave da API Steam nas configurações.');
+    // Obter a fonte da API configurada
+    const apiSource = await window.api.getConfig('apiSource') || 'hydra';
+    
+    let achievementsResult;
+    
+    if (apiSource === 'hydra') {
+      // Usar API Hydra (não requer apiKey)
+      const currentLang = await window.api.getCurrentLanguage();
+      // Extrair o código de idioma principal (pt-BR -> pt)
+      const langCode = currentLang.split('-')[0] || 'pt';
+      
+      achievementsResult = await window.api.getHydraAchievements(currentAppId, langCode);
+    } else {
+      // Usar API Steam (requer apiKey)
+      const apiKey = await window.api.getApiKey();
+      if (!apiKey) {
+        throw new Error('API key não encontrada. Por favor, configure sua chave da API Steam nas configurações.');
+      }
+      
+      achievementsResult = await window.api.getAchievements(currentAppId, apiKey);
     }
     
-    const achievementsResult = await window.api.getAchievements(currentAppId, apiKey);
     if (!achievementsResult.success) {
       throw new Error(achievementsResult.message);
     }
@@ -213,20 +228,36 @@ async function fetchAchievementsFromAPI() {
   achievementsCard.classList.add('hidden');
 
   try {
-    const apiKey = await window.api.getApiKey();
-    if (!apiKey) {
-      throw new Error('API key não encontrada. Por favor, configure sua chave da API Steam nas configurações.');
-    }
-
     // Limpar o array de conquistas antes de receber novos dados
     achievements = [];
     userAchievements = [];
     
-    const achievementsResult = await window.api.getAchievements(currentAppId, apiKey);
+    // Obter a fonte da API configurada
+    const apiSource = await window.api.getConfig('apiSource') || 'hydra';
+    
+    let achievementsResult;
+    
+    if (apiSource === 'hydra') {
+      // Usar API Hydra (não requer apiKey)
+      const currentLang = await window.api.getCurrentLanguage();
+      // Extrair o código de idioma principal (pt-BR -> pt)
+      const langCode = currentLang.split('-')[0] || 'pt';
+      
+      achievementsResult = await window.api.getHydraAchievements(currentAppId, langCode);
+    } else {
+      // Usar API Steam (requer apiKey)
+      const apiKey = await window.api.getApiKey();
+      if (!apiKey) {
+        throw new Error('API key não encontrada. Por favor, configure sua chave da API Steam nas configurações.');
+      }
+      
+      achievementsResult = await window.api.getAchievements(currentAppId, apiKey);
+    }
+    
     if (!achievementsResult.success) {
       throw new Error(achievementsResult.message);
     }
-
+    
     achievements = achievementsResult.achievements;
     await renderAchievements();
     

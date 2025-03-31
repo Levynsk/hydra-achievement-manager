@@ -2,12 +2,12 @@
   "meta": {
     "name": "English (US)",
     "author": "Esther",
-    "version": "v1.3.0"
+    "version": "v1.4.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "about": "A modern Steam achievements manager.",
       "credits": "Made by Levynsk and Esther (Twitter - @onlysterbr)"
     },
@@ -43,10 +43,10 @@
     },
     "settings": {
       "title": "Settings",
-      "apiKey": "Steam API Key",
+      "apiKey": "API Key",
       "apiKeyLabel": "API Key:",
-      "apiKeyPlaceholder": "Enter your Steam API Key",
-      "apiKeyInfo": "You can get your Steam API key here.",
+      "apiKeyPlaceholder": "Enter your API Key",
+      "apiKeyInfo": "You can get your API key here.",
       "saveApiKey": "Save",
       "saved": "Saved",
       "language": "Language",
@@ -65,7 +65,7 @@
       "themeSystem": "System",
       "about": "About",
       "tabs": {
-        "api": "Steam API",
+        "api": "API",
         "language": "Language",
         "output": "Output Directory",
         "about": "About"
@@ -121,7 +121,25 @@
       "cancel": "Cancel",
       "load": "Load",
       "apiOption": "Fetch from API (without loading saved achievements)",
-      "gameExists": "Achievement files found in:"
+      "gameExists": "Achievement files found in:",
+      "loadedFrom": "Achievements loaded from: {directory}"
+    },
+    "apiSources": {
+      "steam": "API",
+      "hydra": "Hydra API",
+      "title": "Data Source",
+      "description": "Select which API will be used to fetch achievements",
+      "steamDescription": "Requires API key",
+      "hydraDescription": "No API key required",
+      "source": "API Source:",
+      "getApiKeyHere": "You can get your API key here",
+      "selectDataSource": "Select the data source for achievements. Hydra API does not require an API key.",
+      "steamOfficial": "Steam Official API",
+      "saveSource": "Save",
+      "steam_url": "https://steamcommunity.com/dev/apikey",
+      "steamId": "Steam ID:",
+      "steamIdPlaceholder": "Enter your Steam ID",
+      "steamIdInfo": "You can find your Steam ID here."
     }
   }
 }

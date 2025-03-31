@@ -1,13 +1,13 @@
 {
   "meta": {
     "name": "Italiano (Italia)",
-    "author": "Esther",
-    "version": "v1.3.0"
+    "author": "Lilith",
+    "version": "v1.4.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "v1.3.0",
+      "version": "v1.4.0",
       "about": "Un moderno gestore di obiettivi Steam.",
       "credits": "Realizzato da Levynsk e Esther (Twitter - @onlysterbr)"
     },
@@ -65,7 +65,7 @@
       "themeSystem": "Sistema",
       "about": "Informazioni",
       "tabs": {
-        "api": "API Steam",
+        "api": "API",
         "language": "Lingua",
         "output": "Directory di Output",
         "about": "Informazioni"
@@ -120,8 +120,26 @@
       "message": "Directory da cui verranno caricati gli obiettivi:",
       "cancel": "Annulla",
       "load": "Carica",
+      "apiOption": "Recupera dall'API (senza caricare obiettivi salvati)",
       "gameExists": "File degli obiettivi trovato in:",
       "loadedFrom": "Obiettivi caricati da: {directory}"
+    },
+    "apiSources": {
+      "steam": "API",
+      "hydra": "API Hydra",
+      "title": "Fonte Dati",
+      "description": "Seleziona quale API verrà utilizzata per recuperare gli obiettivi",
+      "steamDescription": "Richiede chiave API",
+      "hydraDescription": "Non richiede chiave API",
+      "source": "Fonte API:",
+      "getApiKeyHere": "Puoi ottenere la tua chiave API qui",
+      "selectDataSource": "Seleziona la fonte dati per gli obiettivi. L'API Hydra non richiede una chiave API.",
+      "steamOfficial": "API Ufficiale Steam",
+      "saveSource": "Salva",
+      "steam_url": "https://steamcommunity.com/dev/apikey",
+      "steamId": "Steam ID:",
+      "steamIdPlaceholder": "Inserisci il tuo Steam ID",
+      "steamIdInfo": "Puoi trovare il tuo Steam ID qui."
     }
   }
 } 

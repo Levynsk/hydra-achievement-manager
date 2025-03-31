@@ -1,4 +1,8 @@
 const { contextBridge, ipcRenderer } = require('electron');
+require('dotenv').config();
+
+// URL da API Hydra do arquivo .env ou valor padrão caso não esteja definido
+const HYDRA_API_URL = process.env.HYDRA_API_URL;
 
 contextBridge.exposeInMainWorld('api', {
   getAchievements: async (appId, apiKey) => {
@@ -43,6 +47,88 @@ contextBridge.exposeInMainWorld('api', {
       
       return { success: true, achievements: achievementsWithUnlockedStatus };
     } catch (error) {
+      return { success: false, message: error.message };
+    }
+  },
+  
+  getHydraAchievements: async (appId, language = 'pt') => {
+    try {
+      const url = `${HYDRA_API_URL}?shop=steam&objectId=${appId}&language=${language}`;
+      console.log('Chamando API Hydra URL:', url);
+      
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('Resposta da API Hydra:', data);
+      
+      if (Array.isArray(data) && data.length > 0) {
+        console.log('Exemplo das conquistas recebidas:');
+        for (let i = 0; i < Math.min(3, data.length); i++) {
+          console.log(`Conquista ${i} - Estrutura completa:`, JSON.stringify(data[i], null, 2));
+          console.log(`Campos disponíveis: ${Object.keys(data[i]).join(', ')}`);
+        }
+      }
+      
+      if (!Array.isArray(data) || data.length === 0) {
+        throw new Error('Não foram encontradas conquistas para este jogo. Verifique o App ID e tente novamente.');
+      }
+      
+      console.log('Número de conquistas recebidas:', data.length);
+      
+      const achievements = [];
+      
+      data.forEach((achievement, index) => {
+        console.log(`Processando conquista #${index}:`, achievement);
+        
+        const achievementId = achievement.name || achievement.id || `unknown_achievement_${index}`;
+        
+        const displayName = achievement.title || 
+                           achievement.displayName || 
+                           achievement.name || 
+                           `Conquista ${index + 1}`;
+        
+        const description = achievement.description || 
+                           achievement.desc || 
+                           '';
+        
+        const icon = achievement.image || 
+                    achievement.icon || 
+                    achievement.img || 
+                    '';
+        
+        if (!achievementId) {
+          console.log('Conquista sem ID detectada:', achievement);
+        }
+        
+        achievements.push({
+          apiname: achievementId,
+          displayName: displayName,
+          description: description,
+          icon: icon
+        });
+      });
+      
+      console.log('Conquistas processadas:', achievements);
+      
+      const unlockedAchievementsInfo = await ipcRenderer.invoke('get-unlocked-achievements', appId);
+      
+      const achievementsWithUnlockedStatus = achievements.map(achievement => {
+        const unlockedInfo = unlockedAchievementsInfo.find(a => a.id === achievement.apiname);
+        return {
+          ...achievement,
+          unlocked: !!unlockedInfo,
+          unlockTime: unlockedInfo ? unlockedInfo.unlockTime : null
+        };
+      });
+      
+      console.log('Conquistas finais com status:', achievementsWithUnlockedStatus.length);
+      return { success: true, achievements: achievementsWithUnlockedStatus };
+    } catch (error) {
+      console.error('Erro ao buscar conquistas da API Hydra:', error);
       return { success: false, message: error.message };
     }
   },

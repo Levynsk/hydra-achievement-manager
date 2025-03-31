@@ -1,4 +1,4 @@
-import { apiKeyInput, currentLanguage, setCurrentLanguage, saveApiKeyBtn, toggleApiKeyBtn } from './constants.js';
+import { apiKeyInput, currentLanguage, setCurrentLanguage, saveApiKeyBtn, toggleApiKeyBtn, apiSourceSelect, setSelectedApiSource } from './constants.js';
 import { applyTranslations } from './translations.js';
 import { t } from './translations.js';
 
@@ -44,10 +44,6 @@ export async function initLanguageSelector() {
 
 export async function saveApiKey() {
   const apiKey = apiKeyInput.value.trim();
-  if (!apiKey) {
-    await showError(await t('errors.invalidApiKey'));
-    return;
-  }
   
   const result = await window.api.saveApiKey(apiKey);
   if (result.success) {
@@ -57,6 +53,34 @@ export async function saveApiKey() {
       const saveText = await t('settings.saveApiKey');
       saveApiKeyBtn.innerHTML = `<i class="fas fa-save"></i> ${saveText}`;
     }, 2000);
+  }
+}
+
+export async function saveApiSource() {
+  const apiSource = apiSourceSelect.value;
+  const result = await window.api.saveConfig('apiSource', apiSource);
+  
+  if (result.success) {
+    setSelectedApiSource(apiSource);
+    
+    const saveApiSourceBtn = document.getElementById('saveApiSource');
+    const savedText = await t('settings.saved');
+    saveApiSourceBtn.innerHTML = `<i class="fas fa-check"></i> ${savedText}`;
+    setTimeout(async () => {
+      saveApiSourceBtn.innerHTML = `<i class="fas fa-save"></i> ${await t('apiSources.saveSource')}`;
+    }, 2000);
+    
+    // Atualizar a visibilidade do campo de API Key quando a fonte é alterada
+    const apiKeySettingItem = document.querySelector('.setting-item:has(#apiKey)');
+    if (apiKeySettingItem) {
+      if (apiSource === 'hydra') {
+        // Ocultar o campo da API Key quando a Hydra for selecionada
+        apiKeySettingItem.style.display = 'none';
+      } else {
+        // Mostrar o campo da API Key quando a Steam for selecionada
+        apiKeySettingItem.style.display = '';
+      }
+    }
   }
 }
 
@@ -127,6 +151,25 @@ export async function initSettings() {
   if (savedApiKey) {
     apiKeyInput.value = savedApiKey;
     apiKeyInput.type = 'password';
+  }
+  
+  // Carregar configuração da fonte da API
+  const savedApiSource = await window.api.getConfig('apiSource');
+  if (savedApiSource && apiSourceSelect) {
+    apiSourceSelect.value = savedApiSource;
+    setSelectedApiSource(savedApiSource);
+    
+    // Atualizar a visibilidade do campo da API Key com base na fonte selecionada
+    const apiKeySettingItem = document.querySelector('.setting-item:has(#apiKey)');
+    if (apiKeySettingItem) {
+      if (savedApiSource === 'hydra') {
+        // Ocultar o campo da API Key quando a Hydra for selecionada
+        apiKeySettingItem.style.display = 'none';
+      } else {
+        // Mostrar o campo da API Key quando a Steam for selecionada
+        apiKeySettingItem.style.display = '';
+      }
+    }
   }
   
   // Configurar as abas de configurações

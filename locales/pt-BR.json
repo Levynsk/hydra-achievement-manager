@@ -2,12 +2,12 @@
   "meta": {
     "name": "Português (Brasil)",
     "author": "Levynsk & Esther",
-    "version": "v1.3.0"
+    "version": "v1.4.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "v1.3.0",
+      "version": "v1.4.0",
       "about": "Um gerenciador moderno para conquistas da Steam.",
       "credits": "Feito por Levynsk e Esther (Twitter - @onlysterbr)"
     },
@@ -43,10 +43,10 @@
     },
     "settings": {
       "title": "Configurações",
-      "apiKey": "Chave API Steam",
+      "apiKey": "Chave API",
       "apiKeyLabel": "Chave da API:",
-      "apiKeyPlaceholder": "Insira sua chave API Steam",
-      "apiKeyInfo": "Você pode obter sua chave da API Steam aqui.",
+      "apiKeyPlaceholder": "Insira sua chave API",
+      "apiKeyInfo": "Você pode obter sua chave da API aqui.",
       "saveApiKey": "Salvar",
       "saved": "Salvo",
       "language": "Idioma",
@@ -65,7 +65,7 @@
       "themeSystem": "Sistema",
       "about": "Sobre",
       "tabs": {
-        "api": "API Steam",
+        "api": "API",
         "language": "Idioma",
         "output": "Diretório de Saída",
         "about": "Sobre"
@@ -120,8 +120,26 @@
       "message": "Diretório de onde as conquistas serão carregadas:",
       "cancel": "Cancelar",
       "load": "Carregar",
+      "apiOption": "Buscar da API (sem carregar conquistas salvas)",
       "gameExists": "Arquivo de conquistas encontrado em:",
       "loadedFrom": "Conquistas carregadas de: {directory}"
+    },
+    "apiSources": {
+      "steam": "API",
+      "hydra": "API Hydra",
+      "title": "Fonte de Dados",
+      "description": "Selecione qual API será usada para obter as conquistas",
+      "steamDescription": "Requer chave API",
+      "hydraDescription": "Não requer chave API",
+      "source": "Fonte da API:",
+      "getApiKeyHere": "Você pode obter sua chave da API aqui",
+      "selectDataSource": "Selecione a fonte de dados para as conquistas. A API Hydra não requer chave de API.",
+      "steamOfficial": "API Oficial da Steam",
+      "saveSource": "Salvar",
+      "steam_url": "https://steamcommunity.com/dev/apikey",
+      "steamId": "Steam ID:",
+      "steamIdPlaceholder": "Insira seu Steam ID",
+      "steamIdInfo": "Você pode encontrar seu Steam ID aqui."
     }
   }
 }

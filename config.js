@@ -6,7 +6,8 @@ const defaultConfig = {
   outputPaths: ['C:/Users/Public/Documents/Steam/RUNE'],
   activeOutputPath: 'C:/Users/Public/Documents/Steam/RUNE',
   theme: 'dark', 
-  language: 'pt-BR'
+  language: 'pt-BR',
+  apiSource: 'hydra'
 };
 
 async function getConfig(key) {

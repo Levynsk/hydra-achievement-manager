@@ -1,13 +1,13 @@
 {
   "meta": {
     "name": "Русский (Россия)",
-    "author": "Esther",
-    "version": "v1.3.0"
+    "author": "Moyase",
+    "version": "v1.4.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "v1.3.0",
+      "version": "v1.4.0",
       "about": "Современный менеджер достижений Steam.",
       "credits": "Создано Levynsk и Esther (Twitter - @onlysterbr)"
     },
@@ -43,7 +43,7 @@
     },
     "settings": {
       "title": "Настройки",
-      "apiKey": "API ключ Steam",
+      "apiKey": "API",
       "apiKeyLabel": "API ключ:",
       "apiKeyPlaceholder": "Введите ваш API ключ Steam",
       "apiKeyInfo": "Вы можете получить ваш API ключ Steam здесь.",
@@ -120,8 +120,26 @@
       "message": "Директория, из которой будут загружены достижения:",
       "cancel": "Отмена",
       "load": "Загрузить",
+      "apiOption": "Получить из API (без загрузки сохраненных достижений)",
       "gameExists": "Файл достижений найден в:",
       "loadedFrom": "Достижения загружены из: {directory}"
+    },
+    "apiSources": {
+      "steam": "API",
+      "hydra": "Hydra API",
+      "title": "Источник данных",
+      "description": "Выберите, какой API будет использоваться для получения достижений",
+      "steamDescription": "Требуется API ключ",
+      "hydraDescription": "API ключ не требуется",
+      "source": "Источник API:",
+      "getApiKeyHere": "Вы можете получить ваш API ключ здесь",
+      "selectDataSource": "Выберите источник данных для достижений. Hydra API не требует API ключа.",
+      "steamOfficial": "Официальный API Steam",
+      "saveSource": "Сохранить",
+      "steam_url": "https://steamcommunity.com/dev/apikey",
+      "steamId": "Steam ID:",
+      "steamIdPlaceholder": "Введите ваш Steam ID",
+      "steamIdInfo": "Вы можете найти ваш Steam ID здесь."
     }
   }
 }

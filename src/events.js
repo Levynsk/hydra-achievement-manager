@@ -13,9 +13,11 @@ import {
   searchAchievementsInput,
   minimizeBtn,
   maximizeBtn,
-  closeBtn
+  closeBtn,
+  apiSourceSelect,
+  errorCard
 } from './constants.js';
-import { saveApiKey, toggleApiKeyVisibility, initSettings } from './settings.js';
+import { saveApiKey, toggleApiKeyVisibility, initSettings, saveApiSource } from './settings.js';
 import { fetchAchievements, selectAllAchievements, deselectAllAchievements, handleTimestampTypeChange, generateAchievementsFile, filterAchievements } from './achievements.js';
 import { handleSectionChange } from './ui.js';
 import { clearGamesList } from './games.js';
@@ -40,6 +42,19 @@ export function setupEventListeners() {
 
   saveApiKeyBtn.addEventListener('click', saveApiKey);
   toggleApiKeyBtn.addEventListener('click', toggleApiKeyVisibility);
+  
+  // Adicionar evento para salvar a fonte da API
+  const saveApiSourceBtn = document.getElementById('saveApiSource');
+  if (saveApiSourceBtn) {
+    saveApiSourceBtn.addEventListener('click', saveApiSource);
+  }
+  
+  // Adicionar evento para atualizar a visibilidade da chave da API quando a fonte muda
+  if (apiSourceSelect) {
+    apiSourceSelect.addEventListener('change', updateApiKeyVisibility);
+    // Inicializar a visibilidade imediatamente com base na configuração atual
+    setTimeout(updateApiKeyVisibility, 100); // Pequeno atraso para garantir que todos os componentes já foram carregados
+  }
   
   fetchAchievementsBtn.addEventListener('click', fetchAchievements);
   appIdInput.addEventListener('keypress', (e) => {
@@ -80,4 +95,23 @@ export function setupEventListeners() {
   window.addEventListener('beforeunload', () => {
     clearGamesList();
   });
+}
+
+// Função para atualizar a visibilidade do campo API Key
+function updateApiKeyVisibility() {
+  if (!apiSourceSelect) return;
+  
+  const apiKeySettingItem = document.querySelector('.setting-item:has(#apiKey)');
+  if (!apiKeySettingItem) return;
+  
+  const apiKeyDescription = apiKeySettingItem.querySelector('.setting-description');
+  
+  if (apiSourceSelect.value === 'hydra') {
+    // Ocultar o campo da API Key quando a Hydra for selecionada
+    apiKeySettingItem.style.display = 'none';
+  } else {
+    // Mostrar o campo da API Key quando a Steam for selecionada
+    apiKeySettingItem.style.display = '';
+    apiKeyDescription.innerHTML = 'Você pode obter sua chave da API Steam <a href="https://steamcommunity.com/dev/apikey" target="_blank">aqui</a>.';
+  }
 } 

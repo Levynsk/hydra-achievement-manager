@@ -2,12 +2,12 @@
   "meta": {
     "name": "Español (España)",
     "author": "Esther",
-    "version": "v1.3.0"
+    "version": "v1.4.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "v1.3.0",
+      "version": "v1.4.0",
       "about": "Un gestor moderno de logros de Steam.",
       "credits": "Hecho por Levynsk y Esther (Twitter - @onlysterbr)"
     },
@@ -65,7 +65,7 @@
       "themeSystem": "Sistema",
       "about": "Acerca de",
       "tabs": {
-        "api": "API de Steam",
+        "api": "API",
         "language": "Idioma",
         "output": "Directorio de Salida",
         "about": "Acerca de"
@@ -121,7 +121,25 @@
       "cancel": "Cancelar",
       "load": "Cargar",
       "apiOption": "Obtener de la API (sin cargar logros guardados)",
-      "gameExists": "Archivos de logros encontrados en:"
+      "gameExists": "Archivos de logros encontrados en:",
+      "loadedFrom": "Logros cargados desde: {directory}"
+    },
+    "apiSources": {
+      "steam": "API",
+      "hydra": "API Hydra",
+      "title": "Fuente de Datos",
+      "description": "Selecciona qué API se utilizará para obtener los logros",
+      "steamDescription": "Requiere clave API",
+      "hydraDescription": "No requiere clave API",
+      "source": "Fuente de API:",
+      "getApiKeyHere": "Puedes obtener tu clave API aquí",
+      "selectDataSource": "Selecciona la fuente de datos para los logros. La API Hydra no requiere clave API.",
+      "steamOfficial": "API Oficial de Steam",
+      "saveSource": "Guardar",
+      "steam_url": "https://steamcommunity.com/dev/apikey",
+      "steamId": "Steam ID:",
+      "steamIdPlaceholder": "Introduce tu Steam ID",
+      "steamIdInfo": "Puedes encontrar tu Steam ID aquí."
     }
   }
 }

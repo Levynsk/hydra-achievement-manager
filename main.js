@@ -3,6 +3,7 @@ const path = require('path');
 const Store = require('electron-store');
 const fs = require('fs');
 const i18n = require('./i18n');
+require('dotenv').config();
 
 const store = new Store();
 

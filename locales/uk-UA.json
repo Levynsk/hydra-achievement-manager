@@ -2,12 +2,12 @@
   "meta": {
     "name": "Українська (Україна)",
     "author": "Esther",
-    "version": "v1.3.0"
+    "version": "v1.4.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "v1.3.0",
+      "version": "v1.4.0",
       "about": "Сучасний менеджер досягнень Steam.",
       "credits": "Створено Levynsk та Esther (Twitter - @onlysterbr)"
     },
@@ -43,7 +43,7 @@
     },
     "settings": {
       "title": "Налаштування",
-      "apiKey": "API ключ Steam",
+      "apiKey": "API",
       "apiKeyLabel": "API ключ:",
       "apiKeyPlaceholder": "Введіть ваш API ключ Steam",
       "apiKeyInfo": "Ви можете отримати ваш API ключ Steam тут.",
@@ -121,7 +121,25 @@
       "cancel": "Скасувати",
       "load": "Завантажити",
       "gameExists": "Файл досягнень знайдено в:",
-      "loadedFrom": "Досягнення завантажено з: {directory}"
+      "loadedFrom": "Досягнення завантажено з: {directory}",
+      "apiOption": "Отримати з API (без завантаження збережених досягнень)"
+    },
+    "apiSources": {
+      "steam": "API",
+      "hydra": "Hydra API",
+      "title": "Джерело даних",
+      "description": "Виберіть API, яке буде використовуватися для отримання досягнень",
+      "steamDescription": "Потрібен API ключ",
+      "hydraDescription": "API ключ не потрібен",
+      "source": "Джерело API:",
+      "getApiKeyHere": "Ви можете отримати ваш API ключ тут",
+      "selectDataSource": "Виберіть джерело даних для досягнень. Hydra API не потребує API ключа.",
+      "steamOfficial": "Офіційний API Steam",
+      "saveSource": "Зберегти",
+      "steam_url": "https://steamcommunity.com/dev/apikey",
+      "steamId": "Steam ID:",
+      "steamIdPlaceholder": "Введіть ваш Steam ID",
+      "steamIdInfo": "Ви можете знайти ваш Steam ID тут."
     }
   }
 }

@@ -27,6 +27,9 @@ export async function t(key, params = {}) {
 
 export async function applyTranslations() {
   try {
+    // Log para depuração - chaves importantes de tradução da API
+    await debugApiTranslationKeys();
+    
     const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
     if (sidebarLinks.length >= 3) {
       sidebarLinks[0].innerHTML = `<i class="fas fa-gamepad"></i> ${await t('sidebar.games')}`;
@@ -95,7 +98,58 @@ export async function applyTranslations() {
     
     const apiKeyInfo = document.querySelector('.setting-item:has(#apiKey) .setting-description');
     if (apiKeyInfo) {
-      apiKeyInfo.innerHTML = await t('settings.apiKeyInfo');
+      const apiKeyInfoText = await t('settings.apiKeyInfo');
+      const currentLang = await window.api.getCurrentLanguage();
+      const replaceWord = currentLang.startsWith('pt') ? 'aqui' : 'here';
+      const apiKeyLink = `<a href="https://steamcommunity.com/dev/apikey" target="_blank">${replaceWord}</a>`;
+      apiKeyInfo.innerHTML = apiKeyInfoText.replace(replaceWord, apiKeyLink);
+    }
+    
+    // Traduzir elementos da seção de API Source
+    const apiSourceLabel = document.querySelector('label[for="apiSource"]');
+    if (apiSourceLabel) {
+      apiSourceLabel.textContent = await t('apiSources.source');
+    }
+    
+    const apiSourceSelect = document.getElementById('apiSource');
+    if (apiSourceSelect && apiSourceSelect.options.length >= 2) {
+      apiSourceSelect.options[0].textContent = await t('apiSources.hydra');
+      apiSourceSelect.options[1].textContent = await t('apiSources.steamOfficial');
+    }
+    
+    const saveApiSourceBtn = document.getElementById('saveApiSource');
+    if (saveApiSourceBtn) {
+      saveApiSourceBtn.innerHTML = `<i class="fas fa-save"></i> ${await t('apiSources.saveSource')}`;
+    }
+    
+    const apiSourceInfo = document.querySelector('.setting-item:has(#apiSource) .setting-description');
+    if (apiSourceInfo) {
+      apiSourceInfo.textContent = await t('apiSources.selectDataSource');
+    }
+    
+    // Steam ID
+    const steamIdLabel = document.querySelector('label[for="steamId"]');
+    if (steamIdLabel) {
+      steamIdLabel.textContent = await t('apiSources.steamId');
+    }
+    
+    const steamIdInput = document.getElementById('steamId');
+    if (steamIdInput) {
+      steamIdInput.placeholder = await t('apiSources.steamIdPlaceholder');
+    }
+    
+    const saveSteamIdBtn = document.getElementById('saveSteamId');
+    if (saveSteamIdBtn) {
+      saveSteamIdBtn.innerHTML = `<i class="fas fa-save"></i> ${await t('settings.saveApiKey')}`;
+    }
+    
+    const steamIdInfo = document.querySelector('.setting-item:has(#steamId) .setting-description');
+    if (steamIdInfo) {
+      const steamIdInfoText = await t('apiSources.steamIdInfo');
+      const currentLang = await window.api.getCurrentLanguage();
+      const replaceWord = currentLang.startsWith('pt') ? 'aqui' : 'here';
+      const steamIdLink = `<a href="https://steamid.io" target="_blank">${replaceWord}</a>`;
+      steamIdInfo.innerHTML = steamIdInfoText.replace(replaceWord, steamIdLink);
     }
     
     const languageLabel = document.querySelector('label[for="languageSelect"]');
@@ -228,4 +282,17 @@ export async function updateCurrentSectionTitle() {
     
     currentSectionTitle.textContent = await t(titleKey);
   }
+}
+
+// Função auxiliar para debug das traduções
+async function debugApiTranslationKeys() {
+  console.log('Debugging API translation keys:');
+  console.log('apiSources.source:', await t('apiSources.source'));
+  console.log('apiSources.hydra:', await t('apiSources.hydra'));
+  console.log('apiSources.steamOfficial:', await t('apiSources.steamOfficial'));
+  console.log('apiSources.selectDataSource:', await t('apiSources.selectDataSource'));
+  console.log('settings.saveApiKey:', await t('settings.saveApiKey'));
+  console.log('apiSources.saveSource:', await t('apiSources.saveSource'));
+  console.log('apiSources.steamId:', await t('apiSources.steamId'));
+  console.log('apiSources.steamIdInfo:', await t('apiSources.steamIdInfo'));
 } 
