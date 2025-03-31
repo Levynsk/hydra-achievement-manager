@@ -106,6 +106,22 @@
       "achievements": "achievements",
       "errorFetchingGame": "Error fetching game information",
       "errorFetchingGameDetails": "Error fetching details for game"
+    },
+    "directories": {
+      "selectTitle": "Select Directory",
+      "selectMessage": "Select where to save the achievements file:",
+      "cancel": "Cancel",
+      "save": "Save",
+      "existingFiles": "This game already exists in this directory",
+      "noDirectories": "No directories configured."
+    },
+    "loadModal": {
+      "title": "Load Achievements",
+      "message": "From which directory do you want to load achievements?",
+      "cancel": "Cancel",
+      "load": "Load",
+      "apiOption": "Fetch from API (without loading saved achievements)",
+      "gameExists": "Achievement files found in:"
     }
   }
 }

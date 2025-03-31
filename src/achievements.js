@@ -14,7 +14,11 @@ import {
   directoryModal,
   directoryList,
   cancelSaveBtn,
-  confirmSaveBtn
+  confirmSaveBtn,
+  loadDirectoryModal,
+  loadDirectoryList,
+  cancelLoadBtn,
+  confirmLoadBtn
 } from './constants.js';
 import { t } from './translations.js';
 import { showError, showSuccess } from './settings.js';
@@ -28,6 +32,7 @@ let userAchievements = [];
 let currentAppId = '';
 let outputDirectories = [];
 let selectedDirectoryPath = null; // Nova variável local para armazenar o diretório selecionado
+let loadedDirectoryPath = null; // Nova variável para armazenar o diretório de onde as conquistas foram carregadas
 
 export async function fetchAchievements() {
   const appId = appIdInput.value.trim();
@@ -36,9 +41,173 @@ export async function fetchAchievements() {
     return;
   }
 
+  currentAppId = appId;
+
   // Limpar seleções anteriores ao mudar de jogo
   selectedAchievements.clear();
   
+  // Primeiro, verificar se existem diretórios com arquivos de conquistas para este jogo
+  await fetchOutputDirectories();
+  await checkExistingGameFiles(appId);
+  
+  if (window.existingDirs && window.existingDirs.length > 0) {
+    if (window.existingDirs.length === 1) {
+      // Se houver apenas um diretório, usar diretamente
+      loadedDirectoryPath = window.existingDirs[0];
+      await fetchAchievementsFromDirectory();
+    } else {
+      // Se houver mais de um diretório, abrir modal para seleção
+      await openLoadDirectoryModal();
+    }
+  } else {
+    // Não existem arquivos de conquistas, prosseguir com a busca normal
+    await fetchAchievementsFromAPI();
+  }
+}
+
+// Nova função para abrir o modal de seleção de diretório ao carregar conquistas
+async function openLoadDirectoryModal() {
+  loadDirectoryModal.classList.remove('hidden');
+  loadedDirectoryPath = null; // Resetar o diretório selecionado
+  
+  // Atualizar o título e a mensagem com as traduções
+  const modalTitle = loadDirectoryModal.querySelector('.modal-header h3');
+  if (modalTitle) {
+    modalTitle.innerHTML = `<i class="fas fa-folder-open"></i> ${await t('loadModal.title')}`;
+  }
+  
+  const modalMessage = loadDirectoryModal.querySelector('.modal-body > p');
+  if (modalMessage) {
+    modalMessage.textContent = await t('loadModal.message');
+  }
+  
+  // Atualizar textos dos botões
+  if (cancelLoadBtn) {
+    cancelLoadBtn.textContent = await t('loadModal.cancel');
+  }
+  
+  if (confirmLoadBtn) {
+    confirmLoadBtn.textContent = await t('loadModal.load');
+  }
+  
+  // Renderizar lista de diretórios disponíveis
+  await renderLoadDirectoryList();
+  
+  // Configurar eventos
+  cancelLoadBtn.onclick = () => {
+    closeLoadDirectoryModal();
+  };
+  
+  confirmLoadBtn.onclick = async () => {
+    if (loadedDirectoryPath) {
+      closeLoadDirectoryModal();
+      await fetchAchievementsFromDirectory();
+    }
+  };
+  
+  // Fechar o modal ao clicar no X
+  loadDirectoryModal.querySelector('.close-modal').onclick = () => {
+    closeLoadDirectoryModal();
+  };
+}
+
+// Função para renderizar a lista de diretórios disponíveis no modal de carregamento
+async function renderLoadDirectoryList() {
+  loadDirectoryList.innerHTML = '';
+  
+  // Adicionar cada diretório onde existem arquivos
+  window.existingDirs.forEach(dir => {
+    const directoryOption = document.createElement('div');
+    directoryOption.className = 'directory-option';
+    directoryOption.innerHTML = `
+      <div class="directory-option-name">
+        <i class="fas fa-folder"></i> ${dir}
+      </div>
+    `;
+    directoryOption.addEventListener('click', () => {
+      selectLoadDirectory(directoryOption, dir);
+    });
+    loadDirectoryList.appendChild(directoryOption);
+  });
+  
+  // Selecionar primeiro diretório por padrão
+  if (window.existingDirs.length > 0) {
+    const firstOption = loadDirectoryList.querySelector('.directory-option:first-child');
+    selectLoadDirectory(firstOption, window.existingDirs[0]);
+  }
+}
+
+// Função para selecionar um diretório de carregamento
+function selectLoadDirectory(directoryOption, directoryPath) {
+  // Remover seleção anterior
+  loadDirectoryList.querySelectorAll('.directory-option').forEach(option => {
+    option.classList.remove('selected');
+  });
+  
+  // Marcar como selecionado
+  directoryOption.classList.add('selected');
+  loadedDirectoryPath = directoryPath;
+  
+  // Habilitar botão de confirmar (sempre habilitado agora que não há opção nula)
+  if (confirmLoadBtn) {
+    confirmLoadBtn.disabled = false;
+  }
+}
+
+// Função para fechar o modal de carregamento
+function closeLoadDirectoryModal() {
+  loadDirectoryModal.classList.add('hidden');
+}
+
+// Função para buscar conquistas do diretório selecionado
+async function fetchAchievementsFromDirectory() {
+  loadingCard.classList.remove('hidden');
+  errorCard.classList.add('hidden');
+  achievementsCard.classList.add('hidden');
+  
+  try {
+    // Buscar da API primeiro para obter detalhes das conquistas
+    const apiKey = await window.api.getApiKey();
+    if (!apiKey) {
+      throw new Error('API key não encontrada. Por favor, configure sua chave da API Steam nas configurações.');
+    }
+    
+    const achievementsResult = await window.api.getAchievements(currentAppId, apiKey);
+    if (!achievementsResult.success) {
+      throw new Error(achievementsResult.message);
+    }
+    
+    achievements = achievementsResult.achievements;
+    
+    // Buscar as conquistas salvas no diretório
+    const result = await window.api.getUnlockedAchievementsFromDirectory(currentAppId, loadedDirectoryPath);
+    if (result.success) {
+      const unlockedAchievements = result.achievements;
+      
+      // Marcar conquistas como desbloqueadas
+      achievements = achievements.map(achievement => {
+        const unlocked = unlockedAchievements.find(a => a.id === achievement.apiname);
+        return {
+          ...achievement,
+          unlocked: !!unlocked,
+          unlockTime: unlocked ? unlocked.unlockTime : null
+        };
+      });
+    }
+    
+    await renderAchievements();
+    
+    loadingCard.classList.add('hidden');
+    achievementsCard.classList.remove('hidden');
+  } catch (error) {
+    loadingCard.classList.add('hidden');
+    errorCard.classList.remove('hidden');
+    await showError(error.message);
+  }
+}
+
+// Nova função para buscar conquistas da API (separada da função principal)
+async function fetchAchievementsFromAPI() {
   loadingCard.classList.remove('hidden');
   errorCard.classList.add('hidden');
   achievementsCard.classList.add('hidden');
@@ -53,7 +222,7 @@ export async function fetchAchievements() {
     achievements = [];
     userAchievements = [];
     
-    const achievementsResult = await window.api.getAchievements(appId, apiKey);
+    const achievementsResult = await window.api.getAchievements(currentAppId, apiKey);
     if (!achievementsResult.success) {
       throw new Error(achievementsResult.message);
     }
@@ -262,7 +431,27 @@ async function openDirectoryModal() {
   // antes de renderizar a lista no modal
   await forcedDirectoryUpdate();
   
-  renderDirectoryList();
+  // Atualizar o título e a mensagem com as traduções
+  const modalTitle = directoryModal.querySelector('.modal-header h3');
+  if (modalTitle) {
+    modalTitle.innerHTML = `<i class="fas fa-folder-open"></i> ${await t('directories.selectTitle')}`;
+  }
+  
+  const modalMessage = directoryModal.querySelector('.modal-body > p');
+  if (modalMessage) {
+    modalMessage.textContent = await t('directories.selectMessage');
+  }
+  
+  // Atualizar textos dos botões
+  if (cancelSaveBtn) {
+    cancelSaveBtn.textContent = await t('directories.cancel');
+  }
+  
+  if (confirmSaveBtn) {
+    confirmSaveBtn.textContent = await t('directories.save');
+  }
+  
+  await renderDirectoryList();
   directoryModal.classList.remove('hidden');
   
   // Adicionar eventos aos botões do modal
@@ -311,14 +500,17 @@ function closeDirectoryModal(preserveSelection = false) {
 }
 
 // Renderizar lista de diretórios no modal
-function renderDirectoryList() {
+async function renderDirectoryList() {
   directoryList.innerHTML = '';
   
   if (outputDirectories.length === 0) {
-    directoryList.innerHTML = `<p class="no-directories">Nenhum diretório configurado. Configure diretórios na seção de Configurações.</p>`;
+    directoryList.innerHTML = `<p class="no-directories">${await t('directories.noDirectories')}</p>`;
     confirmSaveBtn.disabled = true;
     return;
   }
+  
+  // Obter antecipadamente a mensagem de tooltip para evitar await em função não-assíncrona
+  const existingFilesMessage = await t('directories.existingFiles');
   
   // Criar um elemento para cada diretório
   outputDirectories.forEach((dir, index) => {
@@ -330,11 +522,13 @@ function renderDirectoryList() {
     directoryOption.dataset.path = dir;
     
     const icon = isExisting ? 'fa-folder-open' : 'fa-folder';
-    const tooltip = isExisting ? 'Este jogo já existe neste diretório' : '';
+    const tooltip = isExisting ? existingFilesMessage : '';
     
     directoryOption.innerHTML = `
-      <i class="fas ${icon}"></i>
-      <span class="directory-option-name" title="${dir}">${dir}</span>
+      <div class="directory-option-name">
+        <i class="fas ${icon}"></i>
+        <span title="${dir}">${dir}</span>
+      </div>
       ${isExisting ? '<i class="fas fa-check" style="color: var(--accent-success);"></i>' : ''}
     `;
     
@@ -433,7 +627,8 @@ async function saveAchievementsToSelectedDirectory() {
       const successMessage = document.getElementById('successMessage');
       const successModal = document.getElementById('successModal');
       if (successMessage && successModal) {
-        successMessage.textContent = `${result.message} em ${dirToSave}`;
+        // Usar a tradução com o parâmetro de caminho
+        successMessage.textContent = await t('success.fileGenerated', { path: dirToSave });
         
         // Garante que o modal seja exibido sempre
         successModal.classList.remove('hidden');

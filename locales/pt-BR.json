@@ -106,6 +106,22 @@
       "achievements": "conquistas",
       "errorFetchingGame": "Erro ao buscar informações do jogo",
       "errorFetchingGameDetails": "Erro ao buscar detalhes do jogo"
+    },
+    "directories": {
+      "selectTitle": "Selecionar Diretório",
+      "selectMessage": "Selecione onde deseja salvar o arquivo de conquistas:",
+      "cancel": "Cancelar",
+      "save": "Salvar",
+      "existingFiles": "Este jogo já existe neste diretório",
+      "noDirectories": "Nenhum diretório configurado."
+    },
+    "loadModal": {
+      "title": "Carregar Conquistas",
+      "message": "Diretório de onde as conquistas serão carregadas:",
+      "cancel": "Cancelar",
+      "load": "Carregar",
+      "gameExists": "Arquivo de conquistas encontrado em:",
+      "loadedFrom": "Conquistas carregadas de: {directory}"
     }
   }
 }

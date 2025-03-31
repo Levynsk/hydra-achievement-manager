@@ -169,45 +169,15 @@ ipcMain.handle('write-achievements', async (event, appId, achievements, targetDi
     
     // Mapa para armazenar conquistas e garantir que não haja duplicatas
     const achievementsMap = new Map();
-    
+
     // Set para armazenar os IDs das conquistas selecionadas
     const selectedAchievementIds = new Set(achievements.map(a => a.id));
-    
-    // Verificar se o arquivo existe, e se existir, ler as conquistas atuais
-    if (fs.existsSync(achievementsPath)) {
-      console.log('Arquivo existente encontrado, mesclando dados...');
-      try {
-        const existingContent = fs.readFileSync(achievementsPath, 'utf8');
-        const sections = existingContent.split(/\n\s*\n/);
-        
-        for (const section of sections) {
-          if (!section.trim()) continue;
-          
-          const lines = section.split('\n');
-          const idMatch = lines[0].match(/\[(.*?)\]/);
-          
-          if (idMatch) {
-            const id = idMatch[1];
-            const unlockTimeMatch = lines.find(line => line.includes('UnlockTime='))?.match(/UnlockTime=(\d+)/);
-            const unlockTime = unlockTimeMatch ? parseInt(unlockTimeMatch[1]) : Math.floor(Date.now() / 1000);
-            
-            // Adicionar ao mapa apenas se ainda não existir E estiver nas conquistas selecionadas
-            if (!achievementsMap.has(id) && selectedAchievementIds.has(id)) {
-              achievementsMap.set(id, { id, unlockTime });
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Erro ao ler o arquivo de conquistas existente:', error);
-        // Continuar mesmo com erro, criando um novo arquivo
-      }
-    }
-    
-    // Adicionar as novas conquistas, substituindo as existentes se tiverem o mesmo ID
+
+    // Ignorar o conteúdo anterior do arquivo INI, apenas adicionar as novas conquistas selecionadas
     for (const achievement of achievements) {
       achievementsMap.set(achievement.id, achievement);
     }
-    
+
     // Escrever arquivo de conquistas no formato INI - sem duplicatas
     let iniContent = '';
     for (const achievement of achievementsMap.values()) {
@@ -215,7 +185,7 @@ ipcMain.handle('write-achievements', async (event, appId, achievements, targetDi
       iniContent += `Achieved=1\n`;
       iniContent += `UnlockTime=${achievement.unlockTime}\n\n`;
     }
-    
+
     console.log('Escrevendo arquivo:', achievementsPath);
     fs.writeFileSync(achievementsPath, iniContent);
     
@@ -319,7 +289,7 @@ ipcMain.handle('get-game-folders', async (event, outputPath) => {
           const content = fs.readFileSync(achievementsPath, 'utf8');
           const achievementMatches = (content.match(/\[.*?\]/g) || []).filter(match => !!match.trim());
           
-          // Identificar conquistas únicas, pois o mesmo ID pode aparecer mais de uma vez no arquivo
+          // Identificar conquistas únicas
           const uniqueAchievementIds = new Set();
           for (const match of achievementMatches) {
             const id = match.replace(/[\[\]]/g, ''); // Remove colchetes
@@ -456,6 +426,64 @@ ipcMain.handle('get-unlocked-achievements', async (event, appId) => {
   } catch (error) {
     console.error('Erro ao ler o arquivo de conquistas:', error);
     return [];
+  }
+});
+
+// Nova função para obter conquistas de um diretório específico
+ipcMain.handle('get-unlocked-achievements-from-directory', async (event, appId, directoryPath) => {
+  try {
+    if (!directoryPath) {
+      return { success: false, message: 'Caminho do diretório não fornecido' };
+    }
+
+    // Determinar o caminho correto com base no diretório fornecido
+    let achievementsPath;
+    if (directoryPath.includes('OnlineFix')) {
+      // Caminho específico para OnlineFix (AppID/Stats/achievements.ini)
+      achievementsPath = path.join(directoryPath, appId, 'Stats', 'achievements.ini');
+    } else {
+      // Caminho padrão para outros diretórios
+      achievementsPath = path.join(directoryPath, appId, 'achievements.ini');
+    }
+    
+    console.log(`Verificando arquivo de conquistas em: ${achievementsPath}`);
+    
+    // Se o arquivo não existe, retorna um array vazio
+    if (!fs.existsSync(achievementsPath)) {
+      return { success: true, achievements: [] };
+    }
+    
+    // Ler o conteúdo do arquivo INI
+    const content = fs.readFileSync(achievementsPath, 'utf8');
+    
+    // Parsear o arquivo INI para extrair as conquistas
+    const achievementsMap = new Map(); // Usar um Map para evitar duplicatas
+    const sections = content.split(/\n\s*\n/); // Dividir por linhas em branco para cada seção
+    
+    for (const section of sections) {
+      if (!section.trim()) continue;
+      
+      const lines = section.split('\n');
+      const idMatch = lines[0].match(/\[(.*?)\]/);
+      
+      if (idMatch) {
+        const id = idMatch[1];
+        const unlockTimeMatch = lines.find(line => line.includes('UnlockTime='))?.match(/UnlockTime=(\d+)/);
+        const unlockTime = unlockTimeMatch ? parseInt(unlockTimeMatch[1]) : null;
+        
+        // Adicionar ao mapa (substitui se já existir com o mesmo ID)
+        achievementsMap.set(id, {
+          id,
+          unlockTime
+        });
+      }
+    }
+    
+    // Converter o Map para um array
+    return { success: true, achievements: Array.from(achievementsMap.values()) };
+  } catch (error) {
+    console.error('Erro ao ler o arquivo de conquistas do diretório:', error);
+    return { success: false, message: error.message };
   }
 });
 

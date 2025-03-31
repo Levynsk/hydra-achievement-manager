@@ -1,26 +1,26 @@
 {
   "meta": {
     "name": "Italiano (Italia)",
-    "author": "Lilith",
+    "author": "Esther",
     "version": "v1.2.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
       "version": "v1.2.0",
-      "about": "Un moderno gestore di achievement per Steam.",
+      "about": "Un moderno gestore di obiettivi Steam.",
       "credits": "Realizzato da Levynsk e Esther (Twitter - @onlysterbr)"
     },
     "sidebar": {
       "games": "Giochi",
-      "achievements": "Achievement",
+      "achievements": "Obiettivi",
       "settings": "Impostazioni"
     },
     "achievements": {
-      "title": "Achievement",
-      "appIdPlaceholder": "Inserisci l'App ID del gioco",
-      "appIdInfo": "Puoi trovare l'App ID nell'URL del negozio Steam: store.steampowered.com/app/APP_ID/",
-      "searchPlaceholder": "Cerca achievement...",
+      "title": "Obiettivi",
+      "appIdPlaceholder": "Inserisci l'ID dell'applicazione del gioco",
+      "appIdInfo": "Puoi trovare l'ID dell'app nell'URL del negozio Steam: store.steampowered.com/app/APP_ID/",
+      "searchPlaceholder": "Cerca obiettivi...",
       "selectAll": "Seleziona Tutti",
       "deselectAll": "Deseleziona Tutti",
       "timestamp": "Timestamp:",
@@ -29,7 +29,7 @@
       "timestampRandom": "Casuale",
       "enableCustomTimestamp": "Abilita Timestamp Personalizzato",
       "generateFile": "Genera File",
-      "noAchievements": "Nessun achievement trovato per questo gioco.",
+      "noAchievements": "Nessun obiettivo trovato per questo gioco.",
       "select": "Seleziona",
       "unlockedAt": "Già sbloccato il: {date}",
       "alreadyUnlocked": "Già sbloccato",
@@ -57,38 +57,38 @@
       "outputDir": "Directory di Output",
       "outputDirLabel": "Percorso:",
       "outputDirPlaceholder": "Percorso per salvare i file",
-      "outputDirInfo": "Directory dove verranno salvati i file degli achievement.",
+      "outputDirInfo": "Directory dove saranno salvati i file degli obiettivi.",
       "browse": "Sfoglia",
       "theme": "Tema",
       "themeLight": "Chiaro",
       "themeDark": "Scuro",
       "themeSystem": "Sistema",
-      "about": "Info",
+      "about": "Informazioni",
       "tabs": {
         "api": "API Steam",
         "language": "Lingua",
         "output": "Directory di Output",
-        "about": "Info"
+        "about": "Informazioni"
       }
     },
     "errors": {
-      "invalidApiKey": "Per favore, inserisci una chiave API valida.",
-      "invalidAppId": "Per favore, inserisci un App ID valido.",
-      "fetchError": "Si è verificato un errore durante il recupero degli achievement.",
-      "noSelection": "Per favore, seleziona almeno un achievement.",
+      "invalidApiKey": "Inserisci una chiave API valida.",
+      "invalidAppId": "Inserisci un ID app valido.",
+      "fetchError": "Si è verificato un errore durante il recupero degli obiettivi.",
+      "noSelection": "Seleziona almeno un obiettivo.",
       "writeError": "Errore durante la generazione del file.",
-      "appIdRequired": "Per favore, inserisci l'App ID del gioco.",
-      "achievementsNotFound": "Impossibile ottenere gli achievement. Verifica l'app_id e riprova.",
+      "appIdRequired": "Inserisci l'ID dell'app del gioco.",
+      "achievementsNotFound": "Impossibile ottenere gli obiettivi. Controlla l'app_id e riprova.",
       "outputPathNotConfigured": "Il percorso di output non è configurato."
     },
     "success": {
-      "fileGenerated": "Il file achievements.ini è stato generato con successo in {path}",
+      "fileGenerated": "Il file Achievements.ini è stato generato con successo in {path}",
       "title": "Successo",
-      "defaultMessage": "Il file achievements.ini è stato generato con successo!",
+      "defaultMessage": "Il file Achievements.ini è stato generato con successo!",
       "ok": "OK"
     },
     "loading": {
-      "achievements": "Caricamento achievement...",
+      "achievements": "Caricamento obiettivi...",
       "games": "Caricamento giochi..."
     },
     "error": {
@@ -99,13 +99,29 @@
     "games": {
       "title": "Giochi",
       "loading": "Caricamento giochi...",
-      "noGames": "Nessun gioco trovato. Verifica la directory di output nelle impostazioni.",
+      "noGames": "Nessun gioco trovato. Controlla la directory di output nelle impostazioni.",
       "error": "Errore durante il caricamento dei giochi: {message}",
       "select": "Seleziona",
       "progress": "Progresso",
-      "achievements": "achievement",
+      "achievements": "obiettivi",
       "errorFetchingGame": "Errore durante il recupero delle informazioni del gioco",
       "errorFetchingGameDetails": "Errore durante il recupero dei dettagli del gioco"
+    },
+    "directories": {
+      "selectTitle": "Seleziona Directory",
+      "selectMessage": "Seleziona dove salvare il file degli obiettivi:",
+      "cancel": "Annulla",
+      "save": "Salva",
+      "existingFiles": "Questo gioco esiste già in questa directory",
+      "noDirectories": "Nessuna directory configurata."
+    },
+    "loadModal": {
+      "title": "Carica Obiettivi",
+      "message": "Directory da cui verranno caricati gli obiettivi:",
+      "cancel": "Annulla",
+      "load": "Carica",
+      "gameExists": "File degli obiettivi trovato in:",
+      "loadedFrom": "Obiettivi caricati da: {directory}"
     }
   }
 } 

@@ -1,4 +1,3 @@
-/* Modern Theme with Gradient Accents for Steam Achievements Manager */
 :root {
   --bg-primary: #0f0f13;
   --bg-secondary: #16161e;
@@ -7,7 +6,7 @@
   --text-secondary: #e0e0e0;
   --text-muted: #a0a0a0;
   --accent-primary: #7b68ee;
-  --accent-primary-rgb: 123, 104, 238; /* RGB values for accent color */
+  --accent-primary-rgb: 123, 104, 238; 
   --accent-secondary: #9370db;
   --accent-success: #4caf50;
   --accent-warning: #ff9800;
@@ -19,12 +18,10 @@
   --sidebar-width: 280px;
 }
 
-/* Definir tema escuro como padrão */
 html {
   data-theme: 'dark';
 }
 
-/* Estilos para o container de diretórios */
 .directories-container {
   display: flex;
   flex-direction: column;
@@ -38,38 +35,43 @@ html {
   background-color: var(--bg-tertiary);
 }
 
-/* Estilos para o modal de seleção de diretório */
 .directory-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
+  margin-top: 15px;
   max-height: 250px;
   overflow-y: auto;
-  padding: 8px;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  background-color: var(--bg-tertiary);
 }
 
 .directory-option {
-  display: flex;
-  align-items: center;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 10px 12px;
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--border-color);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+}
+
+.directory-option:last-child {
+  border-bottom: none;
 }
 
 .directory-option:hover {
-  background-color: rgba(var(--accent-primary-rgb), 0.1);
-  border-color: var(--accent-primary);
+  background-color: var(--hover-color);
 }
 
 .directory-option.selected {
-  background-color: rgba(var(--accent-primary-rgb), 0.2);
-  border-color: var(--accent-primary);
+  background-color: var(--primary-color-transparent);
+}
+
+.directory-option-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  word-break: break-all;
+  text-align: left;
 }
 
 .directory-option i {
@@ -80,14 +82,6 @@ html {
 
 .directory-option.selected i {
   color: var(--accent-primary);
-}
-
-.directory-option-name {
-  flex: 1;
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .existing-files-info {
@@ -157,7 +151,6 @@ html {
   font-size: 12px;
 }
 
-/* Estilos modernos com efeito Glassmorphism para os botões de diretório nos cards de jogos */
 .game-directory-buttons {
   display: flex;
   flex-direction: row;
@@ -200,12 +193,11 @@ html {
   background: rgba(255, 255, 255, 0.2);
   color: white;
 }
-/* Smooth Scrolling - Centralizado em um único lugar */
+
 html, body {
   scroll-behavior: smooth;
 }
 
-/* Titlebar Styles - Mac Style */
 .titlebar {
   height: 38px;
   background: rgba(22, 22, 30, 0.95);
@@ -331,7 +323,6 @@ a:hover {
   margin-top: 38px;
 }
 
-/* Sidebar Styles */
 .sidebar {
   width: var(--sidebar-width);
   background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
@@ -466,7 +457,6 @@ a:hover {
   display: none;
 }
 
-/* When sidebar is collapsed */
 .app-container.sidebar-collapsed .sidebar {
   transform: translateX(-100%);
 }
@@ -476,7 +466,6 @@ a:hover {
   width: 100%;
 }
 
-/* Header Styles */
 .app-header {
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border-color);
@@ -537,7 +526,6 @@ a:hover {
   transition: scrollbar-color 0.3s ease;
 }
 
-/* Card Styles */
 .card {
   background: linear-gradient(135deg, rgba(26, 27, 38, 0.8), rgba(22, 22, 30, 0.8));
   border-radius: var(--card-radius);
@@ -585,7 +573,6 @@ a:hover {
   font-size: 1.2rem;
 }
 
-/* Input Styles */
 .input-group {
   display: flex;
   gap: 0.5rem;
@@ -593,7 +580,6 @@ a:hover {
   position: relative;
 }
 
-/* Stretched inputs */
 .stretched-input, 
 .input-group.stretched {
   width: 100%;
@@ -642,7 +628,6 @@ select:focus {
   box-shadow: 0 0 0 2px rgba(var(--accent-primary-rgb), 0.25);
 }
 
-/* Button Styles */
 .btn {
   padding: 0.8rem 1.2rem;
   background-color: var(--bg-tertiary);
@@ -722,7 +707,6 @@ select:focus {
   padding: 0.8rem;
 }
 
-/* Section Styles */
 .section {
   margin-bottom: 1.5rem;
 }
@@ -740,7 +724,6 @@ select:focus {
   color: var(--accent-primary);
 }
 
-/* Achievement Styles */
 .achievements-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -816,7 +799,6 @@ select:focus {
   line-height: 1.4;
 }
 
-/* Modal Styles */
 .modal {
   position: fixed;
   top: 0;
@@ -925,7 +907,6 @@ select:focus {
   min-width: 100px;
 }
 
-/* Para o modal específico de diretório, quero os botões stretch */
 #directoryModal .modal-footer {
   display: flex;
   justify-content: space-between;
@@ -959,12 +940,10 @@ select:focus {
   letter-spacing: 0.5px;
 }
 
-/* Utility Classes */
 .hidden {
   display: none !important;
 }
 
-/* Games Section Styles */
 .games-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -1040,6 +1019,9 @@ select:focus {
   color: var(--text-primary);
   margin-bottom: 0.3rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .game-card .game-title::after {
@@ -1114,7 +1096,6 @@ select:focus {
   font-size: 0.75rem;
 }
 
-/* Botão de seleção para o card de jogo */
 .game-select-btn {
   position: absolute;
   top: 10px;
@@ -1151,7 +1132,6 @@ select:focus {
   box-shadow: 0 0 8px rgba(var(--accent-primary-rgb), 0.6);
 }
 
-/* Responsive Styles */
 @media (max-width: 768px) {
   :root {
     --sidebar-width: 70px;
@@ -1194,17 +1174,16 @@ select:focus {
   .game-card {
     height: 160px;
   }
-  
+
   .game-card .game-title {
     font-size: 1rem;
   }
-  
+
   .game-card .progress-details {
     font-size: 0.7rem;
   }
 }
 
-/* Scrollbar Styles - Sempre invisível */
 ::-webkit-scrollbar {
   width: 0 !important;
   height: 0 !important;
@@ -1232,17 +1211,14 @@ body:hover::-webkit-scrollbar,
   display: none !important;
 }
 
-/* Esconder barras de rolagem para Firefox */
 * {
   scrollbar-width: none !important;
 }
 
-/* Para IE e Edge */
 *::-ms-scrollbar {
   display: none !important;
 }
 
-/* Loading and Error Styles */
 .loading-content {
   display: flex;
   flex-direction: column;
@@ -1287,7 +1263,6 @@ body:hover::-webkit-scrollbar,
   margin-bottom: 1rem;
 }
 
-/* Special Settings Styles */
 .settings-group {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
@@ -1336,7 +1311,6 @@ body:hover::-webkit-scrollbar,
   line-height: 1.4;
 }
 
-/* Input com ícone */
 .input-icon-wrapper {
   position: relative;
   flex: 1;
@@ -1355,7 +1329,6 @@ body:hover::-webkit-scrollbar,
   padding-left: 40px !important;
 }
 
-/* Header Actions */
 .header-actions {
   display: flex;
   align-items: center;
@@ -1394,13 +1367,11 @@ body:hover::-webkit-scrollbar,
   pointer-events: none;
 }
 
-/* Control Buttons */
 .control-buttons {
   display: flex;
   gap: 10px;
 }
 
-/* Timestamp controls */
 .timestamp-controls {
   display: flex;
   align-items: center;
@@ -1438,7 +1409,6 @@ body:hover::-webkit-scrollbar,
   color: var(--text-primary);
 }
 
-/* About Section */
 .about-content {
   text-align: center;
   padding: 1.5rem 0;
@@ -1483,7 +1453,6 @@ body:hover::-webkit-scrollbar,
   color: var(--text-muted);
 }
 
-/* Success Modal */
 .success-icon {
   display: flex;
   justify-content: center;
@@ -1511,7 +1480,6 @@ body:hover::-webkit-scrollbar,
   }
 }
 
-/* Achievements Card */
 .achievements-card {
   overflow: visible;
 }
@@ -1543,29 +1511,28 @@ body:hover::-webkit-scrollbar,
   .achievements-controls {
     flex-direction: column;
   }
-  
+
   .search-wrapper {
     width: 100%;
   }
-  
+
   .header-search:focus {
     width: 100%;
   }
-  
+
   .control-buttons {
     flex-direction: column;
   }
-  
+
   .input-group {
     flex-direction: column;
   }
-  
+
   .input-group button {
     margin-top: 0.5rem;
   }
 }
 
-/* Cards principais sem efeito hover */
 .achievements-card:hover,
 .settings-card:hover {
   transform: none !important;
@@ -1577,7 +1544,6 @@ body:hover::-webkit-scrollbar,
   display: none;
 }
 
-/* Manter o efeito hover apenas para os cards de itens individuais */
 .card {
   position: relative;
   z-index: 1;
@@ -1601,13 +1567,11 @@ body:hover::-webkit-scrollbar,
   opacity: 0.2;
 }
 
-/* Desabilitar o efeito hover nos cards específicos */
 .achievements-card::after,
 .settings-card::after {
   display: none !important;
 }
 
-/* Achievement Item */
 .achievement-item {
   display: flex;
   flex-direction: column;
@@ -1673,14 +1637,12 @@ body:hover::-webkit-scrollbar,
   height: 32px;
 }
 
-/* Estilo do ícone de troféu dourado com animação de brilho */
 .game-card .game-achievements i.fa-trophy {
-  color: #FFD700; /* Dourado */
+  color: #FFD700; 
 }
 
-/* Troféu especial para jogos platinados (100%) */
 .game-card.platinum .game-achievements i.fa-trophy {
-  color: #FFD700; /* Dourado */
+  color: #FFD700; 
   text-shadow: 0 0 5px rgba(255, 215, 0, 0.7);
   animation: trophy-glow 2s ease-in-out infinite alternate;
 }
@@ -1706,17 +1668,16 @@ body:hover::-webkit-scrollbar,
 }
 
 .fa-trophy {
-  color: #FFD700; /* Dourado */
+  color: #FFD700; 
 }
 
 .sidebar-nav .fa-trophy,
 .section-title .fa-trophy,
 .card h2 .fa-trophy {
-  color: #FFD700; /* Dourado */
+  color: #FFD700; 
   text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
-/* Barra de progresso especial para jogos platinados */
 .game-card.platinum .progress-bar {
   background: linear-gradient(90deg, gold, #ffd700, #ffec80, #ffd700, gold);
   background-size: 200% 200%;
@@ -1736,21 +1697,18 @@ body:hover::-webkit-scrollbar,
   }
 }
 
-/* Efeito de borda dourada para jogos platinados - REMOVIDO */
 .game-card.platinum {
-  /* Removendo a borda dourada */
+
   border: 1px solid var(--border-color);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Mantendo o efeito hover padrão para cards platinados */
 .game-card.platinum:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
   border-color: var(--accent-primary);
 }
 
-/* Estilo para inputs de diretório com stretch */
 .stretched-input,
 .input-group.stretched {
   display: flex;
@@ -1774,7 +1732,6 @@ body:hover::-webkit-scrollbar,
   flex-shrink: 0;
 }
 
-/* Melhorar a aparência dos campos de diretório */
 .directory-input {
   background-color: rgba(0, 0, 0, 0.3) !important;
   border: 1px solid var(--border-color);
@@ -1789,13 +1746,11 @@ body:hover::-webkit-scrollbar,
   box-shadow: 0 0 0 2px rgba(var(--accent-primary-rgb), 0.25);
 }
 
-/* Ajuste para os ícones de diretório */
 .directory-icon {
   color: var(--accent-primary) !important;
   font-size: 1rem;
 }
 
-/* Estilos para abas nas configurações */
 .settings-tabs {
   margin-top: 20px;
   width: 100%;
@@ -1810,43 +1765,42 @@ body:hover::-webkit-scrollbar,
 }
 
 .tab-button {
-  background: var(--bg-tertiary);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: none;
-  padding: 12px 20px;
+  padding: 8px 16px;
   color: var(--text-secondary);
   font-weight: 500;
   cursor: pointer;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
   position: relative;
-  border: 1px solid transparent;
-  border-bottom: none;
   min-width: max-content;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .tab-button:hover {
   color: var(--text-primary);
-  background: rgba(var(--accent-primary-rgb), 0.1);
-  border-color: rgba(var(--accent-primary-rgb), 0.3);
+  background: rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
 }
 
 .tab-button.active {
-  background: var(--bg-secondary);
+  background: rgba(255, 255, 255, 0.2);
   color: var(--accent-primary);
-  border-color: var(--border-color);
-  border-bottom-color: var(--border-color);
-  z-index: 1;
   box-shadow: 0 0 8px rgba(var(--accent-primary-rgb), 0.2);
+  z-index: 1;
 }
 
 .tab-button.active::after {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 0;
-  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
   height: 3px;
   background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
   border-radius: 0 0 8px 8px;
@@ -1870,7 +1824,6 @@ body:hover::-webkit-scrollbar,
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsividade para abas */
 @media (max-width: 768px) {
   .tab-header {
     flex-wrap: nowrap;
@@ -1878,19 +1831,18 @@ body:hover::-webkit-scrollbar,
     padding-bottom: 10px;
     gap: 6px;
   }
-  
+
   .tab-button {
     padding: 10px 15px;
     font-size: 0.9rem;
     border-radius: 6px;
   }
-  
+
   .tab-button.active::after {
     border-radius: 0 0 6px 6px;
   }
 }
 
-/* Melhorar aparência dos dropdowns */
 select {
   position: relative;
   cursor: pointer;
@@ -1916,7 +1868,6 @@ select:focus {
   box-shadow: 0 0 0 2px rgba(var(--accent-primary-rgb), 0.25);
 }
 
-/* Estilo personalizado para o select */
 .select-wrapper {
   position: relative;
   display: block;
@@ -1959,7 +1910,6 @@ select:focus {
   box-shadow: 0 0 0 2px rgba(var(--accent-primary-rgb), 0.25);
 }
 
-/* Estilizar dropdowns nativos */
 @supports (-moz-appearance:none) {
   select {
     background-color: var(--bg-tertiary) !important;
@@ -1969,12 +1919,10 @@ select:focus {
   }
 }
 
-/* Para navegadores que suportam ::-ms-expand */
 select::-ms-expand {
   display: none;
 }
 
-/* Estilo específico para selects nas configurações */
 .settings-group select {
   background-color: rgba(15, 15, 19, 0.3);
   padding: 0.8rem 1rem;
@@ -1997,13 +1945,11 @@ select::-ms-expand {
   background-color: rgba(15, 15, 19, 0.5);
 }
 
-/* Animação suave para mostrar options */
 @keyframes dropdownFadeIn {
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Estilo para selects de idioma com flags */
 #languageSelect option {
   padding-left: 30px;
   background-position: 10px center;
@@ -2043,4 +1989,35 @@ select::-ms-expand {
 
 #directoryModal .fa-check {
   margin-left: 8px;
+}
+
+#directoryModal .directory-option-name {
+  text-align: left;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 8px;
+}
+
+#loadDirectoryModal .directory-option-name {
+  text-align: left;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 8px;
+}
+
+#loadDirectoryModal .directory-option {
+  text-align: left;
+}
+
+.directory-option-name i {
+  min-width: 20px;
+  text-align: center;
+}
+
+.directory-option-name span {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

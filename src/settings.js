@@ -81,8 +81,6 @@ export async function setupSettingsTabs() {
       button.textContent = await t('settings.tabs.api');
     } else if (tabId === 'tab-language') {
       button.textContent = await t('settings.tabs.language');
-    } else if (tabId === 'tab-output') {
-      button.textContent = await t('settings.tabs.output');
     } else if (tabId === 'tab-about') {
       button.textContent = await t('settings.tabs.about');
     }

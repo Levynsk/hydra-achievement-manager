@@ -12,7 +12,13 @@ import {
   loadingCard,
   errorCard,
   tryAgainBtn,
-  successModal
+  successModal,
+  loadDirectoryModal,
+  directoryModal,
+  cancelLoadBtn,
+  confirmLoadBtn,
+  cancelSaveBtn,
+  confirmSaveBtn
 } from './constants.js';
 
 export async function t(key, params = {}) {
@@ -118,31 +124,6 @@ export async function applyTranslations() {
       themeOptions[1].textContent = await t('settings.themeLight');
     }
     
-    const outputDirTitle = document.querySelector('.settings-group:nth-child(4) h3');
-    if (outputDirTitle) {
-      outputDirTitle.textContent = await t('settings.outputDir');
-    }
-    
-    const outputDirLabel = document.querySelector('label[for="outputPath"]');
-    if (outputDirLabel) {
-      outputDirLabel.textContent = await t('settings.outputDirLabel');
-    }
-    
-    const outputPathInput = document.getElementById('outputPath');
-    if (outputPathInput) {
-      outputPathInput.placeholder = await t('settings.outputDirPlaceholder');
-    }
-    
-    const outputDirInfo = document.querySelector('.setting-item:has(#outputPath) .setting-description');
-    if (outputDirInfo) {
-      outputDirInfo.textContent = await t('settings.outputDirInfo');
-    }
-    
-    const saveOutputPathBtn = document.getElementById('saveOutputPath');
-    if (saveOutputPathBtn) {
-      saveOutputPathBtn.innerHTML = `<i class="fas fa-save"></i> ${await t('settings.saveApiKey')}`;
-    }
-    
     const aboutTitle = document.querySelector('.settings-group:nth-child(5) h3');
     if (aboutTitle) {
       aboutTitle.textContent = await t('settings.about');
@@ -179,6 +160,44 @@ export async function applyTranslations() {
     const okButton = document.querySelector('#successModal .modal-footer button');
     if (okButton) {
       okButton.textContent = await t('success.ok');
+    }
+    
+    // Traduzir elementos do modal de seleção de diretório para salvar
+    const dirModalTitle = document.querySelector('#directoryModal .modal-header h3');
+    if (dirModalTitle) {
+      dirModalTitle.innerHTML = `<i class="fas fa-folder-open"></i> ${await t('directories.selectTitle')}`;
+    }
+    
+    const dirModalMsg = document.querySelector('#directoryModal .modal-body > p');
+    if (dirModalMsg) {
+      dirModalMsg.textContent = await t('directories.selectMessage');
+    }
+    
+    if (cancelSaveBtn) {
+      cancelSaveBtn.textContent = await t('directories.cancel');
+    }
+    
+    if (confirmSaveBtn) {
+      confirmSaveBtn.textContent = await t('directories.save');
+    }
+    
+    // Traduzir elementos do modal de seleção de diretório para carregar
+    const loadModalTitle = document.querySelector('#loadDirectoryModal .modal-header h3');
+    if (loadModalTitle) {
+      loadModalTitle.innerHTML = `<i class="fas fa-folder-open"></i> ${await t('loadModal.title')}`;
+    }
+    
+    const loadModalMsg = document.querySelector('#loadDirectoryModal .modal-body > p');
+    if (loadModalMsg) {
+      loadModalMsg.textContent = await t('loadModal.message');
+    }
+    
+    if (cancelLoadBtn) {
+      cancelLoadBtn.textContent = await t('loadModal.cancel');
+    }
+    
+    if (confirmLoadBtn) {
+      confirmLoadBtn.textContent = await t('loadModal.load');
     }
     
     console.log('Traduções aplicadas com sucesso');

@@ -33,6 +33,12 @@ export const directoryList = document.getElementById('directoryList');
 export const cancelSaveBtn = document.getElementById('cancelSave');
 export const confirmSaveBtn = document.getElementById('confirmSave');
 
+// Constantes para o modal de seleção ao carregar conquistas
+export const loadDirectoryModal = document.getElementById('loadDirectoryModal');
+export const loadDirectoryList = document.getElementById('loadDirectoryList');
+export const cancelLoadBtn = document.getElementById('cancelLoad');
+export const confirmLoadBtn = document.getElementById('confirmLoad');
+
 // Variáveis globais
 export let achievements = [];
 export let selectedAchievements = new Set();

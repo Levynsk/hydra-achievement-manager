@@ -106,6 +106,22 @@
       "achievements": "logros",
       "errorFetchingGame": "Error al obtener información del juego",
       "errorFetchingGameDetails": "Error al obtener detalles del juego"
+    },
+    "directories": {
+      "selectTitle": "Seleccionar Directorio",
+      "selectMessage": "Selecciona dónde guardar el archivo de logros:",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "existingFiles": "Este juego ya existe en este directorio",
+      "noDirectories": "No hay directorios configurados."
+    },
+    "loadModal": {
+      "title": "Cargar Logros",
+      "message": "¿De qué directorio quieres cargar los logros?",
+      "cancel": "Cancelar",
+      "load": "Cargar",
+      "apiOption": "Obtener de la API (sin cargar logros guardados)",
+      "gameExists": "Archivos de logros encontrados en:"
     }
   }
 }

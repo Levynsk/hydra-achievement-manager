@@ -53,7 +53,7 @@
     <main class="app-content">
       <section class="section games-section hidden" id="gamesSection">
         <div class="games-list" id="gamesList">
-          <!-- Games will be loaded here dynamically -->
+          
         </div>
       </section>
       
@@ -96,11 +96,11 @@
           </div>
             
           <div class="achievements-list" id="achievementsList">
-            <!-- Achievement items will be loaded here dynamically -->
+            
           </div>
             
           <div class="achievements-actions">
-            <!-- Botão removido daqui e movido para cima -->
+            
           </div>
         </div>
           
@@ -125,7 +125,6 @@
             <div class="tab-header">
               <button class="tab-button active" data-tab="tab-api">API Steam</button>
               <button class="tab-button" data-tab="tab-language">Idioma</button>
-              <button class="tab-button" data-tab="tab-output">Diretório de Saída</button>
               <button class="tab-button" data-tab="tab-about">Sobre</button>
             </div>
             
@@ -165,22 +164,10 @@
                     <div class="input-icon-wrapper select-wrapper">
                       <i class="fas fa-globe input-icon"></i>
                       <select id="languageSelect" class="input-with-icon">
-                        <!-- Opções de idioma serão preenchidas dinamicamente -->
+                        
                       </select>
                     </div>
                     <p class="setting-description">Selecione o idioma da interface.</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="tab-pane" id="tab-output">
-                <div class="settings-group">
-                  <div class="setting-item">
-                    <label for="outputPath">Diretórios:</label>
-                    <div class="directories-container" id="directoriesContainer">
-                      <!-- Os diretórios serão adicionados aqui dinamicamente -->
-                    </div>
-                    <p class="setting-description">Diretórios padrão onde os arquivos de conquistas serão salvos. Cada diretório será representado por um botão nos cards dos jogos.</p>
                   </div>
                 </div>
               </div>
@@ -223,7 +210,7 @@
     </div>
   </div>
 
-  <!-- Modal para seleção de diretório -->
+  
   <div class="modal hidden" id="directoryModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -234,12 +221,32 @@
         <p>Selecione onde deseja salvar o arquivo de conquistas:</p>
         
         <div class="directory-list" id="directoryList">
-          <!-- Os diretórios serão adicionados aqui dinamicamente -->
+          
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn" id="cancelSave">Cancelar</button>
         <button class="btn btn-primary" id="confirmSave">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="loadDirectoryModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-folder-open"></i> Carregar Conquistas</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>De qual diretório deseja carregar as conquistas?</p>
+        
+        <div class="directory-list" id="loadDirectoryList">
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" id="cancelLoad">Cancelar</button>
+        <button class="btn btn-primary" id="confirmLoad">Carregar</button>
       </div>
     </div>
   </div>

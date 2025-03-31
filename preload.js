@@ -111,6 +111,10 @@ contextBridge.exposeInMainWorld('api', {
   
   selectDirectory: () => {
     return ipcRenderer.invoke('select-directory');
+  },
+  
+  getUnlockedAchievementsFromDirectory: (appId, directoryPath) => {
+    return ipcRenderer.invoke('get-unlocked-achievements-from-directory', appId, directoryPath);
   }
 });
 

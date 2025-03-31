@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "Русский (Россия)",
-    "author": "Moyase",
+    "author": "Esther",
     "version": "v1.2.0"
   },
   "translations": {
@@ -18,23 +18,23 @@
     },
     "achievements": {
       "title": "Достижения",
-      "appIdPlaceholder": "Введите ID игры",
-      "appIdInfo": "Вы можете найти ID игры в URL страницы игры: store.steampowered.com/app/APP_ID/",
+      "appIdPlaceholder": "Введите App ID игры",
+      "appIdInfo": "Вы можете найти App ID в URL магазина Steam: store.steampowered.com/app/APP_ID/",
       "searchPlaceholder": "Поиск достижений...",
       "selectAll": "Выбрать все",
-      "deselectAll": "Отменить выбор",
-      "timestamp": "Время получения достижения:",
-      "timestampCurrent": "Текущая",
-      "timestampCustom": "Пользовательская",
-      "timestampRandom": "Рандомная",
+      "deselectAll": "Снять выбор",
+      "timestamp": "Время:",
+      "timestampCurrent": "Текущее",
+      "timestampCustom": "Пользовательское",
+      "timestampRandom": "Случайное",
       "enableCustomTimestamp": "Включить пользовательское время",
-      "generateFile": "Создать файл",
+      "generateFile": "Сгенерировать файл",
       "noAchievements": "Для этой игры не найдено достижений.",
       "select": "Выбрать",
       "unlockedAt": "Уже разблокировано: {date}",
       "alreadyUnlocked": "Уже разблокировано",
       "notUnlocked": "Не разблокировано",
-      "selectToUnlock": "Выбрать для разблокировки",
+      "selectToUnlock": "Выберите для разблокировки",
       "unlockDate": "Дата разблокировки",
       "lockedStatus": "Заблокировано",
       "unlockedStatus": "Разблокировано",
@@ -43,10 +43,10 @@
     },
     "settings": {
       "title": "Настройки",
-      "apiKey": "API-ключ Steam",
-      "apiKeyLabel": "API-ключ:",
-      "apiKeyPlaceholder": "Введите ваш API-ключ Steam",
-      "apiKeyInfo": "Вы можете получить свой API-ключ Steam здесь.",
+      "apiKey": "API ключ Steam",
+      "apiKeyLabel": "API ключ:",
+      "apiKeyPlaceholder": "Введите ваш API ключ Steam",
+      "apiKeyInfo": "Вы можете получить ваш API ключ Steam здесь.",
       "saveApiKey": "Сохранить",
       "saved": "Сохранено",
       "language": "Язык",
@@ -72,19 +72,19 @@
       }
     },
     "errors": {
-      "invalidApiKey": "Пожалуйста, введите действительный ключ API.",
-      "invalidAppId": "Пожалуйста, введите действительный ID игры.",
+      "invalidApiKey": "Пожалуйста, введите действительный API ключ.",
+      "invalidAppId": "Пожалуйста, введите действительный App ID.",
       "fetchError": "Произошла ошибка при получении достижений.",
       "noSelection": "Пожалуйста, выберите хотя бы одно достижение.",
-      "writeError": "Ошибка при создании файла.",
-      "appIdRequired": "Пожалуйста, введите ID игры.",
-      "achievementsNotFound": "Не удалось получить достижения. Пожалуйста, проверьте ID игры и попробуйте снова.",
+      "writeError": "Ошибка при генерации файла.",
+      "appIdRequired": "Пожалуйста, введите App ID игры.",
+      "achievementsNotFound": "Не удалось получить достижения. Пожалуйста, проверьте app_id и попробуйте снова.",
       "outputPathNotConfigured": "Путь вывода не настроен."
     },
     "success": {
-      "fileGenerated": "Файл Achievements.ini был успешно создан в {path}",
-      "title": "Успешно!",
-      "defaultMessage": "Файл Achievements.ini был успешно создан!",
+      "fileGenerated": "Файл achievements.ini успешно сгенерирован в {path}",
+      "title": "Успех",
+      "defaultMessage": "Файл achievements.ini успешно сгенерирован!",
       "ok": "OK"
     },
     "loading": {
@@ -99,13 +99,29 @@
     "games": {
       "title": "Игры",
       "loading": "Загрузка игр...",
-      "noGames": "Игры не найдены. Проверьте директорию в настройках.",
+      "noGames": "Игры не найдены. Проверьте директорию вывода в настройках.",
       "error": "Ошибка при загрузке игр: {message}",
       "select": "Выбрать",
       "progress": "Прогресс",
-      "achievements": "достижения",
+      "achievements": "достижений",
       "errorFetchingGame": "Ошибка при получении информации об игре",
-      "errorFetchingGameDetails": "Ошибка при получении деталей игры"
+      "errorFetchingGameDetails": "Ошибка при получении подробностей об игре"
+    },
+    "directories": {
+      "selectTitle": "Выбрать директорию",
+      "selectMessage": "Выберите, куда сохранить файл достижений:",
+      "cancel": "Отмена",
+      "save": "Сохранить",
+      "existingFiles": "Эта игра уже существует в этой директории",
+      "noDirectories": "Нет настроенных директорий."
+    },
+    "loadModal": {
+      "title": "Загрузить достижения",
+      "message": "Директория, из которой будут загружены достижения:",
+      "cancel": "Отмена",
+      "load": "Загрузить",
+      "gameExists": "Файл достижений найден в:",
+      "loadedFrom": "Достижения загружены из: {directory}"
     }
   }
 }
