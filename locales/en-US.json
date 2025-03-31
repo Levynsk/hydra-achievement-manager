@@ -2,12 +2,12 @@
   "meta": {
     "name": "English (US)",
     "author": "Esther",
-    "version": "v1.2.0"
+    "version": "v1.3.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "about": "A modern Steam achievements manager.",
       "credits": "Made by Levynsk and Esther (Twitter - @onlysterbr)"
     },
