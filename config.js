@@ -1,5 +1,10 @@
 const { ipcRenderer } = require('electron');
 
+// Configurações globais da aplicação
+const API_CONFIG = {
+  HYDRA_API_URL: 'API_URL'
+};
+
 const defaultConfig = {
   apiKey: '',
   outputPath: 'C:/Users/Public/Documents/Steam/RUNE',
@@ -19,6 +24,7 @@ async function saveConfig(key, value) {
 }
 
 module.exports = {
+  API_CONFIG,
   defaultConfig,
   getConfig,
   saveConfig

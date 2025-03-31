@@ -1,8 +1,10 @@
 const { contextBridge, ipcRenderer } = require('electron');
-require('dotenv').config();
+const path = require('path');
+const fs = require('fs');
+const { API_CONFIG } = require('./config');
 
-// URL da API Hydra do arquivo .env ou valor padrão caso não esteja definido
-const HYDRA_API_URL = process.env.HYDRA_API_URL;
+// URL da API Hydra do arquivo de configuração
+const HYDRA_API_URL = API_CONFIG.HYDRA_API_URL;
 
 contextBridge.exposeInMainWorld('api', {
   getAchievements: async (appId, apiKey) => {
