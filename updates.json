@@ -1,28 +1,54 @@
 {
-  "latest_version": "1.1.0",
-  "download_url": "https://example.com/hydra-manager-v1.1.0.zip",
-  "release_date": "2023-11-15",
-  "min_version_required": "1.0.0",
-  "is_mandatory": false,
-  "changelog": [
+  "updates": [
     {
-      "version": "1.1.0",
-      "changes": [
-        "Adicionado sistema de atualização automática",
-        "Melhorias na interface da barra de título",
-        "Nova organização das configurações em abas",
-        "Correção de bugs na geração de arquivos",
-        "Melhor desempenho ao carregar grandes listas de conquistas"
+      "version": "1.0",
+      "changelog": [
+        "Stable release of Hydra Achievements Manager.",
+        "A tool designed to manage and unlock achievements in Hydra."
       ]
     },
     {
-      "version": "1.0.5",
-      "changes": [
-        "Correção de bugs menores",
-        "Melhorias na tradução",
-        "Atualização de dependências"
+      "version": "1.1",
+      "changelog": [
+        "Added multi-language support: PT-BR, EN-US, ES-ES, RU, UK, IT.",
+        "Introduced Game Manager: new section with achievement progress and quick navigation.",
+        "Redesigned interface for a more modern, intuitive, and customizable experience.",
+        "Optimized overall performance.",
+        "Full translation implemented."
+      ]
+    },
+    {
+      "version": "1.2",
+      "changelog": [
+        "Fixed: Duplicate achievements issue in the manager UI and bugs during achievement generation.",
+        "Improved: Detection and display system to prevent duplicate achievements.",
+        "Optimized: Achievement file processing to ensure unique entries."
+      ]
+    },
+    {
+      "version": "1.3",
+      "changelog": [
+        "Added support for multiple game directory structures: OnlineFix, RLD!, Codex, Rune (automatic recognition).",
+        "Note: OnlineFix support may be unstable due to potential Hydra bugs.",
+        "Implemented achievement loading from existing directories."
+      ]
+    },
+    {
+      "version": "1.4",
+      "changelog": [
+        "Integrated new Hydra API as default method.",
+        "No need to generate a Steam key anymore — although manual switching is still available in settings.",
+        "Various bug fixes and improvements."
+      ]
+    },
+    {
+      "version": "1.5",
+      "changelog": [
+        "Added a new tab for game search functionality.",
+        "Implemented in-app update checking system.",
+        "Optimized interface for improved performance and lighter experience.",
+        "General bug fixes and refinements."
       ]
     }
-  ],
-  "release_notes": "Esta atualização traz melhorias significativas na usabilidade e correções importantes. Recomendamos que todos os usuários atualizem para a versão mais recente."
-} 
+  ]
+}
