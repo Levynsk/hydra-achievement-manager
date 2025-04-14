@@ -17,8 +17,8 @@
 ### Pré-requisitos
 
 - Node.js (v14 ou superior)
-- npm (v6 ou superior)
-- Uma chave API Steam (obtenha [aqui](https://steamcommunity.com/dev/apikey))
+- Yarn (v1.22 ou superior)
+- Uma chave API Steam (Opcional) (obtenha [aqui](https://steamcommunity.com/dev/apikey))
 
 ### Instalação
 
@@ -30,12 +30,12 @@ cd hydra-achievement-manager
 
 2. Instale as dependências
 ```bash
-npm install
+yarn install
 ```
 
 3. Inicie a aplicação
 ```bash
-npm start
+yarn start
 ```
 
 ### Compilação
@@ -43,7 +43,7 @@ npm start
 Para criar um pacote distribuível:
 
 ```bash
-npm run build
+yarn build
 ```
 
 Isso criará executáveis na pasta `dist`.
@@ -52,7 +52,7 @@ Isso criará executáveis na pasta `dist`.
 
 1. Abra o aplicativo
 2. Vá para a aba Configurações
-3. Insira sua chave API Steam
+3. Insira sua chave de API da Steam ou use a API Hydra definida por padrão
 
 ## 🤝 Contribuindo
 
@@ -79,7 +79,7 @@ Se você achou este projeto útil, considere:
 
 ## 📌 Observação
 
-Este aplicativo é apenas para fins educacionais. Use por sua própria conta e risco e de acordo com os termos de serviço do Hydra.
+Este aplicativo é apenas para fins educacionais. Use por sua própria conta e risco e de acordo com os termos de serviço do Hydra e Steam.
 
 ---
 
