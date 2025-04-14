@@ -2,12 +2,12 @@
   "meta": {
     "name": "Italiano (Italia)",
     "author": "Lilith",
-    "version": "v1.4.0"
+    "version": "v1.5.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "v1.4.0",
+      "version": "v1.5.0",
       "about": "Un moderno gestore di obiettivi Steam.",
       "credits": "Realizzato da Levynsk e Esther (Twitter - @onlysterbr)"
     },
@@ -67,8 +67,24 @@
       "tabs": {
         "api": "API",
         "language": "Lingua",
+        "appearance": "Aspetto",
         "output": "Directory di Output",
-        "about": "Informazioni"
+        "about": "Informazioni",
+        "updates": "Aggiornamenti"
+      },
+      "updates": {
+        "title": "Aggiornamenti",
+        "currentVersion": "Versione attuale:",
+        "latestVersion": "Nuova versione:",
+        "checkUpdates": "Controlla aggiornamenti",
+        "downloadUpdate": "Scarica aggiornamento",
+        "upToDate": "Sistema aggiornato",
+        "upToDateMessage": "Stai utilizzando la versione più recente!",
+        "newVersionAvailable": "Nuova versione disponibile!",
+        "newVersionMessage": "La versione {version} è disponibile per il download.",
+        "changelog": "Note di rilascio",
+        "error": "Impossibile verificare gli aggiornamenti.",
+        "checking": "Verifica aggiornamenti in corso..."
       }
     },
     "errors": {
@@ -142,4 +158,4 @@
       "steamIdInfo": "Puoi trovare il tuo Steam ID qui."
     }
   }
-} 
+}

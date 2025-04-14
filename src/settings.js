@@ -105,6 +105,10 @@ export async function setupSettingsTabs() {
       button.textContent = await t('settings.tabs.api');
     } else if (tabId === 'tab-language') {
       button.textContent = await t('settings.tabs.language');
+    } else if (tabId === 'tab-appearance') {
+      button.textContent = await t('settings.tabs.appearance');
+    } else if (tabId === 'tab-updates') {
+      button.innerHTML = `<i class="fas fa-sync"></i> ${await t('settings.tabs.updates')}`;
     } else if (tabId === 'tab-about') {
       button.textContent = await t('settings.tabs.about');
     }
@@ -145,6 +149,137 @@ export async function showSuccess(message) {
   if (successModal) successModal.classList.remove('hidden');
 }
 
+export async function toggleLiteMode() {
+  const liteModeToggle = document.getElementById('liteModeToggle');
+  if (!liteModeToggle) return;
+  
+  const isLiteModeEnabled = liteModeToggle.checked;
+  
+  // Salvar configuração
+  const result = await window.api.saveConfig('liteMode', isLiteModeEnabled);
+  
+  if (result.success) {
+    // Aplicar Lite Mode imediatamente
+    if (isLiteModeEnabled) {
+      document.body.classList.add('lite-mode');
+    } else {
+      document.body.classList.remove('lite-mode');
+    }
+  }
+}
+
+// Função para mostrar notificação
+export function showNotification(title, message, icon = 'info-circle', duration = 5000) {
+  // Remove notificação existente se houver
+  const existingNotification = document.querySelector('.notification');
+  if (existingNotification) {
+    existingNotification.remove();
+  }
+
+  // Criar nova notificação
+  const notification = document.createElement('div');
+  notification.className = 'notification';
+  notification.innerHTML = `
+    <i class="fas fa-${icon}"></i>
+    <div class="notification-content">
+      <div class="notification-title">${title}</div>
+      <div class="notification-message">${message}</div>
+    </div>
+  `;
+
+  // Adicionar ao body
+  document.body.appendChild(notification);
+
+  // Adicionar evento de clique para fechar
+  notification.addEventListener('click', () => {
+    notification.classList.add('closing');
+    setTimeout(() => notification.remove(), 300);
+  });
+
+  // Auto-fechar após duração especificada
+  if (duration) {
+    setTimeout(() => {
+      if (notification.parentElement) {
+        notification.classList.add('closing');
+        setTimeout(() => notification.remove(), 300);
+      }
+    }, duration);
+  }
+}
+
+// Função para verificar atualizações
+export async function checkForUpdates(showNotificationIfNoUpdate = true) {
+  const checkUpdateBtn = document.getElementById('checkUpdateBtn');
+  const downloadUpdateBtn = document.getElementById('downloadUpdateBtn');
+  const newVersionContainer = document.getElementById('new-version-container');
+  const currentVersionEl = document.getElementById('current-version');
+  const newVersionEl = document.getElementById('new-version');
+  const changelogEl = document.getElementById('changelog');
+
+  try {
+    // Alterar texto do botão para indicar que está verificando
+    checkUpdateBtn.innerHTML = `<i class="fas fa-sync fa-spin"></i> ${await t('settings.updates.checkUpdates')}`;
+    
+    const updateInfo = await window.electron.getUpdateInfo();
+    
+    if (!updateInfo) {
+      throw new Error('Não foi possível obter informações da atualização');
+    }
+
+    // Atualizar elementos da UI
+    currentVersionEl.textContent = updateInfo.currentVersion;
+
+    if (updateInfo.remoteVersion > updateInfo.currentVersion) {
+      // Mostrar nova versão e botão de download
+      newVersionContainer.style.display = 'flex';
+      newVersionEl.textContent = updateInfo.remoteVersion;
+      downloadUpdateBtn.style.display = 'inline-flex';
+      
+      // Mostrar notificação
+      showNotification(
+        await t('settings.updates.newVersionAvailable'),
+        await t('settings.updates.newVersionMessage', { version: updateInfo.remoteVersion }),
+        'arrow-circle-up'
+      );
+    } else if (showNotificationIfNoUpdate) {
+      showNotification(
+        await t('settings.updates.upToDate'),
+        await t('settings.updates.upToDateMessage'),
+        'check-circle',
+        3000
+      );
+    }
+
+    // Mostrar todo o histórico de atualizações em ordem decrescente
+    if (updateInfo.allUpdates && Array.isArray(updateInfo.allUpdates)) {
+      const changelogContent = updateInfo.allUpdates
+        .slice()
+        .reverse()
+        .map(update => `
+          <div class="update-entry">
+            <h4>Versão ${update.version}</h4>
+            <ul>
+              ${update.changelog.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+          </div>
+        `)
+        .join('<hr>');
+
+      changelogEl.innerHTML = changelogContent;
+    }
+  } catch (error) {
+    console.error('Erro ao verificar atualizações:', error);
+    showNotification(
+      await t('error.title'),
+      await t('settings.updates.error'),
+      'exclamation-circle'
+    );
+  } finally {
+    // Restaurar texto do botão
+    checkUpdateBtn.innerHTML = `<i class="fas fa-sync"></i> ${await t('settings.updates.checkUpdates')}`;
+  }
+}
+
 export async function initSettings() {
   // Carregar API Key salva
   const savedApiKey = await window.api.getApiKey();
@@ -172,6 +307,21 @@ export async function initSettings() {
     }
   }
   
+  // Carregar configuração do Lite Mode
+  const liteModeToggle = document.getElementById('liteModeToggle');
+  if (liteModeToggle) {
+    const isLiteModeEnabled = await window.api.getConfig('liteMode');
+    liteModeToggle.checked = isLiteModeEnabled;
+    
+    // Aplicar Lite Mode se estiver ativado
+    if (isLiteModeEnabled) {
+      document.body.classList.add('lite-mode');
+    }
+    
+    // Adicionar evento para alternar o Lite Mode
+    liteModeToggle.addEventListener('change', toggleLiteMode);
+  }
+  
   // Configurar as abas de configurações
   await setupSettingsTabs();
   
@@ -180,4 +330,24 @@ export async function initSettings() {
   if (steamIdContainer) {
     steamIdContainer.style.display = 'none';
   }
-} 
+
+  // Configurar eventos da aba de atualizações
+  const checkUpdateBtn = document.getElementById('checkUpdateBtn');
+  const downloadUpdateBtn = document.getElementById('downloadUpdateBtn');
+
+  if (checkUpdateBtn) {
+    checkUpdateBtn.addEventListener('click', () => checkForUpdates());
+  }
+
+  if (downloadUpdateBtn) {
+    downloadUpdateBtn.addEventListener('click', async () => {
+      const updateInfo = await window.electron.getUpdateInfo();
+      if (updateInfo?.downloadUrl) {
+        await window.electron.openExternalLink(updateInfo.downloadUrl);
+      }
+    });
+  }
+
+  // Verificar atualizações ao iniciar (sem notificação se não houver atualização)
+  await checkForUpdates(false);
+}

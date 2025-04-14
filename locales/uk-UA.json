@@ -2,12 +2,12 @@
   "meta": {
     "name": "Українська (Україна)",
     "author": "Esther",
-    "version": "v1.4.0"
+    "version": "v1.5.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "v1.4.0",
+      "version": "v1.5.0",
       "about": "Сучасний менеджер досягнень Steam.",
       "credits": "Створено Levynsk та Esther (Twitter - @onlysterbr)"
     },
@@ -67,8 +67,24 @@
       "tabs": {
         "api": "API Steam",
         "language": "Мова",
+        "appearance": "Зовнішній вигляд",
         "output": "Директорія виводу",
-        "about": "Про програму"
+        "about": "Про програму",
+        "updates": "Оновлення"
+      },
+      "updates": {
+        "title": "Оновлення",
+        "currentVersion": "Поточна версія:",
+        "latestVersion": "Нова версія:",
+        "checkUpdates": "Перевірити оновлення",
+        "downloadUpdate": "Завантажити оновлення",
+        "upToDate": "Система оновлена",
+        "upToDateMessage": "У вас встановлена остання версія!",
+        "newVersionAvailable": "Доступна нова версія!",
+        "newVersionMessage": "Версія {version} доступна для завантаження.",
+        "changelog": "Історія змін",
+        "error": "Не вдалося перевірити оновлення.",
+        "checking": "Перевірка оновлень..."
       }
     },
     "errors": {

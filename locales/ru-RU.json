@@ -2,17 +2,18 @@
   "meta": {
     "name": "Русский (Россия)",
     "author": "Moyase",
-    "version": "v1.4.0"
+    "version": "v1.5.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "v1.4.0",
+      "version": "v1.5.0",
       "about": "Современный менеджер достижений Steam.",
       "credits": "Создано Levynsk и Esther (Twitter - @onlysterbr)"
     },
     "sidebar": {
       "games": "Игры",
+      "search": "Поиск",
       "achievements": "Достижения",
       "settings": "Настройки"
     },
@@ -67,8 +68,24 @@
       "tabs": {
         "api": "API Steam",
         "language": "Язык",
+        "appearance": "Внешний вид",
         "output": "Директория вывода",
-        "about": "О программе"
+        "about": "О программе",
+        "updates": "Обновления"
+      },
+      "updates": {
+        "title": "Обновления",
+        "currentVersion": "Текущая версия:",
+        "latestVersion": "Новая версия:",
+        "checkUpdates": "Проверить обновления",
+        "downloadUpdate": "Загрузить обновление",
+        "upToDate": "Система обновлена",
+        "upToDateMessage": "У вас установлена последняя версия!",
+        "newVersionAvailable": "Доступна новая версия!",
+        "newVersionMessage": "Версия {version} доступна для загрузки.",
+        "changelog": "История изменений",
+        "error": "Не удалось проверить обновления.",
+        "checking": "Проверка обновлений..."
       }
     },
     "errors": {
@@ -82,9 +99,9 @@
       "outputPathNotConfigured": "Путь вывода не настроен."
     },
     "success": {
-      "fileGenerated": "Файл achievements.ini успешно сгенерирован в {path}",
+      "fileGenerated": "Файл achievements.ini успешно создан в {path}",
       "title": "Успех",
-      "defaultMessage": "Файл achievements.ini успешно сгенерирован!",
+      "defaultMessage": "Файл achievements.ini успешно создан!",
       "ok": "OK"
     },
     "loading": {
@@ -126,14 +143,14 @@
     },
     "apiSources": {
       "steam": "API",
-      "hydra": "Hydra API",
+      "hydra": "API Hydra",
       "title": "Источник данных",
-      "description": "Выберите, какой API будет использоваться для получения достижений",
-      "steamDescription": "Требуется API ключ",
-      "hydraDescription": "API ключ не требуется",
+      "description": "Выберите API, которое будет использоваться для получения достижений",
+      "steamDescription": "Требует API ключ",
+      "hydraDescription": "Не требует API ключ",
       "source": "Источник API:",
       "getApiKeyHere": "Вы можете получить ваш API ключ здесь",
-      "selectDataSource": "Выберите источник данных для достижений. Hydra API не требует API ключа.",
+      "selectDataSource": "Выберите источник данных для достижений. API Hydra не требует API ключа.",
       "steamOfficial": "Официальный API Steam",
       "saveSource": "Сохранить",
       "steam_url": "https://steamcommunity.com/dev/apikey",

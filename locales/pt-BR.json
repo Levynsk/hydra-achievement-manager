@@ -2,17 +2,18 @@
   "meta": {
     "name": "Português (Brasil)",
     "author": "Levynsk & Esther",
-    "version": "v1.4.0"
+    "version": "v1.5.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "v1.4.0",
+      "version": "v1.5.0",
       "about": "Um gerenciador moderno para conquistas da Steam.",
       "credits": "Feito por Levynsk e Esther (Twitter - @onlysterbr)"
     },
     "sidebar": {
       "games": "Jogos",
+      "search": "Pesquisar",
       "achievements": "Conquistas",
       "settings": "Configurações"
     },
@@ -64,11 +65,30 @@
       "themeDark": "Escuro",
       "themeSystem": "Sistema",
       "about": "Sobre",
+      "liteMode": "Lite Mode",
+      "liteModeLabel": "Lite Mode:",
+      "liteModeInfo": "Desativa todas as animações e efeitos visuais para melhorar o desempenho.",
       "tabs": {
         "api": "API",
         "language": "Idioma",
+        "appearance": "Aparência",
         "output": "Diretório de Saída",
-        "about": "Sobre"
+        "about": "Sobre",
+        "updates": "Atualizações"
+      },
+      "updates": {
+        "title": "Atualizações",
+        "currentVersion": "Versão atual:",
+        "latestVersion": "Nova versão:",
+        "checkUpdates": "Verificar atualizações",
+        "downloadUpdate": "Baixar atualização",
+        "upToDate": "Sistema atualizado",
+        "upToDateMessage": "Você está usando a versão mais recente!",
+        "newVersionAvailable": "Nova versão disponível!",
+        "newVersionMessage": "A versão {version} está disponível para download.",
+        "changelog": "Histórico de mudanças",
+        "error": "Não foi possível verificar atualizações.",
+        "checking": "Verificando atualizações..."
       }
     },
     "errors": {
@@ -80,6 +100,16 @@
       "appIdRequired": "Por favor, digite o App ID do jogo.",
       "achievementsNotFound": "Não foi possível obter as conquistas. Verifique o app_id e tente novamente.",
       "outputPathNotConfigured": "O caminho de saída não está configurado."
+    },
+    "search": {
+      "placeholder": "Pesquisar jogos na Steam...",
+      "description": "Pesquise jogos na Steam para ver suas conquistas",
+      "noSearchTerm": "Por favor, digite um termo de pesquisa.",
+      "noResults": "Nenhum jogo encontrado com o termo \"{term}\".",
+      "noGamesWithAchievements": "Nenhum jogo com conquistas encontrado com o termo de pesquisa.",
+      "loading": "Pesquisando jogos...",
+      "error": "Ocorreu um erro ao pesquisar jogos: {message}",
+      "tryAgain": "Tentar Novamente"
     },
     "success": {
       "fileGenerated": "Arquivo achievements.ini foi gerado com sucesso em {path}",

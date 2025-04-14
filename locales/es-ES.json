@@ -2,12 +2,12 @@
   "meta": {
     "name": "Español (España)",
     "author": "Esther",
-    "version": "v1.4.0"
+    "version": "v1.5.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "v1.4.0",
+      "version": "v1.5.0",
       "about": "Un gestor moderno de logros de Steam.",
       "credits": "Hecho por Levynsk y Esther (Twitter - @onlysterbr)"
     },
@@ -67,8 +67,24 @@
       "tabs": {
         "api": "API",
         "language": "Idioma",
+        "appearance": "Apariencia",
         "output": "Directorio de Salida",
-        "about": "Acerca de"
+        "about": "Acerca de",
+        "updates": "Actualizaciones"
+      },
+      "updates": {
+        "title": "Actualizaciones",
+        "currentVersion": "Versión actual:",
+        "latestVersion": "Nueva versión:",
+        "checkUpdates": "Buscar actualizaciones",
+        "downloadUpdate": "Descargar actualización",
+        "upToDate": "Sistema actualizado",
+        "upToDateMessage": "¡Estás usando la última versión!",
+        "newVersionAvailable": "¡Nueva versión disponible!",
+        "newVersionMessage": "La versión {version} está disponible para descargar.",
+        "changelog": "Historial de cambios",
+        "error": "No se pudo buscar actualizaciones.",
+        "checking": "Buscando actualizaciones..."
       }
     },
     "errors": {

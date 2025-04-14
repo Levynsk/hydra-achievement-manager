@@ -3,6 +3,7 @@ import { initLanguageSelector } from './settings.js';
 import { applyTranslations } from './translations.js';
 import { t } from './translations.js';
 import { setupEventListeners } from './events.js';
+import { initSearchListeners } from './search.js';
 
 export async function initApp() {
   const savedApiKey = await window.api.getApiKey();
@@ -20,6 +21,7 @@ export async function initApp() {
   await applyTranslations();
 
   setupEventListeners();
+  initSearchListeners();
 }
 
 document.addEventListener('DOMContentLoaded', initApp);

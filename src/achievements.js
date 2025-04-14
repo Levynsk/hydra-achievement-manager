@@ -289,9 +289,12 @@ export async function renderAchievements() {
   const uniqueAchievements = new Map();
   
   // Adicionar cada conquista ao Map, sobrescrevendo duplicatas
-  for (const achievement of achievements) {
-    uniqueAchievements.set(achievement.apiname, achievement);
-  }
+  achievements.forEach(achievement => {
+    // Só adicionar se a conquista tiver um apiname válido
+    if (achievement.apiname) {
+      uniqueAchievements.set(achievement.apiname, achievement);
+    }
+  });
   
   // Renderizar apenas as conquistas únicas
   for (const achievement of uniqueAchievements.values()) {
@@ -322,6 +325,7 @@ export async function renderAchievements() {
     
     achievementsList.appendChild(achievementItem);
     
+    // Adicionar evento ao checkbox
     const checkbox = achievementItem.querySelector('.achievement-checkbox');
     checkbox.addEventListener('change', () => {
       if (checkbox.checked) {
@@ -334,6 +338,7 @@ export async function renderAchievements() {
       updateGenerateButtonState();
     });
     
+    // Se a conquista já estiver desbloqueada, adicionar à seleção
     if (achievement.unlocked) {
       selectedAchievements.add(achievement.apiname);
     }
@@ -711,4 +716,4 @@ export function setupAchievementCardListeners() {
       input.classList.toggle('hidden', !e.target.checked);
     });
   });
-} 
+}

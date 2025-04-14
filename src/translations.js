@@ -33,8 +33,9 @@ export async function applyTranslations() {
     const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
     if (sidebarLinks.length >= 3) {
       sidebarLinks[0].innerHTML = `<i class="fas fa-gamepad"></i> ${await t('sidebar.games')}`;
-      sidebarLinks[1].innerHTML = `<i class="fas fa-trophy"></i> ${await t('sidebar.achievements')}`;
-      sidebarLinks[2].innerHTML = `<i class="fas fa-cog"></i> ${await t('sidebar.settings')}`;
+      sidebarLinks[1].innerHTML = `<i class="fas fa-search"></i> ${await t('sidebar.search')}`;
+      sidebarLinks[2].innerHTML = `<i class="fas fa-trophy"></i> ${await t('sidebar.achievements')}`;
+      sidebarLinks[3].innerHTML = `<i class="fas fa-cog"></i> ${await t('sidebar.settings')}`;
     }
     
     const achievementsTitle = document.querySelector('.app-id-achievements-card h2');
@@ -162,6 +163,17 @@ export async function applyTranslations() {
       languageInfo.textContent = await t('settings.languageInfo');
     }
     
+    // Traduzir elementos da aba de aparência 
+    const liteModeLabel = document.querySelector('label[for="liteModeToggle"]');
+    if (liteModeLabel) {
+      liteModeLabel.textContent = await t('settings.liteModeLabel');
+    }
+    
+    const liteModeInfo = document.querySelector('#tab-appearance .setting-description');
+    if (liteModeInfo) {
+      liteModeInfo.textContent = await t('settings.liteModeInfo');
+    }
+    
     const appearanceTitle = document.querySelector('.settings-group:nth-child(3) h3');
     if (appearanceTitle) {
       appearanceTitle.textContent = await t('settings.appearance');
@@ -188,6 +200,32 @@ export async function applyTranslations() {
       aboutText[0].textContent = `${await t('app.title')} ${await t('app.version')}`;
       aboutText[1].textContent = await t('app.about');
       aboutText[2].textContent = await t('app.credits');
+    }
+    
+    // Aplicar traduções para a área de pesquisa
+    const searchInput = document.getElementById('searchGameInput');
+    if (searchInput) {
+      searchInput.placeholder = await t('search.placeholder');
+    }
+    
+    const searchDescription = document.querySelector('.search-info p');
+    if (searchDescription) {
+      searchDescription.textContent = await t('search.description');
+    }
+    
+    const searchLoadingText = document.querySelector('#searchLoadingCard p');
+    if (searchLoadingText) {
+      searchLoadingText.textContent = await t('search.loading');
+    }
+    
+    const searchErrorTitle = document.querySelector('#searchErrorCard h3');
+    if (searchErrorTitle) {
+      searchErrorTitle.textContent = await t('error.title');
+    }
+    
+    const searchTryAgainBtn = document.getElementById('searchTryAgain');
+    if (searchTryAgainBtn) {
+      searchTryAgainBtn.textContent = await t('search.tryAgain');
     }
     
     await updateCurrentSectionTitle();
@@ -253,6 +291,32 @@ export async function applyTranslations() {
     if (confirmLoadBtn) {
       confirmLoadBtn.textContent = await t('loadModal.load');
     }
+
+    // Traduzir elementos da aba de atualizações
+    const updatesTitle = document.querySelector('#tab-updates h3');
+    if (updatesTitle) {
+      updatesTitle.textContent = await t('settings.updates.title');
+    }
+
+    const currentVersionText = document.querySelector('#tab-updates .version-item span[data-i18n="settings.updates.currentVersion"]');
+    if (currentVersionText) {
+      currentVersionText.textContent = await t('settings.updates.currentVersion');
+    }
+
+    const latestVersionText = document.querySelector('#tab-updates .version-item span[data-i18n="settings.updates.latestVersion"]');
+    if (latestVersionText) {
+      latestVersionText.textContent = await t('settings.updates.latestVersion');
+    }
+
+    const checkUpdateBtn = document.querySelector('#checkUpdateBtn span[data-i18n="settings.updates.checkUpdates"]');
+    if (checkUpdateBtn) {
+      checkUpdateBtn.textContent = await t('settings.updates.checkUpdates');
+    }
+
+    const downloadUpdateBtn = document.querySelector('#downloadUpdateBtn span[data-i18n="settings.updates.downloadUpdate"]');
+    if (downloadUpdateBtn) {
+      downloadUpdateBtn.textContent = await t('settings.updates.downloadUpdate');
+    }
     
     console.log('Traduções aplicadas com sucesso');
   } catch (error) {
@@ -269,6 +333,9 @@ export async function updateCurrentSectionTitle() {
     switch (section) {
       case 'games':
         titleKey = 'sidebar.games';
+        break;
+      case 'search':
+        titleKey = 'sidebar.search';
         break;
       case 'achievements':
         titleKey = 'sidebar.achievements';
@@ -295,4 +362,4 @@ async function debugApiTranslationKeys() {
   console.log('apiSources.saveSource:', await t('apiSources.saveSource'));
   console.log('apiSources.steamId:', await t('apiSources.steamId'));
   console.log('apiSources.steamIdInfo:', await t('apiSources.steamIdInfo'));
-} 
+}

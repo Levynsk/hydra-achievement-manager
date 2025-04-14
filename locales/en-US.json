@@ -2,17 +2,18 @@
   "meta": {
     "name": "English (US)",
     "author": "Esther",
-    "version": "v1.4.0"
+    "version": "v1.5.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "1.4.0",
+      "version": "1.5.0",
       "about": "A modern Steam achievements manager.",
       "credits": "Made by Levynsk and Esther (Twitter - @onlysterbr)"
     },
     "sidebar": {
       "games": "Games",
+      "search": "Search",
       "achievements": "Achievements",
       "settings": "Settings"
     },
@@ -64,11 +65,30 @@
       "themeDark": "Dark",
       "themeSystem": "System",
       "about": "About",
+      "liteMode": "Lite Mode",
+      "liteModeLabel": "Lite Mode:",
+      "liteModeInfo": "Disables all animations and visual effects to improve performance.",
       "tabs": {
         "api": "API",
         "language": "Language",
+        "appearance": "Appearance",
         "output": "Output Directory",
-        "about": "About"
+        "about": "About",
+        "updates": "Updates"
+      },
+      "updates": {
+        "title": "Updates",
+        "currentVersion": "Current version:",
+        "latestVersion": "Latest version:",
+        "checkUpdates": "Check for updates",
+        "downloadUpdate": "Download update",
+        "upToDate": "Up to date",
+        "upToDateMessage": "You are using the latest version!",
+        "newVersionAvailable": "New version available!",
+        "newVersionMessage": "Version {version} is available for download.",
+        "changelog": "Changelog",
+        "error": "Could not check for updates.",
+        "checking": "Checking for updates..."
       }
     },
     "errors": {
@@ -80,6 +100,16 @@
       "appIdRequired": "Please enter the game's App ID.",
       "achievementsNotFound": "Could not get achievements. Please check the app_id and try again.",
       "outputPathNotConfigured": "The output path is not configured."
+    },
+    "search": {
+      "placeholder": "Search games on Steam...",
+      "description": "Search for games on Steam to view their achievements",
+      "noSearchTerm": "Please enter a search term.",
+      "noResults": "No games found with the term \"{term}\".",
+      "noGamesWithAchievements": "No games with achievements found matching your search term.",
+      "loading": "Searching games...",
+      "error": "An error occurred while searching for games: {message}",
+      "tryAgain": "Try Again"
     },
     "success": {
       "fileGenerated": "Achievements.ini file was successfully generated at {path}",

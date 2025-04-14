@@ -14,6 +14,9 @@ export async function updateCurrentSectionTitle() {
       case 'games':
         titleKey = 'sidebar.games';
         break;
+      case 'search':
+        titleKey = 'sidebar.search';
+        break;
       case 'achievements':
         titleKey = 'sidebar.achievements';
         break;

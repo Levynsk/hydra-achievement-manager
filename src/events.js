@@ -28,16 +28,16 @@ export function setupEventListeners() {
 
   // Eventos da titlebar
   minimizeBtn.addEventListener('click', () => window.windowControls.minimize());
-  maximizeBtn.addEventListener('click', async () => {
-    await window.windowControls.maximize();
-    // Atualizar o ícone do botão de maximizar
-    const isMaximized = await window.windowControls.isMaximized();
-    maximizeBtn.querySelector('i').className = isMaximized ? 'fas fa-window-restore' : 'fas fa-window-maximize';
-  });
+  maximizeBtn.addEventListener('click', () => window.windowControls.maximize());
   closeBtn.addEventListener('click', () => {
     // Limpar a lista de jogos antes de fechar a aplicação
     clearGamesList();
     window.windowControls.close();
+  });
+
+  // Atualizar ícone do botão de maximizar quando o estado da janela mudar
+  window.windowControls.onWindowStateChange((state) => {
+    maximizeBtn.querySelector('i').className = state === 'maximized' ? 'fas fa-window-restore' : 'fas fa-window-maximize';
   });
 
   saveApiKeyBtn.addEventListener('click', saveApiKey);
