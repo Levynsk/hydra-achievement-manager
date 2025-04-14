@@ -11,19 +11,18 @@
 </head>
 <body>
   <div class="titlebar">
+    <div class="titlebar-drag">Hydra Manager</div>
     <div class="titlebar-buttons">
-      <button class="titlebar-button" id="closeBtn">
-        <i class="fas fa-xmark"></i>
-      </button>
       <button class="titlebar-button" id="minimizeBtn">
         <i class="fas fa-minus"></i>
       </button>
       <button class="titlebar-button" id="maximizeBtn">
-        <i class="fas fa-expand"></i>
+        <i class="fas fa-window-maximize"></i>
+      </button>
+      <button class="titlebar-button" id="closeBtn">
+        <i class="fas fa-times"></i>
       </button>
     </div>
-    <div class="titlebar-drag">Hydra Manager</div>
-    <div style="width: 54px;"></div>
   </div>
   <div class="app-container">
     <div class="sidebar">
@@ -36,12 +35,13 @@
       <nav class="sidebar-nav">
         <ul>
           <li><a href="#games"><i class="fas fa-gamepad"></i> <span>Jogos</span></a></li>
+          <li><a href="#search"><i class="fas fa-search"></i> <span>Pesquisar</span></a></li>
           <li class="active"><a href="#achievements"><i class="fas fa-trophy"></i> <span>Conquistas</span></a></li>
           <li><a href="#settings"><i class="fas fa-cog"></i> <span>Configurações</span></a></li>
         </ul>
       </nav>
       <div class="sidebar-footer">
-        <p>v1.4.0</p>
+        <p>v1.5.0</p>
       </div>
     </div>
     
@@ -57,6 +57,37 @@
         </div>
       </section>
       
+      <section class="section search-section hidden" id="searchSection">
+        <div class="achievements-header-card">
+          <div class="input-group stretched">
+            <div class="input-icon-wrapper">
+              <i class="fas fa-search input-icon"></i>
+              <input type="text" id="searchGameInput" placeholder="Pesquisar jogos na Steam..." class="input-with-icon" data-i18n="search.placeholder">
+            </div>
+            <button id="searchGameButton" class="btn btn-primary"><i class="fas fa-search"></i></button>
+          </div>
+          <div class="search-info">
+            <p data-i18n="search.description">Pesquise jogos na Steam para ver suas conquistas</p>
+          </div>
+        </div>
+        
+        <div class="loading-content hidden" id="searchLoadingCard">
+          <div class="loader"></div>
+          <p data-i18n="search.loading">Pesquisando jogos...</p>
+        </div>
+        
+        <div class="error-content hidden" id="searchErrorCard">
+          <i class="fas fa-exclamation-circle"></i>
+          <h3 data-i18n="error.title">Erro</h3>
+          <p id="searchErrorMessage">Ocorreu um erro ao pesquisar jogos.</p>
+          <button id="searchTryAgain" class="btn" data-i18n="search.tryAgain">Tentar Novamente</button>
+        </div>
+        
+        <div class="games-list" id="searchResultsList">
+          
+        </div>
+      </section>
+      
       <section class="section achievements-section" id="achievementsSection">
         <div class="achievements-header-card">
           <div class="input-group stretched">
@@ -66,9 +97,6 @@
             </div>
             <button id="fetchAchievements" class="btn btn-primary"><i class="fas fa-search"></i></button>
             <button id="generateFile" class="btn btn-primary"><i class="fas fa-file-export"></i> Gerar INI</button>
-          </div>
-          <div class="app-id-info">
-            <p>Você pode encontrar o App ID na URL da loja Steam: store.steampowered.com/app/<strong>APP_ID</strong>/</p>
           </div>
         </div>
           
@@ -123,9 +151,11 @@
           
           <div class="settings-tabs">
             <div class="tab-header">
-              <button class="tab-button active" data-tab="tab-api">API Steam</button>
-              <button class="tab-button" data-tab="tab-language">Idioma</button>
-              <button class="tab-button" data-tab="tab-about">Sobre</button>
+              <button class="tab-button active" data-tab="tab-api"><i class="fas fa-key"></i> API</button>
+              <button class="tab-button" data-tab="tab-language"><i class="fas fa-language"></i> Idioma</button>
+              <button class="tab-button" data-tab="tab-appearance"><i class="fas fa-paint-brush"></i> Aparência</button>
+              <button class="tab-button" data-tab="tab-updates"><i class="fas fa-sync"></i> Atualizações</button>
+              <button class="tab-button" data-tab="tab-about"><i class="fas fa-info-circle"></i> Sobre</button>
             </div>
             
             <div class="tab-content">
@@ -146,7 +176,7 @@
                   <div class="setting-item">
                     <label for="apiSource">Fonte da API:</label>
                     <div class="input-group stretched">
-                      <div class="input-icon-wrapper select-wrapper">
+                      <div class="input-icon-wrapper select-wrapper stretched-input">
                         <i class="fas fa-server input-icon"></i>
                         <select id="apiSource" class="input-with-icon">
                           <option value="hydra" selected>API Hydra</option>
@@ -175,13 +205,59 @@
                 <div class="settings-group">
                   <div class="setting-item">
                     <label for="languageSelect">Idioma:</label>
-                    <div class="input-icon-wrapper select-wrapper">
+                    <div class="input-icon-wrapper select-wrapper stretched-input">
                       <i class="fas fa-globe input-icon"></i>
                       <select id="languageSelect" class="input-with-icon">
                         
                       </select>
                     </div>
                     <p class="setting-description">Selecione o idioma da interface.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="tab-pane" id="tab-appearance">
+                <div class="settings-group">
+                  <div class="setting-item">
+                    <label for="liteModeToggle" data-i18n="settings.liteModeLabel">Lite Mode:</label>
+                    <div class="toggle-switch-wrapper">
+                      <label class="toggle-switch">
+                        <input type="checkbox" id="liteModeToggle">
+                        <span class="toggle-slider"></span>
+                      </label>
+                    </div>
+                    <p class="setting-description" data-i18n="settings.liteModeInfo">Desativa todas as animações e efeitos visuais para melhorar o desempenho.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-pane" id="tab-updates">
+                <div class="settings-group">
+                  <h3 data-i18n="settings.updates.title">Updates</h3>
+                  <div class="setting-item">
+                    <div class="version-info">
+                      <div class="version-line">
+                        <div class="version-item">
+                          <i class="fas fa-code-branch"></i>
+                          <span data-i18n="settings.updates.currentVersion">Current version:</span> <span class="version-number" id="current-version"></span>
+                        </div>
+                        <div class="version-item" id="new-version-container" style="display: none;">
+                          <i class="fas fa-arrow-circle-up"></i>
+                          <span data-i18n="settings.updates.latestVersion">Latest version:</span> <span class="version-number" id="new-version"></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="input-group stretched">
+                      <button id="checkUpdateBtn" class="btn">
+                        <i class="fas fa-sync"></i> <span data-i18n="settings.updates.checkUpdates"></span>
+                      </button>
+                      <button id="downloadUpdateBtn" class="btn btn-primary" style="display: none;">
+                        <i class="fas fa-download"></i> <span data-i18n="settings.updates.downloadUpdate"></span>
+                      </button>
+                    </div>
+                  </div>
+                  <div id="changelog" class="setting-description">
+                    
                   </div>
                 </div>
               </div>
@@ -193,9 +269,9 @@
                       <img src="https://i.imgur.com/ILbquHp.png" alt="Hydra" style="width: 48px; height: 48px;">
                       <h2>Hydra Achievements Manager</h2>
                     </div>
-                    <p class="version">v1.4.0</p>
-                    <p class="app-description">Um gerenciador moderno para conquistas da Steam.</p>
-                    <p class="app-credits">Feito por Levynsk e Esther (<a href="https://twitter.com/onlysterbr" target="_blank">@onlysterbr</a>)</p>
+                    <p class="version">v1.5.0</p>
+                    <p class="app-description">A modern manager for Steam achievements.</p>
+                    <p class="app-credits">Made by Levynsk (<a href="https://x.com/Levynskshy" target="_blank">@Levynskshy</a>) and Esther (<a href="https://twitter.com/onlysterbr" target="_blank">@onlysterbr</a>)</p>
                   </div>
                 </div>
               </div>

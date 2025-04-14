@@ -2,8 +2,10 @@ const { ipcRenderer } = require('electron');
 
 // Configurações globais da aplicação
 const API_CONFIG = {
-  HYDRA_API_URL: 'API_URL'
+  HYDRA_API_URL: 'apihere'
 };
+
+const Version = '1.3.0';
 
 const defaultConfig = {
   apiKey: '',
@@ -12,7 +14,8 @@ const defaultConfig = {
   activeOutputPath: 'C:/Users/Public/Documents/Steam/RUNE',
   theme: 'dark', 
   language: 'pt-BR',
-  apiSource: 'hydra'
+  apiSource: 'hydra',
+  liteMode: false
 };
 
 async function getConfig(key) {

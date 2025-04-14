@@ -1,14 +1,17 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const Store = require('electron-store');
 const fs = require('fs');
 const i18n = require('./i18n');
 const { API_CONFIG } = require('./config');
+const axios = require('axios');
 
+const isDev = process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 const store = new Store();
 
 let mainWindow;
 
+// Função para criar a janela principal
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
@@ -26,9 +29,18 @@ function createWindow() {
 
   mainWindow.loadFile('index.html');
 
-  // DevTools em janela separada apenas no ambiente de desenvolvimento
-  if (process.env.NODE_ENV === 'development') {
+  mainWindow.on('maximize', () => {
+    mainWindow.webContents.send('window-state-changed', 'maximized');
+  });
+
+  mainWindow.on('unmaximize', () => {
+    mainWindow.webContents.send('window-state-changed', 'normal');
+  });
+
+  // DevTools em modo de desenvolvimento
+  if (isDev) {
     mainWindow.webContents.openDevTools({ mode: 'detach' });
+    console.log('DevTools aberto em modo de desenvolvimento');
   }
 }
 
@@ -504,4 +516,80 @@ ipcMain.handle('select-directory', async () => {
   } catch (error) {
     return { success: false, message: error.message };
   }
+});
+
+// Adicionar à lista de IPC handlers
+ipcMain.handle('getCurrentVersion', () => {
+  return app.getVersion();
+});
+
+ipcMain.handle('getLatestVersion', async () => {
+  try {
+    const response = await axios.get('https://api.github.com/repos/levynascimento/hydra-achievement-manager/releases/latest');
+    return response.data.tag_name;
+  } catch (error) {
+    console.error('Erro ao buscar última versão:', error);
+    return null;
+  }
+});
+
+ipcMain.handle('getChangelog', async () => {
+  try {
+    const response = await axios.get('https://api.github.com/repos/levynascimento/hydra-achievement-manager/releases/latest');
+    return response.data.body;
+  } catch (error) {
+    console.error('Erro ao buscar changelog:', error);
+    return null;
+  }
+});
+
+ipcMain.handle('getDownloadUrl', async () => {
+  try {
+    const response = await axios.get('https://api.github.com/repos/levynascimento/hydra-achievement-manager/releases/latest');
+    return response.data.html_url;
+  } catch (error) {
+    console.error('Erro ao buscar URL de download:', error);
+    return null;
+  }
+});
+
+// Update handlers
+ipcMain.handle('get-update-info', async () => {
+  try {
+    const response = await axios.get('https://raw.githubusercontent.com/Levynsk/hydra-achievement-manager/refs/heads/main/updates.json');
+    const updateData = response.data;
+    
+    // Pegar a última versão (a mais recente no array)
+    const latestUpdate = updateData.updates[updateData.updates.length - 1];
+    
+    return {
+      currentVersion: require('./package.json').version,
+      remoteVersion: latestUpdate.version,
+      downloadUrl: 'https://github.com/Levynsk/hydra-achievement-manager/releases/',
+      changelog: latestUpdate.changelog,
+      allUpdates: updateData.updates // Enviar todo o histórico de atualizações
+    };
+  } catch (error) {
+    console.error('Error getting update info:', error);
+    return null;
+  }
+});
+
+ipcMain.handle('open-external-link', async (event, url) => {
+  try {
+    await shell.openExternal(url);
+    return { success: true };
+  } catch (error) {
+    console.error('Error opening external link:', error);
+    return { success: false, message: error.message };
+  }
+});
+
+// Funções para controle da janela
+ipcMain.handle('minimizeWindow', (event) => {
+  BrowserWindow.fromWebContents(event.sender).minimize();
+});
+
+ipcMain.handle('closeWindow', (event) => {
+  BrowserWindow.fromWebContents(event.sender).close();
 });

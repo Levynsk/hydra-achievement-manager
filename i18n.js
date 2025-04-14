@@ -31,11 +31,11 @@ function init() {
   
   return {
     t, // Translation function
-    getTranslation, // Added getTranslation function
+    getTranslation, // Translation function with fallback
     getCurrentLanguage,
     getAvailableLanguages,
     setLanguage,
-    getTranslationCompletion // Nova função para obter a porcentagem de conclusão da tradução
+    getTranslationCompletion // Get translation completion percentage
   };
 }
 
@@ -90,25 +90,8 @@ function loadAvailableLanguages() {
         }
       }
     });
-    
-    // If no languages found, add English as default
-    if (Object.keys(availableLanguages).length === 0) {
-      availableLanguages['en-US'] = {
-        code: 'en-US',
-        name: 'English (United States)',
-        author: 'System',
-        version: '1.0.0'
-      };
-    }
   } catch (err) {
     console.error('Error loading language files:', err);
-    // Fallback to English
-    availableLanguages['en-US'] = {
-      code: 'en-US',
-      name: 'English (United States)',
-      author: 'System',
-      version: '1.0.0'
-    };
   }
 }
 
@@ -139,68 +122,40 @@ function setLanguage(langCode) {
     
     if (fs.existsSync(filePath)) {
       const langData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      
       if (langData && langData.translations) {
         translations = langData.translations;
         currentLanguage = langCode;
-        
-        // Save the language preference
+        // Save language preference
         store.set('language', langCode);
-        
         return true;
       }
     }
-    
-    // If we get here, something went wrong, try to load English
-    if (langCode !== 'en-US') {
-      return setLanguage('en-US');
-    }
-    
-    return false;
   } catch (err) {
-    console.error(`Error setting language to ${langCode}:`, err);
-    return false;
+    console.error('Error setting language:', err);
   }
+  
+  return false;
 }
 
 /**
- * Get translation for a key
- * @param {string} key - Translation key (e.g., 'app.title', 'errors.invalidApiKey')
- * @param {Object} params - Parameters to replace in the translation
- * @returns {string} - Translated text or the key if not found
+ * Get the current language code
+ * @returns {string} - Current language code
  */
-function t(key, params = {}) {
-  // Split the key by dots to navigate the translations object
-  const parts = key.split('.');
-  let value = translations;
-  
-  // Navigate through the translations object
-  for (const part of parts) {
-    if (value && value[part] !== undefined) {
-      value = value[part];
-    } else {
-      // Key not found
-      return key;
-    }
-  }
-  
-  // If the value is not a string, return the key
-  if (typeof value !== 'string') {
-    return key;
-  }
-  
-  // Replace parameters in the translation
-  let result = value;
-  for (const [param, replacement] of Object.entries(params)) {
-    result = result.replace(new RegExp(`\\{${param}\\}`, 'g'), replacement);
-  }
-  
-  return result;
+function getCurrentLanguage() {
+  return currentLanguage;
+}
+
+/**
+ * Get all available languages
+ * @returns {Object} - Available languages
+ */
+function getAvailableLanguages() {
+  return availableLanguages;
 }
 
 /**
  * Get translation for a key with fallback to English
- * @param {string} key - Translation key
+ * @param {string} key - Translation key (e.g., 'app.title', 'errors.invalidApiKey')
  * @param {Object} params - Parameters to replace in the translation
  * @returns {string} - Translated text or English fallback or the key if not found
  */
@@ -222,19 +177,19 @@ function getTranslation(key, params = {}) {
     }
   }
   
-  // Se não encontrou no idioma atual ou não é uma string, tenta buscar em inglês
+  // If not found in current language or not a string, try English
   if (!foundInCurrent || typeof value !== 'string') {
-    // Tenta encontrar em inglês
+    // Try to find in English
     for (const part of parts) {
       if (englishValue && englishValue[part] !== undefined) {
         englishValue = englishValue[part];
       } else {
-        // Não encontrou em inglês
+        // Not found in English either
         return key;
       }
     }
     
-    // Se o valor em inglês não for uma string, retorna a chave
+    // If English value is not a string, return the key
     if (typeof englishValue !== 'string') {
       return key;
     }
@@ -243,81 +198,64 @@ function getTranslation(key, params = {}) {
   }
   
   // Replace parameters in the translation
-  let result = value;
   for (const [param, replacement] of Object.entries(params)) {
-    result = result.replace(new RegExp(`\\{${param}\\}`, 'g'), replacement);
+    value = value.replace(new RegExp(`\\{${param}\\}`, 'g'), replacement);
   }
   
-  return result;
+  return value;
+}
+
+/**
+ * Get translation for a key
+ * @param {string} key - Translation key
+ * @param {Object} params - Parameters to replace in the translation
+ * @returns {string} - Translated text or the key if not found
+ */
+function t(key, params = {}) {
+  return getTranslation(key, params);
 }
 
 /**
  * Calculate translation completion percentage
- * @param {string} langCode - Language code to check
+ * @param {string} langCode - Language code to check 
  * @returns {number} - Percentage of translation completion (0-100)
  */
 function getTranslationCompletion(langCode = currentLanguage) {
   try {
-    // Se for inglês, retorna 100%
+    // If English, return 100%
     if (langCode === 'en-US') return 100;
     
-    // Carrega o arquivo de tradução
+    // Load translation file
     const filePath = path.join(__dirname, 'locales', `${langCode}.json`);
     if (!fs.existsSync(filePath)) return 0;
     
     const langData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     if (!langData || !langData.translations) return 0;
     
-    // Conta as chaves em inglês (padrão)
+    // Count English keys (baseline)
+    function countTranslationKeys(obj) {
+      let count = 0;
+      for (const key in obj) {
+        if (typeof obj[key] === 'object') {
+          count += countTranslationKeys(obj[key]);
+        } else if (typeof obj[key] === 'string') {
+          count++;
+        }
+      }
+      return count;
+    }
+    
     const enKeys = countTranslationKeys(englishTranslations);
     if (enKeys === 0) return 0;
     
-    // Conta as chaves no idioma atual
+    // Count keys in current language
     const langKeys = countTranslationKeys(langData.translations);
     
     return Math.round((langKeys / enKeys) * 100);
   } catch (err) {
-    console.error(`Error calculating translation completion for ${langCode}:`, err);
+    console.error('Error calculating translation completion:', err);
     return 0;
   }
-}
-
-/**
- * Count translation keys in an object recursively
- * @param {Object} obj - Translation object
- * @returns {number} - Number of string translations
- */
-function countTranslationKeys(obj) {
-  let count = 0;
-  
-  function traverse(current) {
-    if (typeof current === 'string') {
-      count++;
-    } else if (typeof current === 'object' && current !== null) {
-      for (const key in current) {
-        traverse(current[key]);
-      }
-    }
-  }
-  
-  traverse(obj);
-  return count;
-}
-
-/**
- * Get the current language code
- * @returns {string} - Current language code
- */
-function getCurrentLanguage() {
-  return currentLanguage;
-}
-
-/**
- * Get all available languages
- * @returns {Object} - Available languages
- */
-function getAvailableLanguages() {
-  return availableLanguages;
 }
 
 module.exports = init();

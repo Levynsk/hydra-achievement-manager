@@ -203,12 +203,30 @@ contextBridge.exposeInMainWorld('api', {
   
   getUnlockedAchievementsFromDirectory: (appId, directoryPath) => {
     return ipcRenderer.invoke('get-unlocked-achievements-from-directory', appId, directoryPath);
-  }
+  },
+
+  // APIs de atualização
+  getCurrentVersion: () => ipcRenderer.invoke('getCurrentVersion'),
+  getLatestVersion: () => ipcRenderer.invoke('getLatestVersion'),
+  getChangelog: () => ipcRenderer.invoke('getChangelog'),
+  getDownloadUrl: () => ipcRenderer.invoke('getDownloadUrl'),
+  minimizeWindow: () => ipcRenderer.invoke('minimizeWindow'),
+  closeWindow: () => ipcRenderer.invoke('closeWindow')
 });
 
 contextBridge.exposeInMainWorld('windowControls', {
   minimize: () => ipcRenderer.invoke('minimize-window'),
   maximize: () => ipcRenderer.invoke('maximize-window'),
   close: () => ipcRenderer.invoke('close-window'),
-  isMaximized: () => ipcRenderer.invoke('is-window-maximized')
+  isMaximized: () => ipcRenderer.invoke('is-window-maximized'),
+  onWindowStateChange: (callback) => {
+    ipcRenderer.on('window-state-changed', (event, state) => callback(state));
+  }
+});
+
+contextBridge.exposeInMainWorld('electron', {
+  getUpdateInfo: () => ipcRenderer.invoke('get-update-info'),
+  minimizeWindow: () => ipcRenderer.invoke('minimizeWindow'),
+  closeWindow: () => ipcRenderer.invoke('closeWindow'),
+  openExternalLink: (url) => ipcRenderer.invoke('open-external-link', url)
 });
