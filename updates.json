@@ -1,14 +1,14 @@
 {
   "updates": [
     {
-      "version": "1.0",
+      "version": "1.0.0",
       "changelog": [
         "Stable release of Hydra Achievements Manager.",
         "A tool designed to manage and unlock achievements in Hydra."
       ]
     },
     {
-      "version": "1.1",
+      "version": "1.1.0",
       "changelog": [
         "Added multi-language support: PT-BR, EN-US, ES-ES, RU, UK, IT.",
         "Introduced Game Manager: new section with achievement progress and quick navigation.",
@@ -18,7 +18,7 @@
       ]
     },
     {
-      "version": "1.2",
+      "version": "1.2.0",
       "changelog": [
         "Fixed: Duplicate achievements issue in the manager UI and bugs during achievement generation.",
         "Improved: Detection and display system to prevent duplicate achievements.",
@@ -26,7 +26,7 @@
       ]
     },
     {
-      "version": "1.3",
+      "version": "1.3.0",
       "changelog": [
         "Added support for multiple game directory structures: OnlineFix, RLD!, Codex, Rune (automatic recognition).",
         "Note: OnlineFix support may be unstable due to potential Hydra bugs.",
@@ -34,7 +34,7 @@
       ]
     },
     {
-      "version": "1.4",
+      "version": "1.4.0",
       "changelog": [
         "Integrated new Hydra API as default method.",
         "No need to generate a Steam key anymore — although manual switching is still available in settings.",
@@ -42,7 +42,7 @@
       ]
     },
     {
-      "version": "1.5",
+      "version": "1.5.0",
       "changelog": [
         "Added a new tab for game search functionality.",
         "Implemented in-app update checking system.",
