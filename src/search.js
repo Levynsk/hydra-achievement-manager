@@ -78,18 +78,32 @@ async function renderSearchResults(games) {
   
   const achievementsText = await t('games.achievements') || 'conquistas';
   
-  // Usar um Map para garantir unicidade por ID do jogo
+  // Usar Maps para garantir unicidade por ID e nome do jogo
   const uniqueGames = new Map();
+  const gameNames = new Map(); // Map para controlar nomes duplicados
   
+  // Primeira passagem: organizar jogos por nome para identificar duplicatas
   for (const game of games) {
-    if (game.type !== 'app') continue; // Filtrar apenas aplicativos
+    if (game.type !== 'app') continue;
     
-    // Se o jogo já existe no Map, pular
-    if (uniqueGames.has(game.id)) continue;
+    const normalizedName = game.name.toLowerCase().trim();
     
-    // Adicionar ao Map
-    uniqueGames.set(game.id, game);
+    // Se já existe um jogo com esse nome, verifica qual manter
+    if (gameNames.has(normalizedName)) {
+      const existingGame = gameNames.get(normalizedName);
+      // Se o jogo atual tem um ID menor, vamos considerá-lo como o "original"
+      if (parseInt(game.id) < parseInt(existingGame.id)) {
+        gameNames.set(normalizedName, game);
+      }
+      continue; // Pula o jogo duplicado
+    }
     
+    // Se é a primeira vez que vemos esse nome
+    gameNames.set(normalizedName, game);
+  }
+  
+  // Segunda passagem: renderizar apenas os jogos únicos
+  for (const game of gameNames.values()) {
     // Buscar dados das conquistas usando a API oficial da Steam
     let totalAchievements = "?";
     
@@ -126,12 +140,13 @@ async function renderSearchResults(games) {
       </button>
     `;
     
-    // Adicionar apenas um listener no card inteiro
-    gameCard.addEventListener('click', () => {
+    // Adicionar listener apenas no botão de seleção
+    const selectBtn = gameCard.querySelector('.game-select-btn');
+    selectBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Previne a propagação do clique
       selectGame(game.id);
     });
     
-    // Adicionar o card à lista de resultados
     searchResultsList.appendChild(gameCard);
   }
 }
