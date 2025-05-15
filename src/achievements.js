@@ -382,8 +382,16 @@ export function handleTimestampTypeChange() {
   const timestampType = timestampTypeSelect.value;
   if (timestampType === 'custom') {
     customTimestampInput.classList.remove('hidden');
+    customTimestampInput.disabled = false;
+    // Set current datetime as default value if empty
+    if (!customTimestampInput.value) {
+      const now = new Date();
+      const localDate = new Date(now.getTime() - (now.getTimezoneOffset() * 60000));
+      customTimestampInput.value = localDate.toISOString().slice(0, 16);
+    }
   } else {
     customTimestampInput.classList.add('hidden');
+    customTimestampInput.disabled = true;
   }
 }
 
