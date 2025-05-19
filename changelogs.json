@@ -1,6 +1,15 @@
 {
   "versions": [
     {
+      "version": "1.6.0",
+      "changes": [
+        "Introduced a brand new interface.",
+        "Fixed issue with disabled global custom timestamp functionality.",
+        "Added ability to generate JSON with images included.",
+        "Now supports exporting and loading JSON from custom directories."
+      ]
+    },
+    {
       "version": "1.5.0",
       "changes": [
         "Added a new tab for game search functionality.",
