@@ -24,6 +24,10 @@
       "searchPlaceholder": "Search achievements...",
       "selectAll": "Select All",
       "deselectAll": "Deselect All",
+      "toggleSelect": {
+        "select": "Select All",
+        "deselect": "Deselect All"
+      },
       "timestamp": "Timestamp:",
       "timestampCurrent": "Current",
       "timestampCustom": "Custom",
@@ -40,7 +44,12 @@
       "lockedStatus": "Locked",
       "unlockedStatus": "Unlocked",
       "noDescription": "No description",
-      "platinum": "Platinum"
+      "platinum": "Platinum",
+      "export": "Export",
+      "exportTooltip": "Export achievements and images",
+      "exporting": "Exporting",
+      "selectingDirectory": "Selecting folder for export...",
+      "preparingExport": "Preparing achievements for export..."
     },
     "settings": {
       "title": "Settings",
@@ -99,7 +108,8 @@
       "writeError": "Error generating file.",
       "appIdRequired": "Please enter the game's App ID.",
       "achievementsNotFound": "Could not get achievements. Please check the app_id and try again.",
-      "outputPathNotConfigured": "The output path is not configured."
+      "outputPathNotConfigured": "The output path is not configured.",
+      "exportError": "Error exporting achievements and images"
     },
     "search": {
       "placeholder": "Search games on Steam...",
@@ -112,10 +122,11 @@
       "tryAgain": "Try Again"
     },
     "success": {
-      "fileGenerated": "Achievements.ini file was successfully generated at {path}",
+      "fileGenerated": "{fileType} file was successfully generated at {path}",
       "title": "Success",
-      "defaultMessage": "Achievements.ini file was successfully generated!",
-      "ok": "OK"
+      "defaultMessage": "File was successfully generated!",
+      "ok": "OK",
+      "exportComplete": "Achievements and images exported successfully!"
     },
     "loading": {
       "achievements": "Loading achievements...",
@@ -140,10 +151,13 @@
     "directories": {
       "selectTitle": "Select Directory",
       "selectMessage": "Select where to save the achievements file:",
+      "selectCustom": "Select Custom Directory",
       "cancel": "Cancel",
       "save": "Save",
       "existingFiles": "This game already exists in this directory",
-      "noDirectories": "No directories configured."
+      "noDirectories": "No directories configured.",
+      "customDirectory": "Custom Directory",
+      "customDirectoryDescription": "Select a custom directory to save the file"
     },
     "loadModal": {
       "title": "Load Achievements",
@@ -170,6 +184,13 @@
       "steamId": "Steam ID:",
       "steamIdPlaceholder": "Enter your Steam ID",
       "steamIdInfo": "You can find your Steam ID here."
+    },
+    "formats": {
+      "title": "Format Options",
+      "ini": "INI File (Default)",
+      "json": "JSON + Images",
+      "iniDescription": "Generate a simple .ini file with achievement unlock data",
+      "jsonDescription": "Generate a JSON file including achievement images"
     }
   }
 }

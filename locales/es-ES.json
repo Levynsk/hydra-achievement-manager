@@ -22,6 +22,10 @@
       "appIdInfo": "Puedes encontrar el ID de la aplicación en la URL de la tienda Steam: store.steampowered.com/app/APP_ID/",
       "searchPlaceholder": "Buscar logros...",
       "selectAll": "Seleccionar Todo",
+      "toggleSelect": {
+        "select": "Seleccionar Todo",
+        "deselect": "Deseleccionar Todo"
+      },
       "deselectAll": "Deseleccionar Todo",
       "timestamp": "Marca de tiempo:",
       "timestampCurrent": "Actual",
@@ -39,7 +43,12 @@
       "lockedStatus": "Bloqueado",
       "unlockedStatus": "Desbloqueado",
       "noDescription": "Sin descripción",
-      "platinum": "Platino"
+      "platinum": "Platino",
+      "export": "Exportar",
+      "exportTooltip": "Exportar logros e imágenes",
+      "exporting": "Exportando",
+      "selectingDirectory": "Seleccionando carpeta para exportar...",
+      "preparingExport": "Preparando logros para exportar..."
     },
     "settings": {
       "title": "Ajustes",
@@ -95,13 +104,15 @@
       "writeError": "Error al generar el archivo.",
       "appIdRequired": "Por favor, introduce el ID de la aplicación del juego.",
       "achievementsNotFound": "No se pudieron obtener los logros. Por favor, verifica el app_id e inténtalo de nuevo.",
-      "outputPathNotConfigured": "La ruta de salida no está configurada."
+      "outputPathNotConfigured": "La ruta de salida no está configurada.",
+      "exportError": "Error al exportar logros e imágenes"
     },
     "success": {
-      "fileGenerated": "El archivo Achievements.ini se generó correctamente en {path}",
+      "fileGenerated": "El archivo {fileType} se generó correctamente en {path}",
       "title": "Éxito",
-      "defaultMessage": "¡El archivo Achievements.ini se generó correctamente!",
-      "ok": "Aceptar"
+      "defaultMessage": "¡El archivo se generó correctamente!",
+      "ok": "Aceptar",
+      "exportComplete": "¡Logros e imágenes exportados exitosamente!"
     },
     "loading": {
       "achievements": "Cargando logros...",
@@ -126,10 +137,13 @@
     "directories": {
       "selectTitle": "Seleccionar Directorio",
       "selectMessage": "Selecciona dónde guardar el archivo de logros:",
+      "selectCustom": "Seleccionar Directorio Personalizado",
       "cancel": "Cancelar",
       "save": "Guardar",
       "existingFiles": "Este juego ya existe en este directorio",
-      "noDirectories": "No hay directorios configurados."
+      "noDirectories": "No hay directorios configurados.",
+      "customDirectory": "Directorio Personalizado",
+      "customDirectoryDescription": "Selecciona un directorio personalizado para guardar el archivo"
     },
     "loadModal": {
       "title": "Cargar Logros",
@@ -156,6 +170,13 @@
       "steamId": "Steam ID:",
       "steamIdPlaceholder": "Introduce tu Steam ID",
       "steamIdInfo": "Puedes encontrar tu Steam ID aquí."
+    },
+    "formats": {
+      "title": "Opciones de Formato",
+      "ini": "Archivo INI (Predeterminado)",
+      "json": "JSON + Imágenes",
+      "iniDescription": "Generar un archivo .ini simple con datos de desbloqueo de logros",
+      "jsonDescription": "Generar un archivo JSON incluyendo imágenes de los logros"
     }
   }
 }

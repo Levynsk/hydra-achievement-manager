@@ -23,6 +23,10 @@
       "appIdInfo": "Você pode encontrar o App ID na URL da loja Steam: store.steampowered.com/app/APP_ID/",
       "searchPlaceholder": "Pesquisar conquistas...",
       "selectAll": "Selecionar Todas",
+      "toggleSelect": {
+        "select": "Selecionar Todas",
+        "deselect": "Desmarcar Todas"
+      },
       "deselectAll": "Desmarcar Todas",
       "timestamp": "Timestamp:",
       "timestampCurrent": "Atual",
@@ -40,7 +44,12 @@
       "lockedStatus": "Bloqueada",
       "unlockedStatus": "Desbloqueada",
       "noDescription": "Sem descrição",
-      "platinum": "Platina"
+      "platinum": "Platina",
+      "export": "Exportar",
+      "exportTooltip": "Exportar conquistas e imagens",
+      "exporting": "Exportando",
+      "selectingDirectory": "Selecionando pasta para exportação...",
+      "preparingExport": "Preparando conquistas para exportação..."
     },
     "settings": {
       "title": "Configurações",
@@ -99,7 +108,8 @@
       "writeError": "Erro ao gerar arquivo.",
       "appIdRequired": "Por favor, digite o App ID do jogo.",
       "achievementsNotFound": "Não foi possível obter as conquistas. Verifique o app_id e tente novamente.",
-      "outputPathNotConfigured": "O caminho de saída não está configurado."
+      "outputPathNotConfigured": "O caminho de saída não está configurado.",
+      "exportError": "Erro ao exportar conquistas e imagens"
     },
     "search": {
       "placeholder": "Pesquisar jogos na Steam...",
@@ -112,10 +122,11 @@
       "tryAgain": "Tentar Novamente"
     },
     "success": {
-      "fileGenerated": "Arquivo achievements.ini foi gerado com sucesso em {path}",
+      "fileGenerated": "Arquivo {fileType} foi gerado com sucesso em {path}",
       "title": "Sucesso",
-      "defaultMessage": "Arquivo achievements.ini foi gerado com sucesso!",
-      "ok": "OK"
+      "defaultMessage": "Arquivo foi gerado com sucesso!",
+      "ok": "OK",
+      "exportComplete": "Conquistas e imagens exportadas com sucesso!"
     },
     "loading": {
       "achievements": "Carregando conquistas...",
@@ -140,10 +151,13 @@
     "directories": {
       "selectTitle": "Selecionar Diretório",
       "selectMessage": "Selecione onde deseja salvar o arquivo de conquistas:",
+      "selectCustom": "Selecionar Diretório Personalizado",
       "cancel": "Cancelar",
       "save": "Salvar",
       "existingFiles": "Este jogo já existe neste diretório",
-      "noDirectories": "Nenhum diretório configurado."
+      "noDirectories": "Nenhum diretório configurado.",
+      "customDirectory": "Diretório Personalizado",
+      "customDirectoryDescription": "Selecione um diretório personalizado para salvar o arquivo"
     },
     "loadModal": {
       "title": "Carregar Conquistas",
@@ -170,6 +184,13 @@
       "steamId": "Steam ID:",
       "steamIdPlaceholder": "Insira seu Steam ID",
       "steamIdInfo": "Você pode encontrar seu Steam ID aqui."
+    },
+    "formats": {
+      "title": "Opções de Formato",
+      "ini": "Arquivo INI (Padrão)",
+      "json": "JSON + Imagens",
+      "iniDescription": "Gerar um arquivo .ini simples com dados de desbloqueio das conquistas",
+      "jsonDescription": "Gerar um arquivo JSON incluindo imagens das conquistas"
     }
   }
 }

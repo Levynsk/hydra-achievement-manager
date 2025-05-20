@@ -23,6 +23,10 @@
       "appIdInfo": "Вы можете найти App ID в URL магазина Steam: store.steampowered.com/app/APP_ID/",
       "searchPlaceholder": "Поиск достижений...",
       "selectAll": "Выбрать все",
+      "toggleSelect": {
+        "select": "Выбрать все",
+        "deselect": "Снять выбор"
+      },
       "deselectAll": "Снять выбор",
       "timestamp": "Время:",
       "timestampCurrent": "Текущее",
@@ -40,7 +44,12 @@
       "lockedStatus": "Заблокировано",
       "unlockedStatus": "Разблокировано",
       "noDescription": "Нет описания",
-      "platinum": "Платина"
+      "platinum": "Платина",
+      "export": "Экспорт",
+      "exportTooltip": "Экспортировать достижения и изображения",
+      "exporting": "Экспортирование",
+      "selectingDirectory": "Выбор папки для экспорта...",
+      "preparingExport": "Подготовка достижений для экспорта..."
     },
     "settings": {
       "title": "Настройки",
@@ -96,13 +105,15 @@
       "writeError": "Ошибка при генерации файла.",
       "appIdRequired": "Пожалуйста, введите App ID игры.",
       "achievementsNotFound": "Не удалось получить достижения. Пожалуйста, проверьте app_id и попробуйте снова.",
-      "outputPathNotConfigured": "Путь вывода не настроен."
+      "outputPathNotConfigured": "Путь вывода не настроен.",
+      "exportError": "Ошибка при экспорте достижений и изображений"
     },
     "success": {
-      "fileGenerated": "Файл achievements.ini успешно создан в {path}",
+      "fileGenerated": "Файл {fileType} успешно создан в {path}",
       "title": "Успех",
-      "defaultMessage": "Файл achievements.ini успешно создан!",
-      "ok": "OK"
+      "defaultMessage": "Файл успешно создан!",
+      "ok": "OK",
+      "exportComplete": "Достижения и изображения успешно экспортированы!"
     },
     "loading": {
       "achievements": "Загрузка достижений...",
@@ -127,10 +138,13 @@
     "directories": {
       "selectTitle": "Выбрать директорию",
       "selectMessage": "Выберите, куда сохранить файл достижений:",
+      "selectCustom": "Выбрать Пользовательскую Директорию",
       "cancel": "Отмена",
       "save": "Сохранить",
       "existingFiles": "Эта игра уже существует в этой директории",
-      "noDirectories": "Нет настроенных директорий."
+      "noDirectories": "Нет настроенных директорий.",
+      "customDirectory": "Пользовательская директория",
+      "customDirectoryDescription": "Выберите пользовательскую директорию для сохранения файла"
     },
     "loadModal": {
       "title": "Загрузить достижения",
@@ -157,6 +171,13 @@
       "steamId": "Steam ID:",
       "steamIdPlaceholder": "Введите ваш Steam ID",
       "steamIdInfo": "Вы можете найти ваш Steam ID здесь."
+    },
+    "formats": {
+      "title": "Формат Экспорта",
+      "ini": "INI Файл (По умолчанию)",
+      "json": "JSON + Изображения",
+      "iniDescription": "Создать простой .ini файл с данными о разблокировке достижений",
+      "jsonDescription": "Создать JSON файл с изображениями достижений"
     }
   }
 }

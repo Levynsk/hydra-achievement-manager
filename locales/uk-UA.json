@@ -22,6 +22,10 @@
       "appIdInfo": "Ви можете знайти App ID у URL магазину Steam: store.steampowered.com/app/APP_ID/",
       "searchPlaceholder": "Пошук досягнень...",
       "selectAll": "Вибрати всі",
+      "toggleSelect": {
+        "select": "Вибрати всі",
+        "deselect": "Скасувати вибір"
+      },
       "deselectAll": "Скасувати вибір",
       "timestamp": "Час:",
       "timestampCurrent": "Поточний",
@@ -39,7 +43,12 @@
       "lockedStatus": "Заблоковано",
       "unlockedStatus": "Розблоковано",
       "noDescription": "Немає опису",
-      "platinum": "Платина"
+      "platinum": "Платина",
+      "export": "Експорт",
+      "exportTooltip": "Експортувати досягнення та зображення",
+      "exporting": "Експортування",
+      "selectingDirectory": "Вибір папки для експорту...",
+      "preparingExport": "Підготовка досягнень для експорту..."
     },
     "settings": {
       "title": "Налаштування",
@@ -95,13 +104,15 @@
       "writeError": "Помилка при створенні файлу.",
       "appIdRequired": "Будь ласка, введіть App ID гри.",
       "achievementsNotFound": "Не вдалося отримати досягнення. Будь ласка, перевірте app_id і спробуйте знову.",
-      "outputPathNotConfigured": "Шлях виводу не налаштовано."
+      "outputPathNotConfigured": "Шлях виводу не налаштовано.",
+      "exportError": "Помилка при експорті досягнень та зображень"
     },
     "success": {
-      "fileGenerated": "Файл achievements.ini успішно створено в {path}",
+      "fileGenerated": "Файл {fileType} успішно створено в {path}",
       "title": "Успіх",
-      "defaultMessage": "Файл achievements.ini успішно створено!",
-      "ok": "OK"
+      "defaultMessage": "Файл успішно створено!",
+      "ok": "OK",
+      "exportComplete": "Досягнення та зображення успішно експортовано!"
     },
     "loading": {
       "achievements": "Завантаження досягнень...",
@@ -126,6 +137,7 @@
     "directories": {
       "selectTitle": "Вибрати директорію",
       "selectMessage": "Виберіть, куди зберегти файл досягнень:",
+      "selectCustom": "Вибрати користувацьку директорію",
       "cancel": "Скасувати",
       "save": "Зберегти",
       "existingFiles": "Ця гра вже існує в цій директорії",
@@ -156,6 +168,13 @@
       "steamId": "Steam ID:",
       "steamIdPlaceholder": "Введіть ваш Steam ID",
       "steamIdInfo": "Ви можете знайти ваш Steam ID тут."
+    },
+    "formats": {
+      "title": "Формат Експорту",
+      "ini": "INI Файл (За замовчуванням)",
+      "json": "JSON + Зображення",
+      "iniDescription": "Створити простий .ini файл з даними про розблокування досягнень",
+      "jsonDescription": "Створити JSON файл із зображеннями досягнень"
     }
   }
 }

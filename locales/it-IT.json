@@ -22,6 +22,10 @@
       "appIdInfo": "Puoi trovare l'ID dell'app nell'URL del negozio Steam: store.steampowered.com/app/APP_ID/",
       "searchPlaceholder": "Cerca obiettivi...",
       "selectAll": "Seleziona Tutti",
+      "toggleSelect": {
+        "select": "Seleziona Tutti",
+        "deselect": "Deseleziona Tutti"
+      },
       "deselectAll": "Deseleziona Tutti",
       "timestamp": "Timestamp:",
       "timestampCurrent": "Attuale",
@@ -39,7 +43,12 @@
       "lockedStatus": "Bloccato",
       "unlockedStatus": "Sbloccato",
       "noDescription": "Nessuna descrizione",
-      "platinum": "Platino"
+      "platinum": "Platino",
+      "export": "Esporta",
+      "exportTooltip": "Esporta obiettivi e immagini",
+      "exporting": "Esportazione",
+      "selectingDirectory": "Selezione della cartella per l'esportazione...",
+      "preparingExport": "Preparazione degli obiettivi per l'esportazione..."
     },
     "settings": {
       "title": "Impostazioni",
@@ -95,13 +104,15 @@
       "writeError": "Errore durante la generazione del file.",
       "appIdRequired": "Inserisci l'ID dell'app del gioco.",
       "achievementsNotFound": "Impossibile ottenere gli obiettivi. Controlla l'app_id e riprova.",
-      "outputPathNotConfigured": "Il percorso di output non è configurato."
+      "outputPathNotConfigured": "Il percorso di output non è configurato.",
+      "exportError": "Errore durante l'esportazione di obiettivi e immagini"
     },
     "success": {
-      "fileGenerated": "Il file Achievements.ini è stato generato con successo in {path}",
+      "fileGenerated": "Il file {fileType} è stato generato con successo in {path}",
       "title": "Successo",
-      "defaultMessage": "Il file Achievements.ini è stato generato con successo!",
-      "ok": "OK"
+      "defaultMessage": "Il file è stato generato con successo!",
+      "ok": "OK",
+      "exportComplete": "Obiettivi e immagini esportati con successo!"
     },
     "loading": {
       "achievements": "Caricamento obiettivi...",
@@ -126,10 +137,13 @@
     "directories": {
       "selectTitle": "Seleziona Directory",
       "selectMessage": "Seleziona dove salvare il file degli obiettivi:",
+      "selectCustom": "Seleziona Directory Personalizzata",
       "cancel": "Annulla",
       "save": "Salva",
       "existingFiles": "Questo gioco esiste già in questa directory",
-      "noDirectories": "Nessuna directory configurata."
+      "noDirectories": "Nessuna directory configurata.",
+      "customDirectory": "Directory Personalizzata",
+      "customDirectoryDescription": "Seleziona una directory personalizzata per salvare il file"
     },
     "loadModal": {
       "title": "Carica Obiettivi",
@@ -156,6 +170,13 @@
       "steamId": "Steam ID:",
       "steamIdPlaceholder": "Inserisci il tuo Steam ID",
       "steamIdInfo": "Puoi trovare il tuo Steam ID qui."
+    },
+    "formats": {
+      "title": "Opzioni di Formato",
+      "ini": "File INI (Predefinito)",
+      "json": "JSON + Immagini",
+      "iniDescription": "Genera un file .ini semplice con i dati di sblocco degli obiettivi",
+      "jsonDescription": "Genera un file JSON includendo le immagini degli obiettivi"
     }
   }
 }
