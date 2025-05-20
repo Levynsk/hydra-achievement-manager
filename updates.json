@@ -49,6 +49,15 @@
         "Optimized interface for improved performance and lighter experience.",
         "General bug fixes and refinements."
       ]
+    },
+    {
+      "version": "1.6.0",
+      "changelog": [
+        "Introduced a brand new interface.",
+        "Fixed issue with disabled global custom timestamp functionality.",
+        "Added ability to generate JSON with images included.",
+        "Now supports exporting and loading JSON from custom directories."
+      ]
     }
   ]
 }
