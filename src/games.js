@@ -1,6 +1,7 @@
 import { t } from './translations.js';
 import { showError } from './settings.js';
 import { fetchAchievements } from './achievements.js';
+import { setCurrentGame } from './ui.js';
 
 const gamesList = document.getElementById('gamesList');
 const gamesSection = document.getElementById('gamesSection');
@@ -35,13 +36,21 @@ export async function displayGameInfo(appId) {
     const response = await fetch(`https://store.steampowered.com/api/appdetails?appids=${appId}`);
     const data = await response.json();
     
-    const config = await window.api.getConfig();
-    const outputPaths = config.outputPaths || [config.outputPath];
-    const activeOutputPath = config.activeOutputPath || outputPaths[0];
-    const result = await window.api.getGameFolders(activeOutputPath);
-    
     if (data[appId]?.success) {
       const gameData = data[appId].data;
+      
+      // Set game info in titlebar
+      setCurrentGame({
+        id: appId,
+        name: gameData.name,
+        image: `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`
+      });
+
+      const config = await window.api.getConfig();
+      const outputPaths = config.outputPaths || [config.outputPath];
+      const activeOutputPath = config.activeOutputPath || outputPaths[0];
+      const result = await window.api.getGameFolders(activeOutputPath);
+      
       const totalAchievements = gameData.achievements?.total || 0;
       
       let unlockedAchievements = 0;
@@ -275,30 +284,47 @@ export async function fetchGames() {
 }
 
 // Função para selecionar um jogo e navegar para a tela de conquistas
-function selectGame(gameId) {
-  // Atualiza visualmente o botão se necessário
-  const buttons = document.querySelectorAll('.game-select-btn');
-  buttons.forEach(btn => {
-    if (btn.closest('.game-card').dataset.id === gameId) {
-      btn.classList.add('selected');
-      btn.innerHTML = '<i class="fas fa-check"></i>';
-    } else {
-      btn.classList.remove('selected');
-      btn.innerHTML = '<i class="fas fa-plus"></i>';
-    }
-  });
-  
-  // Preenche o appId e navega para a tela de conquistas
-  const appIdInput = document.getElementById('appId');
-  if (appIdInput) {
-    appIdInput.value = gameId;
+async function selectGame(gameId) {
+  try {
+    // Get game info first
+    const response = await fetch(`https://store.steampowered.com/api/appdetails?appids=${gameId}`);
+    const data = await response.json();
     
-    const achievementsLink = document.querySelector('.sidebar-nav a[href="#achievements"]');
-    if (achievementsLink) {
-      achievementsLink.click();
+    if (data[gameId]?.success) {
+      const gameData = data[gameId].data;
+      setCurrentGame({
+        id: gameId,
+        name: gameData.name,
+        image: `https://cdn.cloudflare.steamstatic.com/steam/apps/${gameId}/header.jpg`
+      });
     }
+
+    // Update button visuals
+    const buttons = document.querySelectorAll('.game-select-btn');
+    buttons.forEach(btn => {
+      if (btn.closest('.game-card').dataset.id === gameId) {
+        btn.classList.add('selected');
+        btn.innerHTML = '<i class="fas fa-check"></i>';
+      } else {
+        btn.classList.remove('selected');
+        btn.innerHTML = '<i class="fas fa-plus"></i>';
+      }
+    });
     
-    fetchAchievements();
+    // Navigate to achievements
+    const appIdInput = document.getElementById('appId');
+    if (appIdInput) {
+      appIdInput.value = gameId;
+      
+      const achievementsLink = document.querySelector('.sidebar-nav a[href="#achievements"]');
+      if (achievementsLink) {
+        achievementsLink.click();
+      }
+      
+      fetchAchievements();
+    }
+  } catch (error) {
+    console.error('Error fetching game info:', error);
   }
 }
 

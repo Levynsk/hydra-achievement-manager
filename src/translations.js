@@ -3,8 +3,6 @@ import {
   appIdInput,
   appIdContainer,
   searchAchievementsInput,
-  selectAllBtn,
-  deselectAllBtn,
   timestampTypeSelect,
   generateFileBtn,
   currentSectionTitle,
@@ -53,14 +51,6 @@ export async function applyTranslations() {
     
     if (searchAchievementsInput) {
       searchAchievementsInput.placeholder = await t('achievements.searchPlaceholder');
-    }
-    
-    if (selectAllBtn) {
-      selectAllBtn.innerHTML = `<i class="fas fa-check-square"></i> ${await t('achievements.selectAll')}`;
-    }
-    
-    if (deselectAllBtn) {
-      deselectAllBtn.innerHTML = `<i class="fas fa-square"></i> ${await t('achievements.deselectAll')}`;
     }
     
     const timestampLabel = document.querySelector('label[for="timestampType"]');
@@ -202,6 +192,17 @@ export async function applyTranslations() {
       aboutText[2].textContent = await t('app.credits');
     }
     
+    // Aplicar traduções para o diretório personalizado
+    const customDirectoryTitle = document.querySelector('.custom-directory-title');
+    if (customDirectoryTitle) {
+      customDirectoryTitle.textContent = await t('directories.customDirectory');
+    }
+
+    const customDirectoryDesc = document.querySelector('.custom-directory-description');
+    if (customDirectoryDesc) {
+      customDirectoryDesc.textContent = await t('directories.customDirectoryDescription');
+    }
+
     // Aplicar traduções para a área de pesquisa
     const searchInput = document.getElementById('searchGameInput');
     if (searchInput) {
@@ -259,10 +260,40 @@ export async function applyTranslations() {
     if (dirModalTitle) {
       dirModalTitle.innerHTML = `<i class="fas fa-folder-open"></i> ${await t('directories.selectTitle')}`;
     }
+
+    // Traduzir botão de seleção de diretório personalizado
+    const selectCustomDirBtn = document.querySelector('.select-custom-dir-btn');
+    if (selectCustomDirBtn) {
+      selectCustomDirBtn.textContent = await t('directories.selectCustom');
+    }
     
     const dirModalMsg = document.querySelector('#directoryModal .modal-body > p');
     if (dirModalMsg) {
       dirModalMsg.textContent = await t('directories.selectMessage');
+    }
+
+    // Traduzir opções de formato
+    const formatTitle = document.querySelector('.format-selection h4');
+    if (formatTitle) {
+      formatTitle.textContent = await t('formats.title');
+    }
+
+    const iniButton = document.querySelector('.format-button[data-format="ini"] span');
+    const iniDescription = document.querySelector('.format-button[data-format="ini"] small');
+    if (iniButton) {
+      iniButton.textContent = await t('formats.ini');
+    }
+    if (iniDescription) {
+      iniDescription.textContent = await t('formats.iniDescription');
+    }
+
+    const jsonButton = document.querySelector('.format-button[data-format="json"] span');
+    const jsonDescription = document.querySelector('.format-button[data-format="json"] small');
+    if (jsonButton) {
+      jsonButton.textContent = await t('formats.json');
+    }
+    if (jsonDescription) {
+      jsonDescription.textContent = await t('formats.jsonDescription');
     }
     
     if (cancelSaveBtn) {
@@ -316,6 +347,18 @@ export async function applyTranslations() {
     const downloadUpdateBtn = document.querySelector('#downloadUpdateBtn span[data-i18n="settings.updates.downloadUpdate"]');
     if (downloadUpdateBtn) {
       downloadUpdateBtn.textContent = await t('settings.updates.downloadUpdate');
+    }
+    
+    // Add translation for toggle selection button
+    const toggleSelectionBtn = document.getElementById('toggleSelection');
+    if (toggleSelectionBtn) {
+      toggleSelectionBtn.innerHTML = `<i class="fa-solid fa-square"></i> ${await t('achievements.toggleSelect.select')}`;
+    }
+    
+    // Add translations for export progress modal
+    const progressModalTitle = document.querySelector('#progressModal .modal-header h3');
+    if (progressModalTitle) {
+      progressModalTitle.innerHTML = `<i class="fas fa-sync fa-spin"></i> ${await t('achievements.exporting')}`;
     }
     
     console.log('Traduções aplicadas com sucesso');

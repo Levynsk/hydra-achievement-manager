@@ -1,4 +1,5 @@
 import { t } from './translations.js';
+import { setCurrentGame } from './ui.js';
 
 // Elementos do DOM
 const searchInput = document.getElementById('searchGameInput');
@@ -78,32 +79,21 @@ async function renderSearchResults(games) {
   
   const achievementsText = await t('games.achievements') || 'conquistas';
   
-  // Usar Maps para garantir unicidade por ID e nome do jogo
+  // Usar um único Map para controlar os jogos únicos
   const uniqueGames = new Map();
-  const gameNames = new Map(); // Map para controlar nomes duplicados
   
-  // Primeira passagem: organizar jogos por nome para identificar duplicatas
+  // Primeira passagem: filtrar jogos únicos
   for (const game of games) {
     if (game.type !== 'app') continue;
     
-    const normalizedName = game.name.toLowerCase().trim();
-    
-    // Se já existe um jogo com esse nome, verifica qual manter
-    if (gameNames.has(normalizedName)) {
-      const existingGame = gameNames.get(normalizedName);
-      // Se o jogo atual tem um ID menor, vamos considerá-lo como o "original"
-      if (parseInt(game.id) < parseInt(existingGame.id)) {
-        gameNames.set(normalizedName, game);
-      }
-      continue; // Pula o jogo duplicado
+    // Usar o ID como chave única
+    if (!uniqueGames.has(game.id)) {
+      uniqueGames.set(game.id, game);
     }
-    
-    // Se é a primeira vez que vemos esse nome
-    gameNames.set(normalizedName, game);
   }
   
-  // Segunda passagem: renderizar apenas os jogos únicos
-  for (const game of gameNames.values()) {
+  // Renderizar apenas os jogos únicos
+  for (const game of uniqueGames.values()) {
     // Buscar dados das conquistas usando a API oficial da Steam
     let totalAchievements = "?";
     
@@ -147,25 +137,43 @@ async function renderSearchResults(games) {
       selectGame(game.id);
     });
     
+    // Adicionar o card à lista de resultados
     searchResultsList.appendChild(gameCard);
   }
 }
 
 // Função para selecionar um jogo dos resultados
-function selectGame(gameId) {
-  // Redirecionar para a aba de conquistas com o id do jogo
-  const appIdInput = document.getElementById('appId');
-  const fetchAchievementsBtn = document.getElementById('fetchAchievements');
-  
-  if (appIdInput && fetchAchievementsBtn) {
-    // Alternar para a aba de conquistas
-    const achievementsLink = document.querySelector('.sidebar-nav a[href="#achievements"]');
-    if (achievementsLink) {
-      achievementsLink.click();
-    }
+async function selectGame(gameId) {
+  try {
+    // Get game info first
+    const response = await fetch(`https://store.steampowered.com/api/appdetails?appids=${gameId}`);
+    const data = await response.json();
     
-    // Preencher o App ID e clicar no botão para buscar conquistas
-    appIdInput.value = gameId;
-    fetchAchievementsBtn.click();
+    if (data[gameId]?.success) {
+      const gameData = data[gameId].data;
+      setCurrentGame({
+        id: gameId,
+        name: gameData.name,
+        image: `https://cdn.cloudflare.steamstatic.com/steam/apps/${gameId}/header.jpg`
+      });
+    }
+
+    // Redirecionar para a aba de conquistas com o id do jogo
+    const appIdInput = document.getElementById('appId');
+    const fetchAchievementsBtn = document.getElementById('fetchAchievements');
+    
+    if (appIdInput && fetchAchievementsBtn) {
+      // Alternar para a aba de conquistas
+      const achievementsLink = document.querySelector('.sidebar-nav a[href="#achievements"]');
+      if (achievementsLink) {
+        achievementsLink.click();
+      }
+      
+      // Preencher o App ID e clicar no botão para buscar conquistas
+      appIdInput.value = gameId;
+      fetchAchievementsBtn.click();
+    }
+  } catch (error) {
+    console.error('Error fetching game info:', error);
   }
 }

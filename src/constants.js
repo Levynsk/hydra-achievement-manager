@@ -10,8 +10,6 @@ export const errorCard = document.getElementById('errorCard');
 export const errorMessage = document.getElementById('errorMessage');
 export const tryAgainBtn = document.getElementById('tryAgain');
 export const achievementsList = document.getElementById('achievementsList');
-export const selectAllBtn = document.getElementById('selectAll');
-export const deselectAllBtn = document.getElementById('deselectAll');
 export const timestampTypeSelect = document.getElementById('timestampType');
 export const customTimestampInput = document.getElementById('customTimestamp');
 export const generateFileBtn = document.getElementById('generateFile');
@@ -27,6 +25,7 @@ export const minimizeBtn = document.getElementById('minimizeBtn');
 export const maximizeBtn = document.getElementById('maximizeBtn');
 export const closeBtn = document.getElementById('closeBtn');
 export const apiSourceSelect = document.getElementById('apiSource');
+export const exportDataBtn = document.getElementById('exportData');
 
 // Novos elementos para o modal de seleção de diretório
 export const directoryModal = document.getElementById('directoryModal');
@@ -39,6 +38,11 @@ export const loadDirectoryModal = document.getElementById('loadDirectoryModal');
 export const loadDirectoryList = document.getElementById('loadDirectoryList');
 export const cancelLoadBtn = document.getElementById('cancelLoad');
 export const confirmLoadBtn = document.getElementById('confirmLoad');
+
+// Export constants
+export const progressModal = document.getElementById('progressModal');
+export const progressBar = document.getElementById('exportProgress');
+export const progressMessage = document.getElementById('progressMessage');
 
 // Variáveis globais
 export let achievements = [];
@@ -56,4 +60,4 @@ export function setCurrentLanguage(lang) {
 // Função para atualizar a fonte da API
 export function setSelectedApiSource(source) {
   selectedApiSource = source;
-} 
+}

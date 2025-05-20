@@ -22,6 +22,7 @@ import {
 } from './constants.js';
 import { t } from './translations.js';
 import { showError, showSuccess } from './settings.js';
+import { setCurrentGame } from './ui.js';
 
 // Inicializar variável global para armazenar diretórios existentes
 window.existingDirs = [];
@@ -33,6 +34,8 @@ let currentAppId = '';
 let outputDirectories = [];
 let selectedDirectoryPath = null; // Nova variável local para armazenar o diretório selecionado
 let loadedDirectoryPath = null; // Nova variável para armazenar o diretório de onde as conquistas foram carregadas
+let isSelectAll = false; // Add this variable to track toggle state
+let selectedFormat = 'ini'; // Add this new variable at the top with the other state variables
 
 export async function fetchAchievements() {
   const appId = appIdInput.value.trim();
@@ -42,6 +45,23 @@ export async function fetchAchievements() {
   }
 
   currentAppId = appId;
+
+  // Get game info from Steam API
+  try {
+    const response = await fetch(`https://store.steampowered.com/api/appdetails?appids=${appId}`);
+    const data = await response.json();
+    
+    if (data[appId]?.success) {
+      const gameData = data[appId].data;
+      setCurrentGame({
+        id: appId,
+        name: gameData.name,
+        image: `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching game info:', error);
+  }
 
   // Limpar seleções anteriores ao mudar de jogo
   selectedAchievements.clear();
@@ -314,12 +334,18 @@ export async function renderAchievements() {
     
     achievementItem.innerHTML = `
       <input type="checkbox" class="achievement-checkbox" id="achievement-${achievement.apiname}" ${achievement.unlocked ? 'checked' : ''}>
-      <img src="${iconUrl}" alt="${achievement.displayName}" class="achievement-icon">
-      <div class="achievement-name">${achievement.displayName}</div>
-      <div class="achievement-description">${achievement.description || await t('achievements.noDescription')}</div>
-      <div class="achievement-time">
-        <i class="far fa-clock"></i>
-        <input type="datetime-local" id="timestamp-${achievement.apiname}" class="timestamp-input" ${achievement.unlockTime ? `value="${formatDateForInput(achievement.unlockTime)}"` : ''}>
+      <div class="achievement-content">
+        <div class="achievement-header">
+          <img src="${iconUrl}" alt="${achievement.displayName}" class="achievement-icon">
+          <div class="achievement-info">
+            <div class="achievement-name">${achievement.displayName}</div>
+            <div class="achievement-description">${achievement.description || await t('achievements.noDescription')}</div>
+          </div>
+        </div>
+        <div class="achievement-time">
+          <i class="far fa-clock"></i>
+          <input type="datetime-local" id="timestamp-${achievement.apiname}" class="timestamp-input" ${achievement.unlockTime ? `value="${formatDateForInput(achievement.unlockTime)}"` : ''}>
+        </div>
       </div>
     `;
     
@@ -335,6 +361,7 @@ export async function renderAchievements() {
         selectedAchievements.delete(achievement.apiname);
         achievementItem.classList.remove('achieved');
       }
+      updateToggleButtonState();
       updateGenerateButtonState();
     });
     
@@ -355,31 +382,76 @@ function formatDateForInput(timestamp) {
   return localDate.toISOString().slice(0, 16);
 }
 
-export function selectAllAchievements() {
+export async function updateToggleButtonState() {
+  const toggleBtn = document.getElementById('toggleSelection');
   const checkboxes = document.querySelectorAll('.achievement-checkbox');
-  checkboxes.forEach(checkbox => {
-    checkbox.checked = true;
-    const achievementId = checkbox.closest('.achievement-item').dataset.id;
-    selectedAchievements.add(achievementId);
-  });
-  updateGenerateButtonState();
+  const totalCheckboxes = checkboxes.length;
+  const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+
+  if (checkedCount > 0) {
+    toggleBtn.classList.add('active');
+    toggleBtn.innerHTML = `<i class="fa-solid fa-check-square"></i> ${await t('achievements.toggleSelect.deselect')}`;
+    isSelectAll = true;
+  } else {
+    toggleBtn.classList.remove('active');
+    toggleBtn.innerHTML = `<i class="fa-solid fa-square"></i> ${await t('achievements.toggleSelect.select')}`;
+    isSelectAll = false;
+  }
 }
 
-export function deselectAllAchievements() {
+export async function toggleSelectAll() {
+  const toggleBtn = document.getElementById('toggleSelection');
   const checkboxes = document.querySelectorAll('.achievement-checkbox');
-  checkboxes.forEach(checkbox => {
-    checkbox.checked = false;
-    const achievementItem = checkbox.closest('.achievement-item');
-    if (achievementItem) {
+  const someChecked = Array.from(checkboxes).some(cb => cb.checked);
+
+  // If all or some achievements are checked, uncheck all
+  if (someChecked) {
+    toggleBtn.classList.remove('active');
+    toggleBtn.innerHTML = `<i class="fa-solid fa-square"></i> ${await t('achievements.toggleSelect.select')}`;
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = false;
+      const achievementItem = checkbox.closest('.achievement-item');
+      const achievementId = achievementItem.dataset.id;
+      selectedAchievements.delete(achievementId);
       achievementItem.classList.remove('achieved');
-    }
-  });
-  selectedAchievements.clear();
+    });
+  } else {
+    // If none are checked, check all
+    toggleBtn.classList.add('active');
+    toggleBtn.innerHTML = `<i class="fa-solid fa-check-square"></i> ${await t('achievements.toggleSelect.deselect')}`;
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = true;
+      const achievementItem = checkbox.closest('.achievement-item');
+      const achievementId = achievementItem.dataset.id;
+      selectedAchievements.add(achievementId);
+      achievementItem.classList.add('achieved');
+    });
+  }
+  
   updateGenerateButtonState();
 }
 
-export function handleTimestampTypeChange() {
+export async function handleTimestampTypeChange() {
   const timestampType = timestampTypeSelect.value;
+  const icons = {
+    current: '<i class="fa-regular fa-clock"></i>',
+    custom: '<i class="fa-regular fa-calendar"></i>',
+    random: '<i class="fa-solid fa-shuffle"></i>'
+  };
+
+  // Get translated texts
+  const currentText = await t('achievements.timestampCurrent');
+  const customText = await t('achievements.timestampCustom');
+  const randomText = await t('achievements.timestampRandom');
+  
+  // Update select content while preserving options
+  timestampTypeSelect.innerHTML = `
+    <option value="current">${icons.current} ${currentText}</option>
+    <option value="custom">${icons.custom} ${customText}</option>
+    <option value="random">${icons.random} ${randomText}</option>
+  `;
+  timestampTypeSelect.value = timestampType; // Restore selected value
+
   if (timestampType === 'custom') {
     customTimestampInput.classList.remove('hidden');
     customTimestampInput.disabled = false;
@@ -505,6 +577,19 @@ async function openDirectoryModal() {
   // Adicionar evento para fechar o modal ao clicar no X
   const closeButtons = directoryModal.querySelectorAll('.close-modal');
   closeButtons.forEach(btn => btn.addEventListener('click', closeDirectoryModal));
+
+  // Add event listener for format selection
+  const formatButtons = directoryModal.querySelectorAll('.format-button');
+  formatButtons.forEach(button => {
+    button.addEventListener('click', handleFormatChange);
+  });
+
+  // Reset format selection to default
+  selectedFormat = 'ini';
+  const defaultFormatButton = directoryModal.querySelector('.format-button[data-format="ini"]');
+  if (defaultFormatButton) {
+    defaultFormatButton.classList.add('active');
+  }
 }
 
 // Função para forçar uma atualização da lista de diretórios
@@ -547,9 +632,44 @@ function closeDirectoryModal(preserveSelection = false) {
 async function renderDirectoryList() {
   directoryList.innerHTML = '';
   
+  // Adicionar botão para selecionar diretório personalizado
+  const customDirButton = document.createElement('div');
+  customDirButton.className = 'directory-option custom-dir-button';
+  customDirButton.innerHTML = `
+    <div class="directory-option-name">
+      <i class="fas fa-plus-circle"></i>
+      <span>${await t('directories.selectCustom')}</span>
+    </div>
+  `;
+  
+  customDirButton.addEventListener('click', async () => {
+    const result = await window.api.selectDirectory();
+    if (result.success && !result.canceled) {
+      selectedDirectoryPath = result.filePath;
+      
+      // Remover seleção anterior
+      const selectedOptions = directoryList.querySelectorAll('.directory-option.selected');
+      selectedOptions.forEach(opt => opt.classList.remove('selected'));
+      
+      // Adicionar novo diretório à lista e selecioná-lo
+      const newDirOption = document.createElement('div');
+      newDirOption.className = 'directory-option selected';
+      newDirOption.dataset.path = result.filePath;
+      newDirOption.innerHTML = `
+        <div class="directory-option-name">
+          <i class="fas fa-folder"></i>
+          <span title="${result.filePath}">${result.filePath}</span>
+        </div>
+      `;
+      
+      directoryList.insertBefore(newDirOption, customDirButton.nextSibling);
+      confirmSaveBtn.disabled = false;
+    }
+  });
+  
+  directoryList.appendChild(customDirButton);
+  
   if (outputDirectories.length === 0) {
-    directoryList.innerHTML = `<p class="no-directories">${await t('directories.noDirectories')}</p>`;
-    confirmSaveBtn.disabled = true;
     return;
   }
   
@@ -604,6 +724,14 @@ function selectDirectory(directoryOption) {
   confirmSaveBtn.disabled = false;
 }
 
+// Função para lidar com a mudança de formato
+function handleFormatChange(event) {
+  const buttons = directoryModal.querySelectorAll('.format-button');
+  buttons.forEach(btn => btn.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  selectedFormat = event.currentTarget.dataset.format;
+}
+
 // Salvar as conquistas no diretório selecionado
 async function saveAchievementsToSelectedDirectory() {
   try {
@@ -616,14 +744,15 @@ async function saveAchievementsToSelectedDirectory() {
       throw new Error('Nenhum diretório selecionado.');
     }
     
-    console.log('Salvando no diretório:', selectedDirectoryPath);
-    
-    // Se não houver conquistas selecionadas, criamos um array vazio para limpar o arquivo INI
+    // Se não houver conquistas selecionadas, criamos um array vazio para limpar o arquivo
     const achievementsData = [];
     
     // Só processar conquistas se houver alguma selecionada
     if (selectedAchievements.size > 0) {
       for (const achievementId of selectedAchievements) {
+        const achievement = achievements.find(a => a.apiname === achievementId);
+        if (!achievement) continue;
+
         const timestampInput = document.getElementById(`timestamp-${achievementId}`);
         let unlockTime;
 
@@ -645,36 +774,54 @@ async function saveAchievementsToSelectedDirectory() {
               unlockTime = Math.floor(Math.random() * (now - oneYearAgo) + oneYearAgo);
               break;
             default:
-              // Timestamp atual ajustado para o fuso horário local
               const currentDate = new Date();
               unlockTime = Math.floor(currentDate.getTime() / 1000);
           }
         }
 
-        achievementsData.push({
-          id: achievementId,
-          unlockTime
-        });
+        if (selectedFormat === 'ini') {
+          achievementsData.push({
+            id: achievementId,
+            unlockTime
+          });
+        } else {
+          // Format for JSON export
+          achievementsData.push({
+            name: achievementId,
+            displayName: achievement.displayName,
+            description: achievement.description || '',
+            hidden: achievement.hidden || 0,
+            icon: achievement.icon,
+            icongray: achievement.icongray || achievement.icon,
+            unlockTime
+          });
+        }
       }
     }
-
+    
     // Guardar o diretório selecionado antes de fechar o modal
     const dirToSave = selectedDirectoryPath;
     
     // Fechar o modal antes de salvar para melhorar a experiência do usuário
     closeDirectoryModal(true);
     
-    // Chamar a API para salvar o arquivo no diretório específico
-    const result = await window.api.writeAchievements(appId, achievementsData, dirToSave);
+    // Call the API with format information
+    const result = await window.api.writeAchievements(appId, achievementsData, dirToSave, {
+      format: selectedFormat,
+      achievements: achievements // Pass full achievements data for image downloading
+    });
     
     if (result.success) {
       const successMessage = document.getElementById('successMessage');
       const successModal = document.getElementById('successModal');
       if (successMessage && successModal) {
-        // Usar a tradução com o parâmetro de caminho
-        successMessage.textContent = await t('success.fileGenerated', { path: dirToSave });
-        
-        // Garante que o modal seja exibido sempre
+        // Get the appropriate file extension based on format
+        const fileType = selectedFormat === 'ini' ? 'achievements.ini' : 'achievements.json';
+        // Use the translation with parameters
+        successMessage.textContent = await t('success.fileGenerated', { 
+          fileType,
+          path: dirToSave
+        });
         successModal.classList.remove('hidden');
       }
     } else {
@@ -724,4 +871,93 @@ export function setupAchievementCardListeners() {
       input.classList.toggle('hidden', !e.target.checked);
     });
   });
+
+  // Adicionar evento de clique nos ícones de relógio
+  const clockIcons = document.querySelectorAll('.achievement-time .far.fa-clock');
+  clockIcons.forEach(icon => {
+    icon.style.cursor = 'pointer';
+    icon.title = 'Clique para limpar o timestamp';
+    icon.addEventListener('click', (e) => {
+      const timeInput = e.target.closest('.achievement-time').querySelector('input[type="datetime-local"]');
+      if (timeInput) {
+        timeInput.value = '';
+      }
+    });
+  });
+}
+
+// New export function
+export async function exportAllAchievements() {
+  try {
+    const appId = appIdInput.value.trim();
+    if (!appId) {
+      await showError(await t('errors.appIdRequired'));
+      return;
+    }
+
+    // Show progress modal
+    const progressModal = document.getElementById('progressModal');
+    const progressBar = document.getElementById('exportProgress');
+    const progressMessage = document.getElementById('progressMessage');
+    progressModal.classList.remove('hidden');
+    progressBar.style.width = '0%';
+    progressMessage.textContent = await t('achievements.selectingDirectory');
+
+    // Open directory selection dialog
+    const result = await window.api.selectDirectory();
+    if (!result.success || result.canceled) {
+      progressModal.classList.add('hidden');
+      return;
+    }
+
+    const exportDir = result.filePath;
+    progressBar.style.width = '30%';
+    progressMessage.textContent = await t('achievements.preparingExport');
+
+    // Format all achievements for export with proper required fields
+    const formattedAchievements = achievements.map(achievement => ({
+      name: achievement.apiname || achievement.name || achievement.id,  // Ensure we have a name property
+      displayName: achievement.displayName || achievement.name || '',
+      description: achievement.description || '',
+      hidden: achievement.hidden || 0,
+      icon: achievement.icon || '',
+      icongray: achievement.icongray || achievement.icon || '',
+    }));
+
+    progressBar.style.width = '50%';
+    progressMessage.textContent = await t('achievements.exporting');
+
+    // Write achievements and download images
+    const result2 = await window.api.writeAchievements(appId, formattedAchievements, exportDir, {
+      format: 'json',
+      achievements: formattedAchievements
+    });
+
+    if (result2.success) {
+      progressBar.style.width = '100%';
+      progressMessage.textContent = await t('success.exportComplete');
+      
+      // Add fade-out class before hiding
+      progressModal.classList.add('fade-out');
+      
+      // Hide progress modal after animation completes
+      setTimeout(async () => {
+        progressModal.classList.remove('fade-out');
+        progressModal.classList.add('hidden');
+        await showSuccess(await t('success.exportComplete'));
+      }, 1000);
+    } else {
+      throw new Error(result2.message || await t('errors.exportError'));
+    }
+  } catch (error) {
+    const progressModal = document.getElementById('progressModal');
+    progressModal.classList.add('hidden');
+    await showError(error.message);
+  }
+}
+
+// Update the event listeners setup
+export function setupEventListeners() {
+  exportDataBtn.addEventListener('click', exportAllAchievements);
+  generateFileBtn.addEventListener('click', generateAchievementsFile);
 }

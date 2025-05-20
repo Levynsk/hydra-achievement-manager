@@ -3,9 +3,8 @@ import {
   toggleApiKeyBtn,
   fetchAchievementsBtn,
   appIdInput,
-  selectAllBtn,
-  deselectAllBtn,
   generateFileBtn,
+  exportDataBtn,
   timestampTypeSelect,
   tryAgainBtn,
   closeModalBtns,
@@ -15,29 +14,62 @@ import {
   maximizeBtn,
   closeBtn,
   apiSourceSelect,
-  errorCard
+  errorCard,
+  progressModal,
+  progressBar,
+  progressMessage
 } from './constants.js';
 import { saveApiKey, toggleApiKeyVisibility, initSettings, saveApiSource } from './settings.js';
-import { fetchAchievements, selectAllAchievements, deselectAllAchievements, handleTimestampTypeChange, generateAchievementsFile, filterAchievements } from './achievements.js';
+import { fetchAchievements, handleTimestampTypeChange, generateAchievementsFile, filterAchievements, toggleSelectAll, exportAllAchievements } from './achievements.js';
 import { handleSectionChange } from './ui.js';
 import { clearGamesList } from './games.js';
+import { t } from './translations.js';
 
 export function setupEventListeners() {
   // Inicializar configurações
   initSettings();
 
   // Eventos da titlebar
-  minimizeBtn.addEventListener('click', () => window.windowControls.minimize());
-  maximizeBtn.addEventListener('click', () => window.windowControls.maximize());
+  minimizeBtn.addEventListener('click', () => {
+    console.log('Minimize button clicked');
+    window.windowControls.minimize();
+  });
+  
+  // Atualizar o botão maximizar com base no estado da janela
+  window.windowControls.onWindowStateChange((state) => {
+    console.log('Window state changed:', state);
+    const maximizeIcon = maximizeBtn.querySelector('i');
+    if (state.isMaximized) {
+      console.log('Updating icon to unmaximize state');
+      maximizeIcon.classList.remove('fa-up-right-and-down-left-from-center');
+      maximizeIcon.classList.add('fa-down-left-and-up-right-to-center');
+    } else {
+      console.log('Updating icon to maximize state');
+      maximizeIcon.classList.remove('fa-down-left-and-up-right-to-center');
+      maximizeIcon.classList.add('fa-up-right-and-down-left-from-center');
+    }
+  });
+  
+  // Adicionar uma flag para controlar o estado de transição
+  let isMaximizeInProgress = false;
+  
+  maximizeBtn.addEventListener('click', async () => {
+    if (isMaximizeInProgress) return; // Evita cliques durante a transição
+    
+    isMaximizeInProgress = true;
+    console.log('Maximize button clicked');
+    await window.windowControls.maximize();
+    
+    // Adicionar um pequeno atraso antes de permitir nova ação
+    setTimeout(() => {
+      isMaximizeInProgress = false;
+    }, 300);
+  });
+
   closeBtn.addEventListener('click', () => {
     // Limpar a lista de jogos antes de fechar a aplicação
     clearGamesList();
     window.windowControls.close();
-  });
-
-  // Atualizar ícone do botão de maximizar quando o estado da janela mudar
-  window.windowControls.onWindowStateChange((state) => {
-    maximizeBtn.querySelector('i').className = state === 'maximized' ? 'fas fa-window-restore' : 'fas fa-window-maximize';
   });
 
   saveApiKeyBtn.addEventListener('click', saveApiKey);
@@ -61,9 +93,8 @@ export function setupEventListeners() {
     if (e.key === 'Enter') fetchAchievements();
   });
   
-  selectAllBtn.addEventListener('click', selectAllAchievements);
-  deselectAllBtn.addEventListener('click', deselectAllAchievements);
   generateFileBtn.addEventListener('click', generateAchievementsFile);
+  exportDataBtn.addEventListener('click', exportAllAchievements);
   
   timestampTypeSelect.addEventListener('change', handleTimestampTypeChange);
   
@@ -95,6 +126,9 @@ export function setupEventListeners() {
   window.addEventListener('beforeunload', () => {
     clearGamesList();
   });
+
+  // Select/Deselect All
+  document.getElementById('toggleSelection').addEventListener('click', toggleSelectAll);
 }
 
 // Função para atualizar a visibilidade do campo API Key
@@ -114,4 +148,34 @@ function updateApiKeyVisibility() {
     apiKeySettingItem.style.display = '';
     apiKeyDescription.innerHTML = 'Você pode obter sua chave da API Steam <a href="https://steamcommunity.com/dev/apikey" target="_blank">aqui</a>.';
   }
-} 
+}
+
+// Initialize timestamp type select with icon
+async function initializeTimestampSelect() {
+  const timestampType = timestampTypeSelect.value;
+  const icons = {
+    current: '<i class="fa-regular fa-clock"></i>',
+    custom: '<i class="fa-regular fa-calendar"></i>',
+    random: '<i class="fa-solid fa-shuffle"></i>'
+  };
+
+  // Get translated texts
+  const currentText = await t('achievements.timestampCurrent');
+  const customText = await t('achievements.timestampCustom');
+  const randomText = await t('achievements.timestampRandom');
+
+  // Update select content with translations
+  timestampTypeSelect.innerHTML = `
+    ${icons[timestampType]} ${timestampType === 'current' ? currentText : timestampType === 'custom' ? customText : randomText}
+    <option value="current">${currentText}</option>
+    <option value="custom">${customText}</option>
+    <option value="random">${randomText}</option>
+  `;
+  timestampTypeSelect.value = timestampType; // Restore selected value
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', async () => {
+  setupEventListeners();
+  await initializeTimestampSelect();
+});

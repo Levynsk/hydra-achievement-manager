@@ -350,4 +350,29 @@ export async function initSettings() {
 
   // Verificar atualizações ao iniciar (sem notificação se não houver atualização)
   await checkForUpdates(false);
+
+  // Initialize theme settings
+  const themeSelect = document.getElementById('themeSelect');
+  if (themeSelect) {
+    const currentTheme = await window.api.getConfig('theme') || 'dark';
+    themeSelect.value = currentTheme;
+    document.documentElement.dataset.theme = currentTheme;
+
+    themeSelect.addEventListener('change', toggleTheme);
+  }
+}
+
+export async function toggleTheme() {
+  const themeSelect = document.getElementById('themeSelect');
+  if (!themeSelect) return;
+
+  const selectedTheme = themeSelect.value;
+  
+  // Save theme configuration
+  const result = await window.api.saveConfig('theme', selectedTheme);
+  
+  if (result.success) {
+    // Apply theme immediately
+    document.documentElement.dataset.theme = selectedTheme;
+  }
 }

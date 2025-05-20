@@ -4,6 +4,7 @@ import { applyTranslations } from './translations.js';
 import { t } from './translations.js';
 import { setupEventListeners } from './events.js';
 import { initSearchListeners } from './search.js';
+import { populateChangelog } from './ui.js';
 
 export async function initApp() {
   const savedApiKey = await window.api.getApiKey();
@@ -24,4 +25,7 @@ export async function initApp() {
   initSearchListeners();
 }
 
-document.addEventListener('DOMContentLoaded', initApp);
+document.addEventListener('DOMContentLoaded', async () => {
+  await initApp();
+  populateChangelog();
+});
