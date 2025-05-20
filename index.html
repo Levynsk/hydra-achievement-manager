@@ -4,51 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hydra Achievements Manager</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="src/css/app.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="icon" href="https://i.imgur.com/ILbquHp.png" type="image/png">
+  <link rel="icon" href="https://i.imgur.com/WGGXmga.png" type="image/png">
 </head>
 <body>
   <div class="titlebar">
-    <div class="titlebar-drag">Hydra Manager</div>
+    <div class="titlebar-left">
+      <div class="titlebar-drag">Project HAM</div>
+    </div>
+    <div class="titlebar-center">
+      <div class="titlebar-section">
+        <i class="current-section-icon fa-solid fa-trophy"></i>
+        <span class="current-section-text"></span>
+      </div>
+    </div>
     <div class="titlebar-buttons">
-      <button class="titlebar-button" id="minimizeBtn">
-        <i class="fas fa-minus"></i>
+      <button class="titlebar-button" id="minimizeBtn" title="Minimize">
+        <i class="fa-solid fa-minus"></i>
       </button>
-      <button class="titlebar-button" id="maximizeBtn">
-        <i class="fas fa-window-maximize"></i>
+      <button class="titlebar-button" id="maximizeBtn" title="Maximize">
+        <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
       </button>
-      <button class="titlebar-button" id="closeBtn">
-        <i class="fas fa-times"></i>
+      <button class="titlebar-button" id="closeBtn" title="Close">
+        <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
   </div>
   <div class="app-container">
     <div class="sidebar">
-      <div class="sidebar-header">
-        <div class="logo">
-          <img src="https://i.imgur.com/ILbquHp.png" alt="Hydra" style="width: 36px; height: 36px;">
-          <h1>Hydra Manager</h1>
-        </div>
-      </div>
       <nav class="sidebar-nav">
         <ul>
-          <li><a href="#games"><i class="fas fa-gamepad"></i> <span>Jogos</span></a></li>
-          <li><a href="#search"><i class="fas fa-search"></i> <span>Pesquisar</span></a></li>
-          <li class="active"><a href="#achievements"><i class="fas fa-trophy"></i> <span>Conquistas</span></a></li>
-          <li><a href="#settings"><i class="fas fa-cog"></i> <span>Configurações</span></a></li>
+          <li><a href="#games"><i class="fa-solid fa-gamepad"></i> <span>Jogos</span></a></li>
+          <li><a href="#search"><i class="fa-solid fa-magnifying-glass"></i> <span>Pesquisar</span></a></li>
+          <li class="active"><a href="#achievements"><i class="fa-solid fa-trophy"></i> <span>Conquistas</span></a></li>
+          <li><a href="#settings"><i class="fa-solid fa-gear"></i> <span>Configurações</span></a></li>
         </ul>
       </nav>
       <div class="sidebar-footer">
-        <p>v1.5.0</p>
+        <a href="https://github.com/Levynsk/hydra-achievement-manager/" target="_blank" class="btn btn-icon" title="GitHub">
+          <i class="fa-brands fa-github"></i> SOURCE CODE GITHUB</span>
+        </a>
       </div>
     </div>
     
     <div class="main-content">
-      <header class="app-header">
-        <h2 id="currentSection"><i class="fas fa-trophy"></i></h2>
-      </header>
 
     <main class="app-content">
       <section class="section games-section hidden" id="gamesSection">
@@ -79,7 +80,7 @@
         <div class="error-content hidden" id="searchErrorCard">
           <i class="fas fa-exclamation-circle"></i>
           <h3 data-i18n="error.title">Erro</h3>
-          <p id="searchErrorMessage">Ocorreu um erro ao pesquisar jogos.</p>
+          <p id="searchErrorMessage">An error occurred while searching for games.</p>
           <button id="searchTryAgain" class="btn" data-i18n="search.tryAgain">Tentar Novamente</button>
         </div>
         
@@ -96,7 +97,8 @@
               <input type="text" id="appId" placeholder="Digite o App ID do jogo" class="input-with-icon">
             </div>
             <button id="fetchAchievements" class="btn btn-primary"><i class="fas fa-search"></i></button>
-            <button id="generateFile" class="btn btn-primary"><i class="fas fa-file-export"></i> Gerar INI</button>
+            <button id="exportData" class="btn btn-primary"><i class="fas fa-download"></i></button>
+            <button id="generateFile" class="btn btn-primary"><i class="fas fa-file-code"></i> Gerar INI</button>
           </div>
         </div>
           
@@ -104,22 +106,24 @@
           <div class="achievements-controls">
             <div class="search-bar">
               <div class="input-icon-wrapper">
-                <i class="fas fa-search input-icon"></i>
+                <i class="fa-solid fa-magnifying-glass input-icon"></i>
                 <input type="text" id="searchAchievements" placeholder="Pesquisar conquistas..." class="input-with-icon stretched-input">
               </div>
             </div>
-            <div class="control-buttons">
-              <button id="selectAll" class="btn"><i class="fas fa-check-square"></i> Selecionar Todas</button>
-              <button id="deselectAll" class="btn"><i class="fas fa-square"></i> Desmarcar Todas</button>
-            </div>
-            <div class="timestamp-controls">
-              <label for="timestampType">Tipo de Data:</label>
-              <select id="timestampType" class="timestamp-select">
-                <option value="current">Atual</option>
-                <option value="custom">Personalizado</option>
-                <option value="random">Aleatório</option>
-              </select>
-              <input type="datetime-local" id="customTimestamp" class="timestamp-input hidden" disabled>
+            
+            <div class="control-group">
+              <button id="toggleSelection" class="btn btn-control">
+                <i class="fa-solid fa-square"></i> Selecionar Todas
+              </button>
+          
+              <div class="timestamp-control">
+                <select id="timestampType" class="btn btn-control">
+                  <option value="current"><i class="fa-regular fa-clock"></i> Atual</option>
+                  <option value="custom"><i class="fa-regular fa-calendar"></i> Personalizado</option>
+                  <option value="random"><i class="fa-solid fa-shuffle"></i> Aleatório</option>
+                </select>
+                <input type="datetime-local" id="customTimestamp" class="hidden" disabled>
+              </div>
             </div>
           </div>
             
@@ -140,7 +144,7 @@
         <div class="error-content hidden" id="errorCard">
           <i class="fas fa-exclamation-circle"></i>
           <h3>Erro</h3>
-          <p id="errorMessage">Ocorreu um erro ao buscar as conquistas.</p>
+          <p id="errorMessage">An error occurred while fetching achievements.</p>
           <button id="tryAgain" class="btn">Tentar Novamente</button>
         </div>
       </section>
@@ -151,11 +155,11 @@
           
           <div class="settings-tabs">
             <div class="tab-header">
-              <button class="tab-button active" data-tab="tab-api"><i class="fas fa-key"></i> API</button>
-              <button class="tab-button" data-tab="tab-language"><i class="fas fa-language"></i> Idioma</button>
-              <button class="tab-button" data-tab="tab-appearance"><i class="fas fa-paint-brush"></i> Aparência</button>
-              <button class="tab-button" data-tab="tab-updates"><i class="fas fa-sync"></i> Atualizações</button>
-              <button class="tab-button" data-tab="tab-about"><i class="fas fa-info-circle"></i> Sobre</button>
+              <button class="tab-button active" data-tab="tab-api"><i class="fa-solid fa-key"></i> API</button>
+              <button class="tab-button" data-tab="tab-language"><i class="fa-solid fa-language"></i> Idioma</button>
+              <button class="tab-button" data-tab="tab-appearance"><i class="fa-solid fa-palette"></i> Aparência</button>
+              <button class="tab-button" data-tab="tab-updates"><i class="fa-solid fa-arrows-rotate"></i> Atualizações</button>
+              <button class="tab-button" data-tab="tab-about"><i class="fa-solid fa-circle-info"></i> Sobre</button>
             </div>
             
             <div class="tab-content">
@@ -165,11 +169,11 @@
                     <label for="apiKey">Chave da API:</label>
                     <div class="input-group stretched">
                       <div class="input-icon-wrapper">
-                        <i class="fas fa-key input-icon"></i>
+                        <i class="fa-solid fa-key input-icon"></i>
                         <input type="password" id="apiKey" placeholder="Insira sua chave da API Steam" class="input-with-icon">
                       </div>
-                      <button id="saveApiKey" class="btn"><i class="fas fa-save"></i> Salvar</button>
-                      <button id="toggleApiKey" class="btn btn-icon"><i class="fas fa-eye"></i></button>
+                      <button id="saveApiKey" class="btn"><i class="fa-solid fa-floppy-disk"></i> Salvar</button>
+                      <button id="toggleApiKey" class="btn btn-icon"><i class="fa-solid fa-eye"></i></button>
                     </div>
                     <p class="setting-description">Você pode obter sua chave da API Steam <a href="https://steamcommunity.com/dev/apikey" target="_blank">aqui</a>.</p>
                   </div>
@@ -177,13 +181,13 @@
                     <label for="apiSource">Fonte da API:</label>
                     <div class="input-group stretched">
                       <div class="input-icon-wrapper select-wrapper stretched-input">
-                        <i class="fas fa-server input-icon"></i>
+                        <i class="fa-solid fa-server input-icon"></i>
                         <select id="apiSource" class="input-with-icon">
                           <option value="hydra" selected>API Hydra</option>
                           <option value="steam">API Oficial da Steam</option>
                         </select>
                       </div>
-                      <button id="saveApiSource" class="btn"><i class="fas fa-save"></i> Salvar</button>
+                      <button id="saveApiSource" class="btn"><i class="fa-solid fa-floppy-disk"></i> Salvar</button>
                     </div>
                     <p class="setting-description">Selecione a fonte de dados para as conquistas. A API Hydra não requer chave de API.</p>
                   </div>
@@ -191,10 +195,10 @@
                     <label for="steamId">Steam ID:</label>
                     <div class="input-group stretched">
                       <div class="input-icon-wrapper">
-                        <i class="fas fa-id-card input-icon"></i>
+                        <i class="fa-solid fa-id-card input-icon"></i>
                         <input type="text" id="steamId" placeholder="Insira seu Steam ID" class="input-with-icon">
                       </div>
-                      <button id="saveSteamId" class="btn"><i class="fas fa-save"></i> Salvar</button>
+                      <button id="saveSteamId" class="btn"><i class="fa-solid fa-floppy-disk"></i> Salvar</button>
                     </div>
                     <p class="setting-description">Você pode encontrar seu Steam ID <a href="https://steamid.io" target="_blank">aqui</a>.</p>
                   </div>
@@ -218,6 +222,18 @@
               
               <div class="tab-pane" id="tab-appearance">
                 <div class="settings-group">
+                  <h3 data-i18n="settings.appearance">Aparência</h3>
+                  
+                  <div class="setting-item">
+                    <label for="themeSelect" data-i18n="settings.themeLabel">Tema:</label>
+                    <div class="select-wrapper">
+                      <select id="themeSelect" class="select-control">
+                        <option value="dark" data-i18n="settings.themeDark">Escuro</option>
+                        <option value="light" data-i18n="settings.themeLight">Claro</option>
+                      </select>
+                    </div>
+                  </div>
+
                   <div class="setting-item">
                     <label for="liteModeToggle" data-i18n="settings.liteModeLabel">Lite Mode:</label>
                     <div class="toggle-switch-wrapper">
@@ -256,7 +272,7 @@
                       </button>
                     </div>
                   </div>
-                  <div id="changelog" class="setting-description">
+                  <div id="changelog" class="changelog setting-description">
                     
                   </div>
                 </div>
@@ -266,10 +282,10 @@
                 <div class="settings-group">
                   <div class="about-content">
                     <div class="app-logo">
-                      <img src="https://i.imgur.com/ILbquHp.png" alt="Hydra" style="width: 48px; height: 48px;">
+                      <img src="https://i.imgur.com/WGGXmga.png" alt="Hydra" style="width: 48px; height: 48px;">
                       <h2>Hydra Achievements Manager</h2>
                     </div>
-                    <p class="version">v1.5.0</p>
+                    <p class="version">v1.6.0</p>
                     <p class="app-description">A modern manager for Steam achievements.</p>
                     <p class="app-credits">Made by Levynsk (<a href="https://x.com/Levynskshy" target="_blank">@Levynskshy</a>) and Esther (<a href="https://twitter.com/onlysterbr" target="_blank">@onlysterbr</a>)</p>
                   </div>
@@ -304,19 +320,16 @@
   <div class="modal hidden" id="directoryModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3><i class="fas fa-folder-open"></i> Selecionar Diretório</h3>
+        <h3><i class="fas fa-folder-open"></i> <span data-i18n="directories.selectTitle">Select Directory</span></h3>
         <button class="close-modal">&times;</button>
       </div>
       <div class="modal-body">
-        <p>Selecione onde deseja salvar o arquivo de conquistas:</p>
-        
-        <div class="directory-list" id="directoryList">
-          
-        </div>
+        <p data-i18n="directories.selectMessage">Select where to save the achievements file:</p>      
+        <div class="directory-list" id="directoryList"></div>
       </div>
       <div class="modal-footer">
-        <button class="btn" id="cancelSave">Cancelar</button>
-        <button class="btn btn-primary" id="confirmSave">Salvar</button>
+        <button class="btn btn-secondary" id="cancelSave" data-i18n="directories.cancel">Cancel</button>
+        <button class="btn btn-primary" id="confirmSave" data-i18n="directories.save" disabled>Save</button>
       </div>
     </div>
   </div>
@@ -337,6 +350,21 @@
       <div class="modal-footer">
         <button class="btn" id="cancelLoad">Cancelar</button>
         <button class="btn btn-primary" id="confirmLoad">Carregar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add progress modal -->
+  <div class="modal hidden" id="progressModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-sync fa-spin"></i> Exportando</h3>
+      </div>
+      <div class="modal-body">
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="exportProgress"></div>
+        </div>
+        <p id="progressMessage">Exportando conquistas e imagens...</p>
       </div>
     </div>
   </div>

@@ -5,6 +5,7 @@ const fs = require('fs');
 const i18n = require('./i18n');
 const { API_CONFIG } = require('./config');
 const axios = require('axios');
+const sharp = require('sharp');
 
 const isDev = process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 const store = new Store();
@@ -14,8 +15,8 @@ let mainWindow;
 // Função para criar a janela principal
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width: 1280,
+    height: 768,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: true,
@@ -28,14 +29,7 @@ function createWindow() {
   });
 
   mainWindow.loadFile('index.html');
-
-  mainWindow.on('maximize', () => {
-    mainWindow.webContents.send('window-state-changed', 'maximized');
-  });
-
-  mainWindow.on('unmaximize', () => {
-    mainWindow.webContents.send('window-state-changed', 'normal');
-  });
+  setupWindowStateListeners(mainWindow);
 
   // DevTools em modo de desenvolvimento
   if (isDev) {
@@ -133,76 +127,154 @@ ipcMain.handle('get-config', (event, key) => {
   return store.get(key);
 });
 
-ipcMain.handle('write-achievements', async (event, appId, achievements, targetDirectory) => {
+ipcMain.handle('write-achievements', async (event, appId, achievements, targetDirectory, options = {}) => {
   try {
     const config = store.get('config') || {};
     const outputPaths = config.outputPaths || [config.outputPath || 'C:/Users/Public/Documents/Steam/RUNE'];
     
-    // Se um diretório de destino específico foi fornecido, usa-o; caso contrário, usa o ativo
     const outputPath = targetDirectory || config.activeOutputPath || outputPaths[0];
     
     console.log('Diretório alvo para salvar:', outputPath);
     console.log('AppID:', appId);
-    
-    // Determinar o caminho correto com base no diretório de destino
-    let achievementsPath;
-    if (outputPath.includes('OnlineFix')) {
-      // Caminho específico para OnlineFix (AppID/Stats/achievements.ini)
-      achievementsPath = path.join(outputPath, appId, 'Stats', 'achievements.ini');
-      console.log('Usando caminho específico para OnlineFix:', achievementsPath);
-    } else {
-      // Caminho padrão para outros diretórios
-      achievementsPath = path.join(outputPath, appId, 'achievements.ini');
-      console.log('Usando caminho padrão:', achievementsPath);
-    }
-    
-    console.log('Caminho completo do arquivo:', achievementsPath);
-    
-    // Criar diretório se não existir
-    const dir = path.dirname(achievementsPath);
-    if (!fs.existsSync(dir)) {
-      console.log('Criando diretório:', dir);
+    console.log('Formato:', options.format);
+
+    const downloadImage = async (url, filename, convertToGrayscale = false) => {
       try {
-        fs.mkdirSync(dir, { recursive: true, mode: 0o777 });
-        console.log('Diretório criado com sucesso');
-      } catch (mkdirError) {
-        console.error('Erro ao criar diretório:', mkdirError);
-        throw new Error(`Não foi possível criar o diretório: ${mkdirError.message}`);
+        if (!url) {
+          console.log('URL de imagem vazia, pulando...');
+          return false;
+        }
+    
+        if (!url.startsWith('http')) {
+          console.log('URL inválida:', url);
+          return false;
+        }
+    
+        console.log('Baixando imagem de:', url);
+        console.log('Salvando em:', filename);
+    
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+    
+        if (convertToGrayscale) {
+          // Processar a imagem para escala de cinza usando sharp
+          await sharp(buffer)
+            .grayscale() // Converter para escala de cinza
+            .toFile(filename);
+        } else {
+          // Salvar imagem original sem modificações
+          fs.writeFileSync(filename, buffer);
+        }
+    
+        console.log('Imagem salva com sucesso');
+        return true;
+      } catch (error) {
+        console.error('Erro ao baixar/processar imagem:', error);
+        return false;
       }
-    }
-    
-    // Verificar se consegue escrever no diretório
-    try {
-      fs.accessSync(dir, fs.constants.W_OK);
-      console.log('Diretório tem permissão de escrita');
-    } catch (accessError) {
-      console.error('Erro de permissão no diretório:', accessError);
-      throw new Error(`Sem permissão para escrever no diretório: ${accessError.message}`);
-    }
-    
-    // Mapa para armazenar conquistas e garantir que não haja duplicatas
-    const achievementsMap = new Map();
+    };
 
-    // Set para armazenar os IDs das conquistas selecionadas
-    const selectedAchievementIds = new Set(achievements.map(a => a.id));
+    if (options.format === 'json') {
+      const gameDir = path.join(outputPath, appId);
+      const imagesDir = path.join(gameDir, 'images');
+      
+      // Criar diretórios se não existirem
+      if (!fs.existsSync(gameDir)) {
+        fs.mkdirSync(gameDir, { recursive: true });
+      }
+      if (!fs.existsSync(imagesDir)) {
+        fs.mkdirSync(imagesDir, { recursive: true });
+      }
+  
+      // Baixar imagens para cada conquista
+      for (const achievement of achievements) {
+        const safeName = achievement.name.replace(/[^a-zA-Z0-9]/g, '_');
+        const iconPath = path.join(imagesDir, `${safeName}.jpg`);
+        const grayPath = path.join(imagesDir, `${safeName}_gray.jpg`);
+  
+        // Baixar imagem colorida
+        if (achievement.icon) {
+          await downloadImage(achievement.icon, iconPath, false);
+        }
+  
+        // Baixar e converter para escala de cinza
+        if (achievement.icongray) {
+          await downloadImage(achievement.icongray, grayPath, true);
+        } else if (achievement.icon) {
+          // Se não tiver imagem em escala de cinza, usar a colorida e converter
+          await downloadImage(achievement.icon, grayPath, true);
+        }
+  
+        // Atualizar os caminhos das imagens no objeto achievement para serem relativos
+        achievement.icon = `images/${safeName}.jpg`;
+        achievement.icongray = `images/${safeName}_gray.jpg`;
+      }
+  
+      // Salvar arquivo JSON com os caminhos relativos das imagens
+      const jsonPath = path.join(gameDir, 'achievements.json');
+      fs.writeFileSync(jsonPath, JSON.stringify(achievements, null, 2));
+  
+      return { 
+        success: true, 
+        message: 'Arquivo achievements.json e imagens foram gerados com sucesso!' 
+      };
+    } else {
+      // INI format - existing code
+      let achievementsPath;
+      if (outputPath.includes('OnlineFix')) {
+        achievementsPath = path.join(outputPath, appId, 'Stats', 'achievements.ini');
+      } else {
+        achievementsPath = path.join(outputPath, appId, 'achievements.ini');
+      }
+      
+      console.log('Caminho completo do arquivo:', achievementsPath);
+      
+      // Criar diretório se não existir
+      const dir = path.dirname(achievementsPath);
+      if (!fs.existsSync(dir)) {
+        console.log('Criando diretório:', dir);
+        try {
+          fs.mkdirSync(dir, { recursive: true, mode: 0o777 });
+          console.log('Diretório criado com sucesso');
+        } catch (mkdirError) {
+          console.error('Erro ao criar diretório:', mkdirError);
+          throw new Error(`Não foi possível criar o diretório: ${mkdirError.message}`);
+        }
+      }
+      
+      // Verificar se consegue escrever no diretório
+      try {
+        fs.accessSync(dir, fs.constants.W_OK);
+        console.log('Diretório tem permissão de escrita');
+      } catch (accessError) {
+        console.error('Erro de permissão no diretório:', accessError);
+        throw new Error(`Sem permissão para escrever no diretório: ${accessError.message}`);
+      }
+      
+      // Mapa para armazenar conquistas e garantir que não haja duplicatas
+      const achievementsMap = new Map();
 
-    // Ignorar o conteúdo anterior do arquivo INI, apenas adicionar as novas conquistas selecionadas
-    for (const achievement of achievements) {
-      achievementsMap.set(achievement.id, achievement);
+      // Ignorar o conteúdo anterior do arquivo INI, apenas adicionar as novas conquistas selecionadas
+      for (const achievement of achievements) {
+        achievementsMap.set(achievement.id, achievement);
+      }
+
+      // Escrever arquivo de conquistas no formato INI - sem duplicatas
+      let iniContent = '';
+      for (const achievement of achievementsMap.values()) {
+        iniContent += `[${achievement.id}]\n`;
+        iniContent += `Achieved=1\n`;
+        iniContent += `UnlockTime=${achievement.unlockTime}\n\n`;
+      }
+
+      console.log('Escrevendo arquivo:', achievementsPath);
+      fs.writeFileSync(achievementsPath, iniContent);
+      
+      return { success: true, message: 'Arquivo achievements.ini foi gerado com sucesso!' };
     }
-
-    // Escrever arquivo de conquistas no formato INI - sem duplicatas
-    let iniContent = '';
-    for (const achievement of achievementsMap.values()) {
-      iniContent += `[${achievement.id}]\n`;
-      iniContent += `Achieved=1\n`;
-      iniContent += `UnlockTime=${achievement.unlockTime}\n\n`;
-    }
-
-    console.log('Escrevendo arquivo:', achievementsPath);
-    fs.writeFileSync(achievementsPath, iniContent);
-    
-    return { success: true, message: 'Arquivo achievements.ini foi gerado com sucesso!' };
   } catch (error) {
     console.error('Erro ao salvar arquivo:', error);
     return { success: false, message: error.message };
@@ -340,11 +412,25 @@ ipcMain.handle('minimize-window', () => {
   mainWindow.minimize();
 });
 
+let isMaximizeInProgress = false;
+
 ipcMain.handle('maximize-window', () => {
-  if (mainWindow.isMaximized()) {
-    mainWindow.unmaximize();
-  } else {
-    mainWindow.maximize();
+  if (isMaximizeInProgress) return;
+  
+  isMaximizeInProgress = true;
+  console.log('Maximize window handler called');
+  
+  try {
+    if (mainWindow.isMaximized()) {
+      mainWindow.unmaximize();
+    } else {
+      mainWindow.maximize();
+    }
+  } finally {
+    // Adicionar um pequeno atraso antes de permitir nova ação
+    setTimeout(() => {
+      isMaximizeInProgress = false;
+    }, 300);
   }
 });
 
@@ -353,7 +439,9 @@ ipcMain.handle('close-window', () => {
 });
 
 ipcMain.handle('is-window-maximized', () => {
-  return mainWindow.isMaximized();
+  const isMaximized = mainWindow.isMaximized();
+  console.log('Checking window maximized state:', isMaximized);
+  return isMaximized;
 });
 
 // i18n handlers
@@ -525,7 +613,7 @@ ipcMain.handle('getCurrentVersion', () => {
 
 ipcMain.handle('getLatestVersion', async () => {
   try {
-    const response = await axios.get('https://api.github.com/repos/levynascimento/hydra-achievement-manager/releases/latest');
+    const response = await axios.get('https://api.github.com/repos/Levynsk/hydra-achievement-manager/releases/latest');
     return response.data.tag_name;
   } catch (error) {
     console.error('Erro ao buscar última versão:', error);
@@ -535,7 +623,7 @@ ipcMain.handle('getLatestVersion', async () => {
 
 ipcMain.handle('getChangelog', async () => {
   try {
-    const response = await axios.get('https://api.github.com/repos/levynascimento/hydra-achievement-manager/releases/latest');
+    const response = await axios.get('https://api.github.com/repos/Levynsk/hydra-achievement-manager/releases/latest');
     return response.data.body;
   } catch (error) {
     console.error('Erro ao buscar changelog:', error);
@@ -545,7 +633,7 @@ ipcMain.handle('getChangelog', async () => {
 
 ipcMain.handle('getDownloadUrl', async () => {
   try {
-    const response = await axios.get('https://api.github.com/repos/levynascimento/hydra-achievement-manager/releases/latest');
+    const response = await axios.get('https://api.github.com/repos/Levynsk/hydra-achievement-manager/releases/latest');
     return response.data.html_url;
   } catch (error) {
     console.error('Erro ao buscar URL de download:', error);
@@ -556,22 +644,38 @@ ipcMain.handle('getDownloadUrl', async () => {
 // Update handlers
 ipcMain.handle('get-update-info', async () => {
   try {
+    // Try to get the update data
     const response = await axios.get('https://raw.githubusercontent.com/Levynsk/hydra-achievement-manager/refs/heads/main/updates.json');
     const updateData = response.data;
     
-    // Pegar a última versão (a mais recente no array)
+    if (!updateData || !updateData.updates || !Array.isArray(updateData.updates)) {
+      throw new Error('Invalid update data format');
+    }
+    
+    // Get latest update (most recent in array)
     const latestUpdate = updateData.updates[updateData.updates.length - 1];
     
+    if (!latestUpdate || !latestUpdate.version) {
+      throw new Error('No valid version information found');
+    }
+    
+    const currentVersion = app.getVersion();
+    
     return {
-      currentVersion: require('./package.json').version,
+      success: true,
+      currentVersion: currentVersion,
       remoteVersion: latestUpdate.version,
-      downloadUrl: 'https://github.com/Levynsk/hydra-achievement-manager/releases/',
-      changelog: latestUpdate.changelog,
-      allUpdates: updateData.updates // Enviar todo o histórico de atualizações
+      downloadUrl: 'https://github.com/Levynsk/hydra-achievement-manager/releases/latest',
+      changelog: latestUpdate.changelog || 'No changelog available',
+      allUpdates: updateData.updates
     };
   } catch (error) {
     console.error('Error getting update info:', error);
-    return null;
+    return {
+      success: false,
+      error: error.message || 'Failed to get update information',
+      currentVersion: app.getVersion()
+    };
   }
 });
 
@@ -593,3 +697,16 @@ ipcMain.handle('minimizeWindow', (event) => {
 ipcMain.handle('closeWindow', (event) => {
   BrowserWindow.fromWebContents(event.sender).close();
 });
+
+// Adicionar listener para mudanças no estado da janela
+function setupWindowStateListeners(window) {
+  window.on('maximize', () => {
+    console.log('Window maximized event fired');
+    window.webContents.send('window-state-changed', { isMaximized: true });
+  });
+  
+  window.on('unmaximize', () => {
+    console.log('Window unmaximized event fired');
+    window.webContents.send('window-state-changed', { isMaximized: false });
+  });
+}

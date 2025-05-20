@@ -2,7 +2,7 @@ const { ipcRenderer } = require('electron');
 
 // Configurações globais da aplicação
 const API_CONFIG = {
-  HYDRA_API_URL: 'apihere'
+  HYDRA_API_URL: ''
 };
 
 const defaultConfig = {

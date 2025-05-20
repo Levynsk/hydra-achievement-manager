@@ -76,7 +76,7 @@ contextBridge.exposeInMainWorld('api', {
       }
       
       if (!Array.isArray(data) || data.length === 0) {
-        throw new Error('Não foram encontradas conquistas para este jogo. Verifique o App ID e tente novamente.');
+        throw new Error('No achievements found for this game.');
       }
       
       console.log('Número de conquistas recebidas:', data.length);
@@ -135,9 +135,10 @@ contextBridge.exposeInMainWorld('api', {
     }
   },
   
-  writeAchievements: (appId, achievements, targetDirectory) => {
+  writeAchievements: (appId, achievements, targetDirectory, options = {}) => {
     console.log("Preload: escrevendo achievements no diretório:", targetDirectory);
-    return ipcRenderer.invoke('write-achievements', appId, achievements, targetDirectory);
+    console.log("Formato:", options.format);
+    return ipcRenderer.invoke('write-achievements', appId, achievements, targetDirectory, options);
   },
 
   saveApiKey: (apiKey) => {
