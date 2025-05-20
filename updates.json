@@ -56,7 +56,7 @@
         "Introduced a brand new interface.",
         "Fixed issue with disabled global custom timestamp functionality.",
         "Added ability to generate JSON with images included.",
-        "Now supports exporting and loading JSON from custom directories."
+        "Now supports exporting data from custom directories."
       ]
     }
   ]
