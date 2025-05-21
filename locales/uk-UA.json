@@ -175,6 +175,30 @@
       "json": "JSON + Зображення",
       "iniDescription": "Створити простий .ini файл з даними про розблокування досягнень",
       "jsonDescription": "Створити JSON файл із зображеннями досягнень"
+    },
+    "setup": {
+      "welcome": {
+        "title": "Ласкаво просимо до Hydra Achievement Manager",
+        "description": "Виберіть бажану мову"
+      },
+      "theme": {
+        "title": "Оберіть тему",
+        "description": "Налаштуйте вигляд додатку"
+      },
+      "lite": {
+        "title": "Lite Mode",
+        "description": "Бажаєте увімкнути Lite Mode? (Вимикає анімації та візуальні ефекти для кращої продуктивності)",
+        "toggle": "Увімкнути Lite Mode"
+      },
+      "api": {
+        "title": "Джерело API",
+        "description": "Оберіть джерело даних досягнень"
+      },
+      "buttons": {
+        "next": "Далі",
+        "back": "Назад",
+        "finish": "Завершити"
+      }
     }
   }
 }

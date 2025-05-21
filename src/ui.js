@@ -76,6 +76,17 @@ export async function handleSectionChange(section) {
   await updateTitlebarSection(section);
 
   if (section === 'games') {
+    // Buscar os diretórios configurados antes de buscar os jogos
+    const result = await window.api.getOutputDirectories();
+    if (result.success) {
+      // Atualizar a configuração com os diretórios encontrados
+      await window.api.saveConfig('outputPaths', result.directories);
+      // Definir o primeiro diretório como ativo se não houver um definido
+      const config = await window.api.getConfig();
+      if (!config.activeOutputPath || !result.directories.includes(config.activeOutputPath)) {
+        await window.api.saveConfig('activeOutputPath', result.directories[0]);
+      }
+    }
     await fetchGames();
   }
 }

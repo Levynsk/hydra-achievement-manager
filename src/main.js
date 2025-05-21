@@ -5,8 +5,15 @@ import { t } from './translations.js';
 import { setupEventListeners } from './events.js';
 import { initSearchListeners } from './search.js';
 import { populateChangelog } from './ui.js';
+import { initLoadingScreen } from './setup.js';
+import { ensureWizardAlwaysShows } from './config.js';
 
 export async function initApp() {
+  // Garante que o wizard sempre aparece
+  await ensureWizardAlwaysShows();
+  // Show loading screen first
+  await initLoadingScreen();
+
   const savedApiKey = await window.api.getApiKey();
   if (savedApiKey) {
     apiKeyInput.value = savedApiKey;
@@ -14,7 +21,6 @@ export async function initApp() {
   }
 
   const now = new Date();
-
   const localNow = new Date(now.getTime() - (now.getTimezoneOffset() * 60000));
   customTimestampInput.value = localNow.toISOString().slice(0, 16);
 

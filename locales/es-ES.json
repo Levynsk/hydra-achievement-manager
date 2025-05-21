@@ -177,6 +177,30 @@
       "json": "JSON + Imágenes",
       "iniDescription": "Generar un archivo .ini simple con datos de desbloqueo de logros",
       "jsonDescription": "Generar un archivo JSON incluyendo imágenes de los logros"
+    },
+    "setup": {
+      "welcome": {
+        "title": "Bienvenido a Hydra Achievement Manager",
+        "description": "Selecciona tu idioma preferido"
+      },
+      "theme": {
+        "title": "Elige tu tema",
+        "description": "Personaliza la apariencia de la aplicación"
+      },
+      "lite": {
+        "title": "Lite Mode",
+        "description": "¿Deseas activar el Lite Mode? (Desactiva animaciones y efectos visuales para mejor rendimiento)",
+        "toggle": "Activar Lite Mode"
+      },
+      "api": {
+        "title": "Fuente de la API",
+        "description": "Elige la fuente de los datos de logros"
+      },
+      "buttons": {
+        "next": "Siguiente",
+        "back": "Atrás",
+        "finish": "Finalizar"
+      }
     }
   }
 }

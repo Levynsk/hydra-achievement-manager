@@ -8,6 +8,7 @@
 @import url("states.css");
 @import url("tabs.css");
 @import url("tittlebar.css");
+@import url("loading.css");
 
 /* Directory List */
 .directory-list {
@@ -454,4 +455,40 @@ a:hover {
 #tryAgain {
   display: block;
   margin: 0 auto;
+}
+
+.minicard-stretch {
+  width: 100%;
+  background: var(--bg-secondary, #18181b);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  transition: box-shadow 0.2s;
+}
+
+.minicard-stretch:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+}
+
+.minicard-texts {
+  display: flex;
+  align-items: center;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.minicard-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.minicard-desc {
+  color: var(--text-secondary);
+  font-weight: 400;
+  font-size: 1rem;
 }

@@ -212,7 +212,10 @@ contextBridge.exposeInMainWorld('api', {
   getChangelog: () => ipcRenderer.invoke('getChangelog'),
   getDownloadUrl: () => ipcRenderer.invoke('getDownloadUrl'),
   minimizeWindow: () => ipcRenderer.invoke('minimizeWindow'),
-  closeWindow: () => ipcRenderer.invoke('closeWindow')
+  closeWindow: () => ipcRenderer.invoke('closeWindow'),
+  onExportProgress: (callback) => {
+    ipcRenderer.on('export-progress', (event, data) => callback(data));
+  }
 });
 
 contextBridge.exposeInMainWorld('windowControls', {

@@ -11,6 +11,8 @@
     gap: 12px;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
+    position: relative;
+    z-index: 10000;
   }
   
   .titlebar-left {

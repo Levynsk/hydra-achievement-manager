@@ -1,19 +1,19 @@
 {
   "meta": {
     "name": "Português (Brasil)",
-    "author": "Levynsk & Esther",
+    "author": "Levynsk",
     "version": "v1.5.0"
   },
   "translations": {
     "app": {
       "title": "Hydra Achievements Manager",
-      "version": "v1.5.0",
-      "about": "Um gerenciador moderno para conquistas da Steam.",
+      "version": "1.5.0",
+      "about": "Um gerenciador moderno de conquistas Steam.",
       "credits": "Feito por Levynsk e Esther (Twitter - @onlysterbr)"
     },
     "sidebar": {
       "games": "Jogos",
-      "search": "Pesquisar",
+      "search": "Buscar",
       "achievements": "Conquistas",
       "settings": "Configurações"
     },
@@ -21,35 +21,36 @@
       "title": "Conquistas",
       "appIdPlaceholder": "Digite o App ID do jogo",
       "appIdInfo": "Você pode encontrar o App ID na URL da loja Steam: store.steampowered.com/app/APP_ID/",
-      "searchPlaceholder": "Pesquisar conquistas...",
-      "selectAll": "Selecionar Todas",
+      "searchPlaceholder": "Buscar conquistas...",
+      "selectAll": "Selecionar Todos",
+      "deselectAll": "Deselecionar Todos",
       "toggleSelect": {
-        "select": "Selecionar Todas",
-        "deselect": "Desmarcar Todas"
+        "select": "Selecionar Todos",
+        "deselect": "Deselecionar Todos"
       },
-      "deselectAll": "Desmarcar Todas",
       "timestamp": "Timestamp:",
       "timestampCurrent": "Atual",
       "timestampCustom": "Personalizado",
       "timestampRandom": "Aleatório",
-      "enableCustomTimestamp": "Ativar Timestamp Custom",
+      "enableCustomTimestamp": "Habilitar Timestamp Personalizado",
       "generateFile": "Gerar Arquivo",
       "noAchievements": "Nenhuma conquista encontrada para este jogo.",
       "select": "Selecionar",
-      "unlockedAt": "Já desbloqueada em: {date}",
-      "alreadyUnlocked": "Já desbloqueada",
-      "notUnlocked": "Não desbloqueada",
+      "unlockedAt": "Já desbloqueado em: {date}",
+      "alreadyUnlocked": "Já desbloqueado",
+      "notUnlocked": "Não desbloqueado",
       "selectToUnlock": "Selecionar para desbloquear",
       "unlockDate": "Data de desbloqueio",
-      "lockedStatus": "Bloqueada",
-      "unlockedStatus": "Desbloqueada",
+      "lockedStatus": "Bloqueado",
+      "unlockedStatus": "Desbloqueado",
       "noDescription": "Sem descrição",
       "platinum": "Platina",
       "export": "Exportar",
       "exportTooltip": "Exportar conquistas e imagens",
       "exporting": "Exportando",
       "selectingDirectory": "Selecionando pasta para exportação...",
-      "preparingExport": "Preparando conquistas para exportação..."
+      "preparingExport": "Preparando conquistas para exportação...",
+      "downloadingImage": "Baixando imagem {filename} ({current}/{total})"
     },
     "settings": {
       "title": "Configurações",
@@ -101,13 +102,13 @@
       }
     },
     "errors": {
-      "invalidApiKey": "Por favor, insira uma chave de API válida.",
+      "invalidApiKey": "Por favor, insira uma chave API válida.",
       "invalidAppId": "Por favor, insira um App ID válido.",
       "fetchError": "Ocorreu um erro ao buscar as conquistas.",
       "noSelection": "Por favor, selecione pelo menos uma conquista.",
       "writeError": "Erro ao gerar arquivo.",
-      "appIdRequired": "Por favor, digite o App ID do jogo.",
-      "achievementsNotFound": "Não foi possível obter as conquistas. Verifique o app_id e tente novamente.",
+      "appIdRequired": "Por favor, insira o App ID do jogo.",
+      "achievementsNotFound": "Não foi possível obter as conquistas. Por favor, verifique o app_id e tente novamente.",
       "outputPathNotConfigured": "O caminho de saída não está configurado.",
       "exportError": "Erro ao exportar conquistas e imagens"
     },
@@ -130,7 +131,12 @@
     },
     "loading": {
       "achievements": "Carregando conquistas...",
-      "games": "Carregando jogos..."
+      "games": "Carregando jogos...",
+      "resources": "Carregando recursos...",
+      "settings": "Inicializando configurações...",
+      "translations": "Carregando traduções...",
+      "updates": "Verificando atualizações...",
+      "complete": "Concluído!"
     },
     "error": {
       "title": "Erro",
@@ -191,6 +197,30 @@
       "json": "JSON + Imagens",
       "iniDescription": "Gerar um arquivo .ini simples com dados de desbloqueio das conquistas",
       "jsonDescription": "Gerar um arquivo JSON incluindo imagens das conquistas"
+    },
+    "setup": {
+      "welcome": {
+        "title": "Bem-vindo ao Hydra Achievement Manager",
+        "description": "Selecione seu idioma preferido"
+      },
+      "theme": {
+        "title": "Escolha seu tema",
+        "description": "Personalize a aparência do aplicativo"
+      },
+      "lite": {
+        "title": "Lite Mode",
+        "description": "Deseja ativar o Lite Mode? (Desativa animações e efeitos visuais para melhor desempenho)",
+        "toggle": "Ativar Lite Mode"
+      },
+      "api": {
+        "title": "Fonte da API",
+        "description": "Escolha a fonte dos dados de conquistas"
+      },
+      "buttons": {
+        "next": "Próximo",
+        "back": "Voltar",
+        "finish": "Concluir"
+      }
     }
   }
 }

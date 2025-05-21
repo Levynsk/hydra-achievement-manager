@@ -177,6 +177,30 @@
       "json": "JSON + Immagini",
       "iniDescription": "Genera un file .ini semplice con i dati di sblocco degli obiettivi",
       "jsonDescription": "Genera un file JSON includendo le immagini degli obiettivi"
+    },
+    "setup": {
+      "welcome": {
+        "title": "Benvenuto in Hydra Achievement Manager",
+        "description": "Seleziona la tua lingua preferita"
+      },
+      "theme": {
+        "title": "Scegli il tuo tema",
+        "description": "Personalizza l'aspetto dell'app"
+      },
+      "lite": {
+        "title": "Lite Mode",
+        "description": "Vuoi attivare il Lite Mode? (Disattiva animazioni ed effetti visivi per migliori prestazioni)",
+        "toggle": "Attiva Lite Mode"
+      },
+      "api": {
+        "title": "Fonte API",
+        "description": "Scegli la fonte dei dati degli obiettivi"
+      },
+      "buttons": {
+        "next": "Avanti",
+        "back": "Indietro",
+        "finish": "Concludi"
+      }
     }
   }
 }

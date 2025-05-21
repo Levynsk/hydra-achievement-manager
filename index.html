@@ -10,6 +10,122 @@
   <link rel="icon" href="https://i.imgur.com/WGGXmga.png" type="image/png">
 </head>
 <body>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <img src="https://i.imgur.com/WGGXmga.png" alt="Logo" class="loading-logo">
+    <div class="loading-progress">
+      <div class="loading-progress-bar" id="loadingProgress"></div>
+    </div>
+  </div>
+
+  <!-- Setup Wizard -->
+  <div class="setup-wizard" id="setupWizard">
+    <div class="setup-container">
+      <!-- Step 1: Language -->
+      <div class="setup-step active" id="setupStep1">
+        <div class="setup-header">
+          <h2>Bem-vindo ao Hydra Achievement Manager</h2>
+          <p>Selecione seu idioma preferido</p>
+        </div>
+        <div class="setup-content">
+          <div class="setting-item">
+            <div class="input-icon-wrapper select-wrapper stretched-input">
+              <i class="fas fa-globe input-icon"></i>
+              <select id="setupLanguageSelect" class="input-with-icon">
+                <!-- Will be populated dynamically -->
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="setup-actions">
+          <button class="btn btn-primary" onclick="nextStep(1)"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Step 2: Theme -->
+      <div class="setup-step" id="setupStep2">
+        <div class="setup-header">
+          <h2>Escolha seu tema</h2>
+          <p>Personalize a aparência do aplicativo</p>
+        </div>
+        <div class="setup-content">
+          <div class="setting-item">
+            <div class="input-icon-wrapper select-wrapper stretched-input">
+              <i class="fas fa-paint-brush input-icon"></i>
+              <select id="setupThemeSelect" class="input-with-icon">
+                <option value="dark">Escuro</option>
+                <option value="light">Claro</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="setup-actions">
+          <button class="btn" onclick="prevStep(2)"><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="btn btn-primary" onclick="nextStep(2)"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Step 3: Lite Mode -->
+      <div class="setup-step" id="setupStep3">
+        <div class="setup-header">
+          <h2>Lite Mode</h2>
+          <p>Deseja ativar o Lite Mode? (Desativa animações e efeitos visuais para melhor desempenho)</p>
+        </div>
+        <div class="setup-content">
+          <div class="setting-item">
+            <div class="minicard-stretch">
+              <div class="minicard-texts">
+                <span class="minicard-desc" id="liteModeDesc" style="margin-left: 12px;">Ativar Lite Mode</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="setupLiteModeToggle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="setup-actions">
+          <button class="btn" onclick="prevStep(3)"><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="btn btn-primary" onclick="nextStep(3)"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Step 4: API Source -->
+      <div class="setup-step" id="setupStep4">
+        <div class="setup-header">
+          <h2>Fonte da API</h2>
+          <p>Escolha a fonte dos dados de conquistas</p>
+        </div>
+        <div class="setup-content">
+          <div class="setting-item">
+            <div class="input-icon-wrapper select-wrapper stretched-input">
+              <i class="fas fa-cloud input-icon"></i>
+              <select id="setupApiSourceSelect" class="input-with-icon">
+                <option value="hydra">API Hydra</option>
+                <option value="steam">Steam API</option>
+              </select>
+            </div>
+          </div>
+          <div class="setting-item" id="wizardApiKeyContainer" style="display:none;">
+            <label for="wizardApiKey">Chave da API:</label>
+            <div class="input-group stretched">
+              <div class="input-icon-wrapper">
+                <i class="fa-solid fa-key input-icon"></i>
+                <input type="password" id="wizardApiKey" placeholder="Insira sua chave da API Steam" class="input-with-icon">
+              </div>
+              <button id="wizardToggleApiKey" class="btn btn-icon" type="button"><i class="fa-solid fa-eye"></i></button>
+            </div>
+            <p class="setting-description">Você pode obter sua chave da API Steam <a href="https://steamcommunity.com/dev/apikey" target="_blank">aqui</a>.</p>
+          </div>
+        </div>
+        <div class="setup-actions">
+          <button class="btn" onclick="prevStep(4)"><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="btn btn-primary" id="wizardFinishBtn" onclick="finishSetup()"><i class="fa-solid fa-check"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="titlebar">
     <div class="titlebar-left">
       <div class="titlebar-drag">Project HAM</div>
@@ -222,7 +338,6 @@
               
               <div class="tab-pane" id="tab-appearance">
                 <div class="settings-group">
-                  <h3 data-i18n="settings.appearance">Aparência</h3>
                   
                   <div class="setting-item">
                     <label for="themeSelect" data-i18n="settings.themeLabel">Tema:</label>
@@ -285,7 +400,7 @@
                       <img src="https://i.imgur.com/WGGXmga.png" alt="Hydra" style="width: 48px; height: 48px;">
                       <h2>Hydra Achievements Manager</h2>
                     </div>
-                    <p class="version">v1.6.0</p>
+                    <p class="version">v1.6.1</p>
                     <p class="app-description">A modern manager for Steam achievements.</p>
                     <p class="app-credits">Made by Levynsk (<a href="https://x.com/Levynskshy" target="_blank">@Levynskshy</a>) and Esther (<a href="https://twitter.com/onlysterbr" target="_blank">@onlysterbr</a>)</p>
                   </div>

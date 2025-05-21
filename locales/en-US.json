@@ -49,7 +49,8 @@
       "exportTooltip": "Export achievements and images",
       "exporting": "Exporting",
       "selectingDirectory": "Selecting folder for export...",
-      "preparingExport": "Preparing achievements for export..."
+      "preparingExport": "Preparing achievements for export...",
+      "downloadingImage": "Downloading image {filename} ({current}/{total})"
     },
     "settings": {
       "title": "Settings",
@@ -130,7 +131,12 @@
     },
     "loading": {
       "achievements": "Loading achievements...",
-      "games": "Loading games..."
+      "games": "Loading games...",
+      "resources": "Loading resources...",
+      "settings": "Initializing settings...",
+      "translations": "Loading translations...",
+      "updates": "Checking for updates...",
+      "complete": "Done!"
     },
     "error": {
       "title": "Error",
@@ -191,6 +197,30 @@
       "json": "JSON + Images",
       "iniDescription": "Generate a simple .ini file with achievement unlock data",
       "jsonDescription": "Generate a JSON file including achievement images"
+    },
+    "setup": {
+      "welcome": {
+        "title": "Welcome to Hydra Achievement Manager",
+        "description": "Select your preferred language"
+      },
+      "theme": {
+        "title": "Choose your theme",
+        "description": "Customize the app appearance"
+      },
+      "lite": {
+        "title": "Lite Mode",
+        "description": "Do you want to enable Lite Mode? (Disables animations and visual effects for better performance)",
+        "toggle": "Enable Lite Mode"
+      },
+      "api": {
+        "title": "API Source",
+        "description": "Choose the source for achievement data"
+      },
+      "buttons": {
+        "next": "Next",
+        "back": "Back",
+        "finish": "Finish"
+      }
     }
   }
 }

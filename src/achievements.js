@@ -927,6 +927,17 @@ export async function exportAllAchievements() {
     progressBar.style.width = '50%';
     progressMessage.textContent = await t('achievements.exporting');
 
+    // Configurar listener para atualizações de progresso
+    window.api.onExportProgress(async (data) => {
+      const progress = (data.current / data.total) * 100;
+      progressBar.style.width = `${progress}%`;
+      progressMessage.textContent = await t('achievements.downloadingImage', {
+        filename: data.filename,
+        current: data.current,
+        total: data.total
+      });
+    });
+
     // Write achievements and download images
     const result2 = await window.api.writeAchievements(appId, formattedAchievements, exportDir, {
       format: 'json',

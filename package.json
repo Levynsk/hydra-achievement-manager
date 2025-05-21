@@ -1,6 +1,6 @@
 {
   "name": "hydra-achievements-manager",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "A modern Hydra achievements manager",
   "main": "main.js",
   "scripts": {

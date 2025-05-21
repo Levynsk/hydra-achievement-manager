@@ -178,7 +178,8 @@ ipcMain.handle('write-achievements', async (event, appId, achievements, targetDi
     };
 
     if (options.format === 'json') {
-      const gameDir = path.join(outputPath, appId);
+      // Se for formato JSON, usar o diretório selecionado diretamente
+      const gameDir = options.format === 'ini' ? path.join(outputPath, appId) : outputPath;
       const imagesDir = path.join(gameDir, 'images');
       
       // Criar diretórios se não existirem
@@ -188,35 +189,59 @@ ipcMain.handle('write-achievements', async (event, appId, achievements, targetDi
       if (!fs.existsSync(imagesDir)) {
         fs.mkdirSync(imagesDir, { recursive: true });
       }
-  
+
       // Baixar imagens para cada conquista
+      const totalImages = achievements.length * 2; // Cada conquista tem 2 imagens (colorida e cinza)
+      let processedImages = 0;
+
       for (const achievement of achievements) {
         const safeName = achievement.name.replace(/[^a-zA-Z0-9]/g, '_');
         const iconPath = path.join(imagesDir, `${safeName}.jpg`);
         const grayPath = path.join(imagesDir, `${safeName}_gray.jpg`);
-  
+
         // Baixar imagem colorida
         if (achievement.icon) {
           await downloadImage(achievement.icon, iconPath, false);
+          processedImages++;
+          // Enviar progresso para o frontend
+          event.sender.send('export-progress', {
+            current: processedImages,
+            total: totalImages,
+            filename: `${safeName}.jpg`
+          });
         }
-  
+
         // Baixar e converter para escala de cinza
         if (achievement.icongray) {
           await downloadImage(achievement.icongray, grayPath, true);
+          processedImages++;
+          // Enviar progresso para o frontend
+          event.sender.send('export-progress', {
+            current: processedImages,
+            total: totalImages,
+            filename: `${safeName}_gray.jpg`
+          });
         } else if (achievement.icon) {
           // Se não tiver imagem em escala de cinza, usar a colorida e converter
           await downloadImage(achievement.icon, grayPath, true);
+          processedImages++;
+          // Enviar progresso para o frontend
+          event.sender.send('export-progress', {
+            current: processedImages,
+            total: totalImages,
+            filename: `${safeName}_gray.jpg`
+          });
         }
-  
+
         // Atualizar os caminhos das imagens no objeto achievement para serem relativos
         achievement.icon = `images/${safeName}.jpg`;
         achievement.icongray = `images/${safeName}_gray.jpg`;
       }
-  
+
       // Salvar arquivo JSON com os caminhos relativos das imagens
       const jsonPath = path.join(gameDir, 'achievements.json');
       fs.writeFileSync(jsonPath, JSON.stringify(achievements, null, 2));
-  
+
       return { 
         success: true, 
         message: 'Arquivo achievements.json e imagens foram gerados com sucesso!' 

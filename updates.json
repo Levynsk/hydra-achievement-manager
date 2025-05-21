@@ -49,23 +49,6 @@
         "Optimized interface for improved performance and lighter experience.",
         "General bug fixes and refinements."
       ]
-    },
-    {
-      "version": "1.6.0",
-      "changelog": [
-        "Introduced a brand new, redesigned and improved interface for a more intuitive and modern user experience.",
-        "Fixed various bugs to improve system stability and reliability.",
-        "Added support for light theme, allowing users to easily switch between light and dark modes.",
-        "Implemented game data export functionality, generating a JSON file with progress data and a folder containing achievement icons.",
-        "Added option to select a custom directory when generating achievements, offering greater flexibility to users."
-      ]
-    },
-    {
-      "version": "1.6.1",
-      "changelog": [
-        "Fix JSON data export.",
-        "New initial screen wizard."
-      ]
     }
   ]
 }

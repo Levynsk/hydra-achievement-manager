@@ -137,21 +137,38 @@ export async function fetchGames() {
           const response = await fetch(`https://store.steampowered.com/api/appdetails?appids=${game.id}`);
           const data = await response.json();
           
+          let totalAchievements = 0;
+          
           if (data[game.id]?.success) {
             const gameData = data[game.id].data;
-            const totalAchievements = gameData.achievements?.total || 0;
-
-            gamesMap.set(game.id, {
-              id: game.id,
-              name: gameData.name,
-              image: `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.id}/header.jpg`,
-              achievements: {
-                unlocked: game.unlockedAchievements,
-                total: totalAchievements,
-              },
-              sourcePath: outputPath // Armazenar o caminho de origem deste jogo
-            });
+            totalAchievements = gameData.achievements?.total || 0;
           }
+          
+          // Se não conseguiu obter o total da Steam, tenta obter da API Hydra
+          if (totalAchievements === 0) {
+            try {
+              const currentLang = await window.api.getCurrentLanguage();
+              const langCode = currentLang.split('-')[0] || 'pt';
+              const hydraResult = await window.api.getHydraAchievements(game.id, langCode);
+              
+              if (hydraResult.success && hydraResult.achievements) {
+                totalAchievements = hydraResult.achievements.length;
+              }
+            } catch (hydraError) {
+              console.warn(`Erro ao buscar conquistas da API Hydra para o jogo ${game.id}:`, hydraError);
+            }
+          }
+
+          gamesMap.set(game.id, {
+            id: game.id,
+            name: data[game.id]?.data?.name || game.id,
+            image: `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.id}/header.jpg`,
+            achievements: {
+              unlocked: game.unlockedAchievements,
+              total: totalAchievements,
+            },
+            sourcePath: outputPath
+          });
         } catch (error) {
           console.error(`Erro ao buscar detalhes do jogo ${game.id}:`, error);
         }
@@ -197,20 +214,22 @@ export async function fetchGames() {
       
       // Criar os botões de diretório
       let directoryButtons = '';
-      if (outputPaths.length > 1) {
+      if (outputPaths.length > 0) {
         directoryButtons = '<div class="game-directory-buttons">';
+        
+        // Loop para criar os botões
         for (const path of outputPaths) {
           // Verificar se o jogo existe neste diretório
           const gameExistsInDir = await checkGameExistsInDirectory(game.id, path);
           if (!gameExistsInDir) continue; // Pular este diretório se o jogo não existir nele
           
           // Extrair o nome da última pasta do caminho
-          // Usar separador correto para Windows (\) ou Unix (/)
           const pathParts = path.split(/[\\\/]/);
           const dirName = pathParts[pathParts.length - 1];
           
-          // Verificar se este diretório é o ativo
-          const isActive = path === activeOutputPath;
+          // Se houver apenas um diretório ou se este for o diretório ativo, marcar como ativo
+          const isActive = outputPaths.length === 1 || path === activeOutputPath;
+          
           directoryButtons += `
             <button class="game-directory-btn ${isActive ? 'active' : ''}" 
                     data-path="${path}" 
@@ -392,8 +411,10 @@ async function updateGameCard(gameId, newPath) {
     
     // Criar os botões de diretório
     let directoryButtons = '';
-    if (outputPaths.length > 1) {
+    if (outputPaths.length > 0) {
       directoryButtons = '<div class="game-directory-buttons">';
+      
+      // Loop para criar os botões
       for (const path of outputPaths) {
         // Verificar se o jogo existe neste diretório
         const gameExistsInDir = await checkGameExistsInDirectory(gameId, path);
@@ -403,8 +424,9 @@ async function updateGameCard(gameId, newPath) {
         const pathParts = path.split(/[\\\/]/);
         const dirName = pathParts[pathParts.length - 1];
         
-        // Verificar se este diretório é o ativo
-        const isActive = path === activeOutputPath;
+        // Se houver apenas um diretório ou se este for o diretório ativo, marcar como ativo
+        const isActive = outputPaths.length === 1 || path === activeOutputPath;
+        
         directoryButtons += `
           <button class="game-directory-btn ${isActive ? 'active' : ''}" 
                   data-path="${path}" 

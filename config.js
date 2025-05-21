@@ -2,7 +2,7 @@ const { ipcRenderer } = require('electron');
 
 // Configurações globais da aplicação
 const API_CONFIG = {
-  HYDRA_API_URL: ''
+  HYDRA_API_URL: 'https://hydra-api-us-east-1.losbroxas.org/games/achievements'
 };
 
 const defaultConfig = {
