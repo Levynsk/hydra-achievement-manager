@@ -59,6 +59,13 @@
         "Implemented game data export functionality, generating a JSON file with progress data and a folder containing achievement icons.",
         "Added option to select a custom directory when generating achievements, offering greater flexibility to users."
       ]
+    },
+    {
+      "version": "1.6.1",
+      "changelog": [
+        "Fix JSON data export.",
+        "New initial screen wizard."
+      ]
     }
   ]
 }
