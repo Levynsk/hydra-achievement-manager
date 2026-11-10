@@ -278,7 +278,7 @@ export const getGameAchievementsFallback = async (
       );
       const settings = await loadSettings().catch(() => null);
       const hydraLanguage = mapUiLanguageToHydraLanguage(settings?.language);
-      const hydraUrl = `https://hydra-api-us-east-1.losbroxas.org/games/achievements?shop=steam&objectId=${game_id}&language=${hydraLanguage}`;
+      const hydraUrl = `https://hydra-api-us-east-1.losbroxas.org/games/steam/${game_id}/achievements?language=${hydraLanguage}`;
 
     try {
       const response = await tauriFetch(hydraUrl, {

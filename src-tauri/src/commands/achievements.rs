@@ -263,7 +263,11 @@ pub async fn get_game_achievements(
             .and_then(|v| v.as_str())
             .or_else(|| ach.get("name").and_then(|v| v.as_str()))
         {
-            if let Some(percent) = ach.get("percent").and_then(|v| v.as_f64()) {
+            if let Some(percent) = ach
+                .get("percent")
+                .or_else(|| ach.get("globalUnlockPercentage"))
+                .and_then(|v| v.as_f64())
+            {
                 rarity_map.insert(name.to_string(), percent);
             }
             if let Some(hidden) = ach.get("hidden").and_then(|v| v.as_bool()) {

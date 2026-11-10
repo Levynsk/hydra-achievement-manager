@@ -132,7 +132,8 @@ const DebugSettings: React.FC<DebugSettingsProps> = ({
 
       const startHydraFront = performance.now();
       try {
-        const hydraUrl = `${import.meta.env.VITE_HYDRA_API_URL || "https://hydra-api-us-east-1.losbroxas.org"}/games/achievements?shop=steam&objectId=${testGameId}`;
+        const baseUrl = (import.meta.env.VITE_HYDRA_API_URL || "https://hydra-api-us-east-1.losbroxas.org").replace(/\/+$/, "");
+        const hydraUrl = `${baseUrl}/games/steam/${testGameId}/achievements`;
         const response = await tauriFetch(hydraUrl, { method: "GET" });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         await response.json();

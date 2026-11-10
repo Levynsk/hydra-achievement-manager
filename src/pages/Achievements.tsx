@@ -406,16 +406,19 @@ const AchievementsContent: React.FC<AchievementsContentProps> = ({
               ach.displayName || ach.display_name || ach.name || ach.apiname,
             description: ach.description || "",
             icon: ach.icon || "",
-            percent: ach.percent,
+            iconLocked: ach.iconLocked || ach.icongray || ach.icon_gray || ach.icon || "",
+            percent: ach.percent ?? ach.globalUnlockPercentage,
             hidden: ach.hidden,
           }));
         } else {
           achievements = result.achievements.map((ach: any) => ({
             internalName: ach.name,
-            displayName: ach.displayName || ach.name,
-            description: ach.description,
-            icon: ach.icon,
-            percent: ach.percent,
+            displayName:
+              ach.displayName || ach.display_name || ach.name || ach.apiname,
+            description: ach.description || "",
+            icon: ach.icon || "",
+            iconLocked: ach.iconLocked || ach.icongray || ach.icon_gray || ach.icon || "",
+            percent: ach.percent ?? ach.globalUnlockPercentage,
             hidden: ach.hidden,
           }));
         }

@@ -129,16 +129,38 @@ pub struct DirectoryConfig {
     pub detection_preset: DirectoryDetectionPreset,
 }
 
+fn deserialize_null_as_empty_string<'de, D>(deserializer: D) -> Result<String, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let opt = Option::<String>::deserialize(deserializer)?;
+    Ok(opt.unwrap_or_default())
+}
+
 /// Achievement da API Hydra
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HydraAchievement {
     pub name: String,
-    #[serde(rename = "displayName")]
+    #[serde(
+        rename = "displayName",
+        default,
+        deserialize_with = "deserialize_null_as_empty_string"
+    )]
     pub display_name: String,
+    #[serde(default, deserialize_with = "deserialize_null_as_empty_string")]
     pub description: String,
+    #[serde(default, deserialize_with = "deserialize_null_as_empty_string")]
     pub icon: String,
+    #[serde(default, deserialize_with = "deserialize_null_as_empty_string")]
     pub icongray: String,
+    #[serde(default)]
     pub hidden: bool,
+    #[serde(default)]
+    pub points: Option<i64>,
+    #[serde(rename = "globalUnlockPercentage", default)]
+    pub global_unlock_percentage: Option<f64>,
+    #[serde(default)]
+    pub percent: Option<f64>,
 }
 
 /// Resposta da API Hydra
