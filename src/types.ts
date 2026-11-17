@@ -221,3 +221,18 @@ export interface SteamUserInfo {
   userId: string;
   userName: string;
 }
+
+/// Unlock Steam agendado para o futuro (a Steam grava o horário do momento
+/// em que a conquista é definida, então esperamos até a data).
+export interface PendingSteamUnlock {
+  id: string;
+  appId: number;
+  achievementName: string;
+  unlockAt: number;
+  createdAt: number;
+}
+
+export interface UnlockAchievementsResult {
+  unlockedNow: number;
+  scheduled: PendingSteamUnlock[];
+}

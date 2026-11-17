@@ -1,7 +1,7 @@
 use super::language::{map_ui_language_to_hydra_lang, map_ui_language_to_steam_store_lang};
 use super::settings::{load_settings, save_settings};
 use crate::integrations::hydra::HydraApi;
-use crate::integrations::steam::SteamWebApi;
+use crate::integrations::steam::{SteamUnlockPlan, SteamWebApi, PENDING_UNLOCKS_UPDATED_EVENT};
 use crate::models::{DirectoryConfig, DirectoryDetectionPreset, UnlockOptions};
 use crate::parser::AchievementParser;
 use crate::unlocker::AchievementUnlocker;
@@ -366,7 +366,7 @@ pub async fn unlock_achievements(
     options: UnlockOptions,
     state: tauri::State<'_, crate::AppState>,
     app_handle: AppHandle,
-) -> Result<(), String> {
+) -> Result<Value, String> {
     log::info!(
         "Unlocking achievements for game {} (Path: {})",
         options.game_id,
@@ -374,7 +374,42 @@ pub async fn unlock_achievements(
     );
 
     if options.selected_path.starts_with("steam://") {
-        if let Ok(steam_lock) = state.steam_monitor.lock() {
+        let app_id = options
+            .game_id
+            .parse::<u32>()
+            .map_err(|_| "Invalid Steam AppID".to_string())?;
+        let plan = SteamUnlockPlan::build(&options, app_id);
+
+        // Timestamps no futuro não podem ser gravados pela Steam: ficam na fila
+        // persistida e são aplicados quando o horário chegar.
+        if !plan.scheduled.is_empty() {
+            state
+                .steam_unlock_scheduler
+                .schedule(plan.scheduled.clone())
+                .map_err(|e| format!("Failed to schedule Steam unlocks: {}", e))?;
+            log::info!(
+                "Scheduled {} Steam achievement(s) for a future timestamp",
+                plan.scheduled.len()
+            );
+        }
+
+        if !plan.immediate.is_empty() {
+            let immediate_names: Vec<&str> = plan
+                .immediate
+                .iter()
+                .map(|action| action.achievement_name.as_str())
+                .collect();
+            if let Err(e) = state
+                .steam_unlock_scheduler
+                .cancel_for_achievements(app_id, &immediate_names)
+            {
+                log::warn!(
+                    "Failed to clear scheduled Steam unlocks for immediate actions: {}",
+                    e
+                );
+            }
+
+            let steam_lock = state.steam_monitor.lock().map_err(|e| e.to_string())?;
             if let Some(steam_monitor) = &*steam_lock {
                 log::info!("Using Steam API for unlock (temporary session)");
 
@@ -384,17 +419,13 @@ pub async fn unlock_achievements(
                         return Err("Steam integration not available or Steam not running".into());
                     }
 
-                    let app_id = options
-                        .game_id
-                        .parse::<u32>()
-                        .map_err(|_| "Invalid Steam AppID".to_string())?;
                     steam_monitor
                         .switch_app_id(app_id)
                         .map_err(|e| e.to_string())?;
 
-                    for achievement in &options.achievements {
+                    for action in &plan.immediate {
                         steam_monitor
-                            .set_achievement(&achievement.name, achievement.completed)
+                            .set_achievement(&action.achievement_name, action.unlocked)
                             .map_err(|e| e.to_string())?;
                     }
 
@@ -406,10 +437,21 @@ pub async fn unlock_achievements(
                 }
 
                 unlock_result?;
-                return Ok(());
+            } else {
+                return Err("Steam monitor not initialized".to_string());
             }
+        } else {
+            log::info!(
+                "All requested Steam unlocks are in the future; no Steam session needed now"
+            );
         }
-        return Err("Steam integration not available or Steam not running".into());
+
+        let _ = app_handle.emit(PENDING_UNLOCKS_UPDATED_EVENT, ());
+
+        return Ok(serde_json::json!({
+            "unlockedNow": plan.immediate.iter().filter(|action| action.unlocked).count(),
+            "scheduled": plan.scheduled,
+        }));
     }
 
     let preset = directory_preset_for_path(&state, &options.selected_path).unwrap_or_default();
@@ -424,7 +466,10 @@ pub async fn unlock_achievements(
         .emit("achievements-updated", ())
         .map_err(|e| e.to_string())?;
 
-    Ok(())
+    Ok(serde_json::json!({
+        "unlockedNow": options.achievements.iter().filter(|achievement| achievement.completed).count(),
+        "scheduled": [],
+    }))
 }
 
 fn directory_preset_for_path(

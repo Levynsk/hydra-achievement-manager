@@ -113,7 +113,7 @@
     "pathPlaceholder": "ex: C:\\Usuários\\SeuNome\\Documentos",
     "add": "Adicionar",
     "overwriteWarning": "Um arquivo para este jogo já existe aqui e será sobrescrito.",
-    "steamCustomTimestampWarning": "Ao desbloquear pela Steam, o horário personalizado não é aplicado. O timestamp final é definido pelos servidores da Steam.",
+    "steamCustomTimestampWarning": "A Steam grava o horário no momento em que a conquista é enviada, então timestamps no passado não podem ser aplicados. Timestamps no futuro ficam agendados e são desbloqueados automaticamente quando a data chegar.",
     "retroAchievementsCustomTimestampWarning": "Ao desbloquear pelo RetroAchievements, o horário personalizado não é aplicado. O timestamp final é definido pelos servidores do RetroAchievements.",
     "retroAchievementsWebSessionRequiredWarning": "A sessão web do RetroAchievements não está configurada. A remoção de conquistas já desbloqueadas ficará indisponível até salvar a sessão web nas configurações de Conexões.",
     "cancel": "Cancelar",
@@ -128,12 +128,21 @@
   "unlockToasts": {
     "successTitle": "Desbloqueio concluído",
     "successMessage": "{count} conquistas desbloqueadas com sucesso.",
+    "scheduledTitle": "Desbloqueios Steam agendados",
+    "scheduledMessage": "{count} conquista(s) serão desbloqueadas automaticamente, a partir de {date}, porque a Steam não permite alterar o horário do desbloqueio.",
     "errorTitle": "Falha no desbloqueio",
     "errorMessage": "Não foi possível desbloquear as conquistas. Tente novamente.",
     "steamErrorTitle": "Falha no desbloqueio via Steam",
     "steamErrorMessage": "A integração da Steam falhou durante o desbloqueio. Verifique se a Steam está aberta e logada.",
     "retroRuntimeLoginRequiredTitle": "Login RetroAchievements necessário",
     "retroRuntimeLoginRequiredMessage": "Abra as Configurações, acesse Conexões e conclua o login do RetroAchievements antes de desbloquear conquistas."
+  },
+  "pendingSteamUnlocks": {
+    "title": "Desbloqueios Steam agendados ({count})",
+    "description": "A Steam registra o horário no momento em que a conquista é desbloqueada, então estas aguardam o timestamp para serem aplicadas.",
+    "unlocksAt": "Desbloqueia em {date}",
+    "cancel": "Cancelar",
+    "cancelError": "Não foi possível cancelar o desbloqueio agendado."
   },
   "directorySelectionModal": {
     "title": "Selecionar Diretório para {gameName}",

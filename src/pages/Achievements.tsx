@@ -26,6 +26,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import { useI18n } from "../contexts/I18nContext";
 import { useMonitoredAchievements } from "../contexts/MonitoredAchievementsContext";
 import UnlockModal from "../components/UnlockModal";
+import PendingSteamUnlocks from "../components/PendingSteamUnlocks";
 import {
   getAchievementsForGameSource,
   getSteamAchievementSource,
@@ -641,6 +642,7 @@ const AchievementsContent: React.FC<AchievementsContentProps> = ({
     timestamp: emptyTimestamp(),
   };
   const isRetroAchievementsSource = !!preferredSourcePath?.startsWith("retroachievements://");
+  const isSteamSource = !!preferredSourcePath?.startsWith("steam://");
 
   return (
     <>
@@ -755,6 +757,10 @@ const AchievementsContent: React.FC<AchievementsContentProps> = ({
             </div>
           </div>
         </header>
+
+        {isSteamSource && game && (
+          <PendingSteamUnlocks appId={Number(game.id)} achievements={achievements} />
+        )}
 
         <div
           className="flex-grow overflow-y-auto custom-scrollbar min-h-0 pr-2"

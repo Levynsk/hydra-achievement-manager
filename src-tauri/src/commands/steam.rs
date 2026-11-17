@@ -1,13 +1,13 @@
 use super::language::{map_ui_language_to_hydra_lang, map_ui_language_to_steam_store_lang};
 use super::settings::{load_settings, save_settings};
 use crate::integrations::hydra::HydraApi;
-use crate::integrations::steam::SteamWebApi;
+use crate::integrations::steam::{PendingSteamUnlock, SteamWebApi};
 use crate::integrations::steam::{SteamAchievementData, SteamGame};
 use crate::utils::CacheManager;
 use serde_json::Value;
 use std::collections::HashMap;
 use std::path::PathBuf;
-use tauri::AppHandle;
+use tauri::{AppHandle, Emitter};
 use tauri_plugin_dialog::DialogExt;
 
 #[cfg(target_os = "windows")]
@@ -743,6 +743,36 @@ pub async fn set_steam_achievement(
     } else {
         Err("Steam monitor not initialized".to_string())
     }
+}
+
+/// Retorna os unlocks Steam agendados para o futuro, ordenados por horário.
+#[tauri::command]
+pub fn get_pending_steam_unlocks(
+    state: tauri::State<'_, crate::AppState>,
+) -> Result<Vec<PendingSteamUnlock>, String> {
+    Ok(state.steam_unlock_scheduler.pending())
+}
+
+/// Cancela um unlock Steam agendado. Retorna `true` se ele existia.
+#[tauri::command]
+pub fn cancel_pending_steam_unlock(
+    id: String,
+    state: tauri::State<'_, crate::AppState>,
+    app_handle: AppHandle,
+) -> Result<bool, String> {
+    let removed = state
+        .steam_unlock_scheduler
+        .cancel(&id)
+        .map_err(|e| e.to_string())?;
+
+    if removed {
+        let _ = app_handle.emit(
+            crate::integrations::steam::PENDING_UNLOCKS_UPDATED_EVENT,
+            (),
+        );
+    }
+
+    Ok(removed)
 }
 
 /// Detecta jogos Steam instalados

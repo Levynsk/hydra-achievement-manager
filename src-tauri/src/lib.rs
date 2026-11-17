@@ -9,15 +9,16 @@ pub mod unlocker;
 pub mod utils;
 pub mod wine;
 
-use integrations::steam::SteamMonitor;
+use integrations::steam::{SteamMonitor, SteamUnlockScheduler};
 use monitor::AchievementMonitor;
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 use tauri::Manager;
 
 // Estado global do monitor
 pub struct AppState {
     pub monitor: Mutex<Option<AchievementMonitor>>,
     pub steam_monitor: Mutex<Option<SteamMonitor>>,
+    pub steam_unlock_scheduler: Arc<SteamUnlockScheduler>,
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -208,11 +209,25 @@ pub fn run() {
             let mut steam_monitor = SteamMonitor::new();
             steam_monitor.set_app_handle(app.handle().clone());
 
+            // Fila persistida de unlocks Steam com timestamp futuro. A Steam não
+            // permite alterar o horário de uma conquista, então esperamos até a
+            // data chegar e só então chamamos SetAchievement.
+            let pending_unlocks_path = user_data_path
+                .join(crate::integrations::steam::PENDING_UNLOCKS_FILE);
+            let steam_unlock_scheduler = Arc::new(SteamUnlockScheduler::new(pending_unlocks_path));
+
             // Armazena monitor no estado da app
             app.manage(AppState {
                 monitor: Mutex::new(Some(monitor)),
                 steam_monitor: Mutex::new(Some(steam_monitor)),
+                steam_unlock_scheduler: Arc::clone(&steam_unlock_scheduler),
             });
+
+            // Só inicia o worker depois que o AppState está registrado: ele
+            // consulta o estado para acessar o SteamMonitor.
+            if let Err(e) = steam_unlock_scheduler.start(app.handle().clone()) {
+                log::error!("Failed to start Steam unlock scheduler: {}", e);
+            }
 
             Ok(())
         })
@@ -250,6 +265,8 @@ pub fn run() {
             commands::steam::get_steam_games,
             commands::steam::get_steam_game_achievements,
             commands::steam::set_steam_achievement,
+            commands::steam::get_pending_steam_unlocks,
+            commands::steam::cancel_pending_steam_unlock,
             commands::steam::detect_steam_games,
             commands::steam::get_steam_dll_path,
             commands::steam::get_steam_library_path,

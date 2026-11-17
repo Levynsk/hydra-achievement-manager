@@ -1,6 +1,6 @@
 use crate::models::{
-    AchievementEntry, Cracker, DirectoryDetectionPreset, TimeFormat, Timestamp, UnlockMode,
-    UnlockOptions,
+    AchievementEntry, AchievementToUnlock, Cracker, DirectoryDetectionPreset, TimeFormat,
+    Timestamp, UnlockMode, UnlockOptions,
 };
 use crate::parser::{detect_cracker_from_path, expand_path, AchievementParser};
 use anyhow::{Context, Result};
@@ -438,33 +438,37 @@ impl AchievementWriter {
 pub struct AchievementUnlocker;
 
 impl AchievementUnlocker {
+    /// Resolve o Unix timestamp de uma conquista.
+    ///
+    /// Usa o timestamp individual quando ele está completo; caso contrário cai
+    /// para o modo global (`current`, `random` ou `custom`).
+    pub fn resolve_unlock_time(achievement: &AchievementToUnlock, options: &UnlockOptions) -> i64 {
+        if !achievement.timestamp.day.is_empty()
+            && !achievement.timestamp.month.is_empty()
+            && !achievement.timestamp.year.is_empty()
+            && !achievement.timestamp.hour.is_empty()
+            && !achievement.timestamp.minute.is_empty()
+        {
+            AchievementWriter::timestamp_to_unix(&achievement.timestamp)
+        } else {
+            Self::get_global_timestamp(
+                &options.mode,
+                options.custom_timestamp.as_ref(),
+                &options.time_format,
+            )
+        }
+    }
+
     /// Processa achievements para unlock
     pub fn process_achievements(options: &UnlockOptions) -> Vec<AchievementEntry> {
         options
             .achievements
             .iter()
             .filter(|ach| ach.completed)
-            .map(|ach| {
-                let unlock_time = if !ach.timestamp.day.is_empty()
-                    && !ach.timestamp.month.is_empty()
-                    && !ach.timestamp.year.is_empty()
-                    && !ach.timestamp.hour.is_empty()
-                    && !ach.timestamp.minute.is_empty()
-                {
-                    AchievementWriter::timestamp_to_unix(&ach.timestamp)
-                } else {
-                    Self::get_global_timestamp(
-                        &options.mode,
-                        options.custom_timestamp.as_ref(),
-                        &options.time_format,
-                    )
-                };
-
-                AchievementEntry {
-                    name: ach.name.clone(),
-                    achieved: true,
-                    unlock_time,
-                }
+            .map(|ach| AchievementEntry {
+                name: ach.name.clone(),
+                achieved: true,
+                unlock_time: Self::resolve_unlock_time(ach, options),
             })
             .collect()
     }

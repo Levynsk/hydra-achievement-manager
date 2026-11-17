@@ -13,6 +13,8 @@ import {
   RetroAchievementsWebSessionLogin,
   SteamAchievementData,
   SteamSearchResult,
+  PendingSteamUnlock,
+  UnlockAchievementsResult,
 } from "./types";
 
 const inFlightAchievementRequests = new Map<string, Promise<any>>();
@@ -353,7 +355,7 @@ export const reloadAchievements = (gameId: string, basePath: string) =>
   invoke<any>("reload_achievements", { gameId, basePath });
 
 export const unlockAchievements = (options: any) =>
-  invoke<void>("unlock_achievements", { options });
+  invoke<UnlockAchievementsResult>("unlock_achievements", { options });
 
 export const exportAchievements = (gameId: string) =>
   invoke<any>("export_achievements", { gameId });
@@ -654,6 +656,19 @@ export const setSteamAchievement = (
   achievementName: string,
   unlocked: boolean,
 ) => invoke<void>("set_steam_achievement", { achievementName, unlocked });
+
+// Steam unlocks scheduled for a future timestamp (Steam always records "now").
+export const getPendingSteamUnlocks = () =>
+  invoke<PendingSteamUnlock[]>("get_pending_steam_unlocks");
+
+export const cancelPendingSteamUnlock = (id: string) =>
+  invoke<boolean>("cancel_pending_steam_unlock", { id });
+
+export const onPendingSteamUnlocksUpdate = (
+  callback: () => void,
+): Promise<UnlistenFn> => {
+  return listen("steam-pending-unlocks-updated", () => callback());
+};
 
 export const detectSteamGames = () => invoke<string[]>("detect_steam_games");
 export const getSteamDllPath = () => invoke<string | null>("get_steam_dll_path");

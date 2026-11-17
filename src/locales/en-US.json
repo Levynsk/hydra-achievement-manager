@@ -113,7 +113,7 @@
     "pathPlaceholder": "e.g., C:\\Users\\Name\\Documents",
     "add": "Add",
     "overwriteWarning": "A file already exists for this game here and will be overwritten.",
-    "steamCustomTimestampWarning": "When unlocking through Steam, a custom timestamp is not applied. The final unlock time is managed by Steam servers.",
+    "steamCustomTimestampWarning": "Steam records the unlock time when the achievement is sent, so past timestamps cannot be applied. Future timestamps are scheduled and unlocked automatically when the date arrives.",
     "retroAchievementsCustomTimestampWarning": "When unlocking through RetroAchievements, a custom timestamp is not applied. The final unlock time is managed by RetroAchievements servers.",
     "retroAchievementsWebSessionRequiredWarning": "RetroAchievements web session is not configured. Removing previously unlocked achievements will be unavailable until the web session is saved in Connections settings.",
     "cancel": "Cancel",
@@ -128,12 +128,21 @@
   "unlockToasts": {
     "successTitle": "Unlock completed",
     "successMessage": "{count} achievements unlocked successfully.",
+    "scheduledTitle": "Steam unlocks scheduled",
+    "scheduledMessage": "{count} achievement(s) will be unlocked automatically, starting {date}, because Steam does not allow changing the unlock time.",
     "errorTitle": "Unlock failed",
     "errorMessage": "Could not unlock achievements. Please try again.",
     "steamErrorTitle": "Steam unlock failed",
     "steamErrorMessage": "Steam integration failed while unlocking. Make sure Steam is running and logged in.",
     "retroRuntimeLoginRequiredTitle": "RetroAchievements login required",
     "retroRuntimeLoginRequiredMessage": "Open Settings, go to Connections, and complete the RetroAchievements login before unlocking achievements."
+  },
+  "pendingSteamUnlocks": {
+    "title": "Scheduled Steam unlocks ({count})",
+    "description": "Steam records the time an achievement is unlocked, so these wait until their timestamp to be applied.",
+    "unlocksAt": "Unlocks at {date}",
+    "cancel": "Cancel",
+    "cancelError": "Could not cancel the scheduled unlock."
   },
   "directorySelectionModal": {
     "title": "Select directory for {gameName}",

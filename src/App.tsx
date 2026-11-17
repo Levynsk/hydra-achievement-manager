@@ -25,6 +25,8 @@ import {
   convertTimestampTimeFormat,
   dateToTimestamp,
   emptyTimestamp,
+  formatDateObj,
+  isTimestampComplete,
   isTimestampEmpty,
   unixSecondsToTimestamp,
 } from './formatters';
@@ -159,7 +161,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const { timeFormat, sidebarWidth, setSidebarWidth } = useTheme();
+  const { dateFormat, timeFormat, sidebarWidth, setSidebarWidth } = useTheme();
   const { games, closeDirectorySelection, selectDirectory, duplicateGames, openDirectorySelection, gameNames, manuallyUpdateGame, forceRefresh } = useMonitoredAchievements();
   const [isResizing, setIsResizing] = useState(false);
   const [isSourceSelectionOpen, setIsSourceSelectionOpen] = useState(false);
@@ -432,10 +434,15 @@ const App: React.FC = () => {
     const unlockSourcePath = isSteam ? 'steam://' : path;
 
     const generateTimestamp = (): Timestamp => {
-      const date = mode === 'current' ? new Date() : (
-        mode === 'custom' ? new Date() : // fallback
-          new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000)
-      );
+      // "custom" use the date chosen in the global timestamp manager; the old
+      // fallback used `new Date()` and silently ignored a future custom date.
+      if (mode === 'custom' && customTimestamp && isTimestampComplete(customTimestamp, timeFormat)) {
+        return customTimestamp;
+      }
+
+      const date = mode === 'random'
+        ? new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000)
+        : new Date();
 
       return dateToTimestamp(date, timeFormat);
     };
@@ -572,15 +579,8 @@ const App: React.FC = () => {
     }
 
     try {
-      // Optimistic update: instantly update local state
-      manuallyUpdateGame(
-        gameId,
-        achievements.map(a => ({ name: a.name, completed: a.completed })),
-        isSteam
-      );
-
       // Call the IPC to unlock achievements
-      await unlockAchievements({
+      const result = await unlockAchievements({
         gameId,
         selectedPath: path,
         achievements,
@@ -589,11 +589,39 @@ const App: React.FC = () => {
         timeFormat,
       });
 
+      const scheduled = result?.scheduled ?? [];
+      const scheduledNames = new Set(scheduled.map((item) => item.achievementName));
+      const unlockedNow = result?.unlockedNow ?? unlockedCount;
+
+      // Optimistic update: only reflect achievements that were applied now.
+      // Future Steam unlocks stay pending until their timestamp arrives.
+      manuallyUpdateGame(
+        gameId,
+        achievements
+          .filter((a) => !scheduledNames.has(a.name))
+          .map(a => ({ name: a.name, completed: a.completed })),
+        isSteam
+      );
+
       console.log('Achievements unlocked successfully');
-      toast.success(t('unlockToasts.successTitle'), {
-        description: t('unlockToasts.successMessage', { count: unlockedCount }),
-        duration: 3000,
-      });
+
+      if (unlockedNow > 0) {
+        toast.success(t('unlockToasts.successTitle'), {
+          description: t('unlockToasts.successMessage', { count: unlockedNow }),
+          duration: 3000,
+        });
+      }
+
+      if (scheduled.length > 0) {
+        const nextUnlockAt = Math.min(...scheduled.map((item) => item.unlockAt));
+        toast.success(t('unlockToasts.scheduledTitle'), {
+          description: t('unlockToasts.scheduledMessage', {
+            count: scheduled.length,
+            date: formatDateObj(new Date(nextUnlockAt * 1000), dateFormat, timeFormat),
+          }),
+          duration: 7000,
+        });
+      }
 
       // Reload achievements data from the saved file or Steamworks.
       try {
